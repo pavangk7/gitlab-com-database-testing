@@ -22,7 +22,7 @@ default:
     - cd ${BUILD_PATH}
     - export GOPATH=$BUILD_PATH/.go
     - mkdir -p $GOPATH
-    - echo 'TODO: update code'
+    - "echo 'TODO: update code'"
     - ls -l
     - source scripts/utils.sh
     - source scripts/prepare_build.sh
