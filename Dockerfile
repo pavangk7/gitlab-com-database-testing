@@ -6,7 +6,7 @@ ARG GL_SHA
 ENV RAILS_ENV=test
 
 WORKDIR $GL_REPO
-RUN git clone --progress --no-checkout https://gitlab.com/gitlab-org/gitlab.git $GL_REPO
+RUN git clone --progress https://gitlab.com/gitlab-org/gitlab.git $GL_REPO
 RUN bundle install
 
 RUN git fetch origin $GL_SHA
