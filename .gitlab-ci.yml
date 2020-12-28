@@ -21,7 +21,7 @@ image:gitlab:
   script:
     - mkdir -p /docker-builds
     - docker build --build-arg GL_SHA=${GL_SHA} -t ${IMAGE_NAME} .
-    - docker save -o ${IMAGE_NAME} {IMAGE_PATH}
+    - docker save -o ${IMAGE_PATH} {IMAGE_NAME}
     - cat ${IMAGE_PATH} | bzip2 - | ssh $MIGRATOR_HOST "bunzip2 | docker load -"
 
 image:redis:
@@ -34,7 +34,7 @@ image:redis:
   script:
     - mkdir -p /docker-builds
     - docker pull $IMAGE_NAME
-    - docker save -o ${IMAGE_NAME} {IMAGE_PATH}
+    - docker save -o ${IMAGE_PATH} {IMAGE_NAME}
     - cat ${IMAGE_PATH} | bzip2 - | ssh $MIGRATOR_HOST "bunzip2 | docker load -"
 
 image:postgres:
@@ -47,7 +47,7 @@ image:postgres:
   script:
     - mkdir -p /docker-builds
     - docker pull $IMAGE_NAME
-    - docker save -o ${IMAGE_NAME} {IMAGE_PATH}
+    - docker save -o ${IMAGE_PATH} {IMAGE_NAME}
     - cat ${IMAGE_PATH} | bzip2 - | ssh $MIGRATOR_HOST "bunzip2 | docker load -"
 
 db:status:
