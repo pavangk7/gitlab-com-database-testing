@@ -1,4 +1,5 @@
 stages:
+  - prepare
   - migrations
 
 default:
@@ -6,35 +7,20 @@ default:
   interruptible: true
   timeout: 90m
 
-.default-before_script:
-  cache:
-    key: 'gl-repo'
-    paths:
-      - ${GL_REPO}
-    policy: pull
-  before_script:
-    - echo ${BUILD_PATH}
-    - if [ ! -d ${GL_REPO} ]; then
-        rm -rf ${BUILD_PATH};
-        git clone --progress --no-checkout https://gitlab.com/gitlab-org/gitlab.git ${GL_REPO};
-        git clone ${GL_REPO} ${BUILD_PATH};
-      fi
-    - cd ${BUILD_PATH}
-    - export GOPATH=$BUILD_PATH/.go
-    - mkdir -p $GOPATH
-    - "echo 'TODO: update code'"
-    - ls -l
-    - source scripts/utils.sh
-    - source scripts/prepare_build.sh
-
 variables:
   RAILS_ENV: "test"
   BUILD_PATH: "/builds/gitlab"
   GL_REPO: "/repos/gitlab"
+  IMAGE_NAME: "gitlab-com-migrations:${GL_SHA}"
+
+build:image:
+  stage: prepare
+  script:
+    - docker build --build-arg GL_SHA=${GL_SHA} -t ${IMAGE_NAME} .
 
 db:migrations:
-  extends: .default-before_script
   stage: migrations
+  image: $IMAGE_NAME
   services:
     - name: postgres:11.6
       command: ["postgres", "-c", "fsync=off", "-c", "synchronous_commit=off", "-c", "full_page_writes=off"]
@@ -43,4 +29,7 @@ db:migrations:
     POSTGRES_HOST_AUTH_METHOD: trust
   script:
     - env
+    - ls -l
+    - source scripts/utils.sh
+    - source scripts/prepare_build.sh
     - rake db:migrate:status
