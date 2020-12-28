@@ -22,9 +22,7 @@ image:gitlab:
     - mkdir -p /docker-builds
     - echo Building ${IMAGE_NAME}
     - docker build --build-arg GL_SHA=${GL_SHA} -t ${IMAGE_NAME} .
-    - echo docker save -o ${IMAGE_PATH} ${IMAGE_NAME}
-    - docker save -o ${IMAGE_PATH} ${IMAGE_NAME}
-    - cat ${IMAGE_PATH} | bzip2 - | ssh $MIGRATOR_HOST "bunzip2 | docker load"
+    - docker save ${IMAGE_NAME} | bzip2 - | ssh $MIGRATOR_HOST "bunzip2 | docker load"
 
 image:redis:
   stage: prepare
@@ -36,8 +34,7 @@ image:redis:
   script:
     - mkdir -p /docker-builds
     - docker pull $IMAGE_NAME
-    - docker save -o ${IMAGE_PATH} ${IMAGE_NAME}
-    - cat ${IMAGE_PATH} | bzip2 - | ssh $MIGRATOR_HOST "bunzip2 | docker load"
+    - docker save ${IMAGE_NAME} | bzip2 - | ssh $MIGRATOR_HOST "bunzip2 | docker load"
 
 image:postgres:
   stage: prepare
@@ -49,8 +46,7 @@ image:postgres:
   script:
     - mkdir -p /docker-builds
     - docker pull $IMAGE_NAME
-    - docker save -o ${IMAGE_PATH} ${IMAGE_NAME}
-    - cat ${IMAGE_PATH} | bzip2 - | ssh $MIGRATOR_HOST "bunzip2 | docker load"
+    - docker save ${IMAGE_NAME} | bzip2 - | ssh $MIGRATOR_HOST "bunzip2 | docker load"
 
 db:status:
   stage: migrations
