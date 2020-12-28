@@ -15,7 +15,7 @@ variables:
 build:image:
   stage: prepare
   tags:
-    - docker
+    - builder
   script:
     - docker build --build-arg GL_SHA=${GL_SHA} -t ${IMAGE_NAME} .
 
