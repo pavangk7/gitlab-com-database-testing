@@ -12,12 +12,17 @@ variables:
   GL_REPO: "/repos/gitlab"
   IMAGE_NAME: "gitlab-com-migrations:${GL_SHA}"
 
-build:image:
+image:build:
   stage: prepare
   tags:
     - builder
+  variables:
+    IMAGE_PATH: "/docker-builds/${IMAGE_NAME}"
   script:
+    - mkdir /docker-builds
     - docker build --build-arg GL_SHA=${GL_SHA} -t ${IMAGE_NAME} .
+    - docker save -o ${IMAGE_PATH}
+    - cat ${IMAGE_PATH} | bzip2 - | ssh $MIGRATOR_HOST "bunzip2 | docker load -"
 
 db:migrations:
   stage: migrations
