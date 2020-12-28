@@ -6,24 +6,31 @@ default:
   interruptible: true
   timeout: 90m
 
-.rails-cache:
-  cache:
-    key: "rails-v3"
-    paths:
-      - vendor/ruby/
-      - vendor/gitaly-ruby/
-      - .go/pkg/mod/
-    policy: pull
-
 .default-before_script:
+  cache:
+    key: 'gl-repo'
+    paths:
+      - ${GL_REPO}
+    policy: pull
   before_script:
-    - export GOPATH=$CI_PROJECT_DIR/.go
+    - echo ${BUILD_PATH}
+    - if [ ! -d ${GL_REPO} ]; then
+        rm -rf ${BUILD_PATH};
+        git clone --progress --no-checkout https://gitlab.com/gitlab-org/gitlab.git ${GL_REPO};
+        git clone ${GL_REPO} ${BUILD_PATH}
+      fi
+    - cd ${BUILD_PATH}
+    - export GOPATH=$BUILD_PATH/.go
     - mkdir -p $GOPATH
+    - echo 'TODO: update code'
+    - ls -l
     - source scripts/utils.sh
     - source scripts/prepare_build.sh
 
 variables:
   RAILS_ENV: "test"
+  BUILD_PATH: "/builds/gitlab"
+  GL_REPO: "/repos/gitlab"
 
 db:migrations:
   extends: .default-before_script
@@ -35,8 +42,5 @@ db:migrations:
   variables:
     POSTGRES_HOST_AUTH_METHOD: trust
   script:
-    - echo ${CI_PROJECT_DIR}
-    - git clone https://gitlab.com/gitlab-org/gitlab.git ${CI_PROJECT_DIR}
-    - cd ${CI_PROJECT_DIR}
     - env
     - rake db:migrate:status
