@@ -12,3 +12,6 @@ RUN bundle install
 RUN git fetch origin $GL_SHA
 RUN git reset --hard origin/${GL_SHA}
 RUN bundle install
+
+COPY entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh", "--"]
