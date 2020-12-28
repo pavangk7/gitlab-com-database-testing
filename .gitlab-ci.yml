@@ -17,12 +17,12 @@ image:gitlab:
   tags:
     - builder
   variables:
-    IMAGE_PATH: "/docker-builds/${IMAGE_NAME}"
+    IMAGE_PATH: "/docker-builds/${IMAGE_NAME}.tgz"
   script:
     - mkdir -p /docker-builds
     - docker build --build-arg GL_SHA=${GL_SHA} -t ${IMAGE_NAME} .
     - docker save -o ${IMAGE_PATH} {IMAGE_NAME}
-    - cat ${IMAGE_PATH} | bzip2 - | ssh $MIGRATOR_HOST "bunzip2 | docker load -"
+    - cat ${IMAGE_PATH} | bzip2 - | ssh $MIGRATOR_HOST "bunzip2 | docker load"
 
 image:redis:
   stage: prepare
@@ -30,12 +30,12 @@ image:redis:
     - builder
   variables:
     IMAGE_NAME: "redis:4.0-alpine"
-    IMAGE_PATH: "/docker-builds/${IMAGE_NAME}"
+    IMAGE_PATH: "/docker-builds/${IMAGE_NAME}.tgz"
   script:
     - mkdir -p /docker-builds
     - docker pull $IMAGE_NAME
     - docker save -o ${IMAGE_PATH} {IMAGE_NAME}
-    - cat ${IMAGE_PATH} | bzip2 - | ssh $MIGRATOR_HOST "bunzip2 | docker load -"
+    - cat ${IMAGE_PATH} | bzip2 - | ssh $MIGRATOR_HOST "bunzip2 | docker load"
 
 image:postgres:
   stage: prepare
@@ -43,12 +43,12 @@ image:postgres:
     - builder
   variables:
     IMAGE_NAME: "postgres:11.6"
-    IMAGE_PATH: "/docker-builds/${IMAGE_NAME}"
+    IMAGE_PATH: "/docker-builds/${IMAGE_NAME}.tgz"
   script:
     - mkdir -p /docker-builds
     - docker pull $IMAGE_NAME
     - docker save -o ${IMAGE_PATH} {IMAGE_NAME}
-    - cat ${IMAGE_PATH} | bzip2 - | ssh $MIGRATOR_HOST "bunzip2 | docker load -"
+    - cat ${IMAGE_PATH} | bzip2 - | ssh $MIGRATOR_HOST "bunzip2 | docker load"
 
 db:status:
   stage: migrations
