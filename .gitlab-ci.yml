@@ -14,12 +14,16 @@ variables:
 
 build:image:
   stage: prepare
+  tags:
+    - docker
   script:
     - docker build --build-arg GL_SHA=${GL_SHA} -t ${IMAGE_NAME} .
 
 db:migrations:
   stage: migrations
   image: $IMAGE_NAME
+  tags:
+    - dblab
   services:
     - name: postgres:11.6
       command: ["postgres", "-c", "fsync=off", "-c", "synchronous_commit=off", "-c", "full_page_writes=off"]
