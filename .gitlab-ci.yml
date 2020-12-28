@@ -17,7 +17,7 @@ default:
     - if [ ! -d ${GL_REPO} ]; then
         rm -rf ${BUILD_PATH};
         git clone --progress --no-checkout https://gitlab.com/gitlab-org/gitlab.git ${GL_REPO};
-        git clone ${GL_REPO} ${BUILD_PATH}
+        git clone ${GL_REPO} ${BUILD_PATH};
       fi
     - cd ${BUILD_PATH}
     - export GOPATH=$BUILD_PATH/.go
