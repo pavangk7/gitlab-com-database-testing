@@ -72,6 +72,5 @@ db:status:
       alias: redis
   script:
     - cd /gitlab
-    - ls -l
     - ./prepare.sh
-    - cat config/database.yml
+    - rake db:migrate:status
