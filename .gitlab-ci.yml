@@ -72,4 +72,5 @@ db:status:
     - cd /gitlab
     - ./prepare.sh
     - git status
-    - rake db:migrate:status
+    - bundle check
+    - bundle exec rake db:migrate:status

@@ -14,10 +14,11 @@ USER gitlab
 WORKDIR $GL_REPO
 
 RUN git clone --progress https://gitlab.com/gitlab-org/gitlab.git $GL_REPO
-RUN bundle install --jobs 4 --deployment
+#RUN bundle config set deployment 'true'
+RUN bundle install --clean --jobs=$(nproc) --path=vendor --retry=3 --without=development --quiet
 RUN git fetch origin $GL_SHA
 RUN git reset --hard origin/${GL_SHA}
-RUN bundle install --jobs 4 --deployment
+RUN bundle install --clean --jobs=$(nproc) --path=vendor --retry=3 --without=development --quiet
 
 # Codebase patching
 USER gitlab
