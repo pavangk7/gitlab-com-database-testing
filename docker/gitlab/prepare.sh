@@ -3,14 +3,18 @@
 cp config/gitlab.yml.example config/gitlab.yml
 sed -i 's/bin_path: \/usr\/bin\/git/bin_path: \/usr\/local\/bin\/git/' config/gitlab.yml
 
-cp config/database.yml.postgresql config/database.yml
-
-# Set user to a non-superuser to ensure we test permissions
-sed -i 's/username: root/username: gitlab/g' config/database.yml
-
-sed -i 's/localhost/postgres/g' config/database.yml
-sed -i "s/username: postgres/username: ${DBLAB_USER}/g" config/database.yml
-sed -i "s/password:.*/password: ${DBLAB_PASSWORD}/g" config/database.yml
+cat > config/database.yml <<-EOF
+test: &test
+  adapter: postgresql
+  encoding: unicode
+  database: gitlabhq_dblabs
+  username: ${DBLAB_USER}
+  password: ${DBLAB_PASSWORD}
+  host: postgres
+  prepared_statements: false
+  variables:
+    statement_timeout: 15s
+EOF
 
 cp config/cable.yml.example config/cable.yml
 sed -i 's|url:.*$|url: redis://redis:6379|g' config/cable.yml
