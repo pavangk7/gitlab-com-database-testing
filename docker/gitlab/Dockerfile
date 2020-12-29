@@ -5,8 +5,8 @@ ARG GL_SHA
 
 ENV RAILS_ENV=test
 
-RUN apt-get update; apt-get -y install iptables
-RUN groupadd -r gitlab && useradd -r -g gitlab gitlab
+RUN apt-get update; apt-get -y install iptables sudo
+RUN groupadd -r gitlab && useradd -m -r -g gitlab gitlab
 RUN mkdir -p $GL_REPO
 RUN chown gitlab:gitlab $GL_REPO
 
@@ -14,17 +14,12 @@ USER gitlab
 WORKDIR $GL_REPO
 
 RUN git clone --progress https://gitlab.com/gitlab-org/gitlab.git $GL_REPO
-RUN bundle install
+RUN bundle install --jobs 4 --deployment
 RUN git fetch origin $GL_SHA
 RUN git reset --hard origin/${GL_SHA}
-RUN bundle install
+RUN bundle install --jobs 4 --deployment
 
 # Codebase patching
-# TODO: Move up
-USER root
-RUN mkdir /home/gitlab; chown gitlab /home/gitlab
-RUN apt-get install -y sudo
-
 USER gitlab
 WORKDIR $GL_REPO
 RUN git config --global user.email "gitlab-org/database-team@gitlab.com"
