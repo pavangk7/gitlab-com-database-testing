@@ -64,7 +64,13 @@ db:status:
     - name: ${DOCKER_REGISTRY}/redis:4.0-alpine
       alias: redis
   variables:
-    POSTGRES_HOST_AUTH_METHOD: trust
+    - DBLAB_SSH_KEY
+    - DBLAB_HOST_KEYS
+    - DBLAB_USER
+    - DBLAB_PASSWORD
+    - DBLAB_SSH_HOST
+    - DBLAB_ENVIRONMENT
+    - DBLAB_TOKEN
   script:
     - env
     - ls -l
