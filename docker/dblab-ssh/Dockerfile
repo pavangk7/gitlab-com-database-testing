@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 
-RUN apt-get update; apt-get -y install curl
+RUN apt-get update; apt-get -y install curl sudo
 
 COPY dblab_install.sh /dblab_install.sh
 RUN bash /dblab_install.sh
