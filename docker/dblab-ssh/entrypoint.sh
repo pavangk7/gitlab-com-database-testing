@@ -4,13 +4,10 @@ set -e
 
 mkdir ~/.ssh
 echo "${DBLAB_SSH_KEY}" > ~/.ssh/id_rsa
+chmod 0400 ~/.ssh/id_rsa
 echo "${DBLAB_HOST_KEYS}" > ~/.ssh/known_hosts
 
-cat ~/.ssh/known_hosts
-
 env | grep -i dblab
-
-echo "DBLABS: ${DBLAB_SSH_HOST}"
 
 ssh -f -N -L 2344:localhost:2345 -i ~/.ssh/id_rsa ${DBLAB_SSH_HOST}
 
