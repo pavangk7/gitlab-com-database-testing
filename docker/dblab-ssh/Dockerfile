@@ -7,7 +7,7 @@ RUN bash /dblab_install.sh
 
 ENV DBLAB_SSH_HOST=gldatabase@gitlab-joe-poc.postgres.ai
 ENV DBLAB_ENVIRONMENT=gitlab-production-tunnel
-ENV DBLAB_TOKEN
-ENV DBLAB_SSH_KEY
+ENV DBLAB_TOKEN=unset
+ENV DBLAB_SSH_KEY=unset
 
 USER dblab
