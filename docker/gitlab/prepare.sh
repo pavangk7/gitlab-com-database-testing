@@ -7,7 +7,7 @@ cat > config/database.yml <<-EOF
 test: &test
   adapter: postgresql
   encoding: unicode
-  database: gitlabhq_dblabs
+  database: gitlabhq_dblab
   username: ${DBLAB_USER}
   password: ${DBLAB_PASSWORD}
   host: postgres

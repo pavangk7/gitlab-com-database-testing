@@ -71,6 +71,4 @@ db:status:
   script:
     - cd /gitlab
     - ./prepare.sh
-    - ping -c 3 postgres
-    - ping -c 3 redis
     - bundle exec rake db:migrate:status
