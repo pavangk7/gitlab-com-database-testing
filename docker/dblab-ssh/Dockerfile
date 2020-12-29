@@ -10,11 +10,11 @@ ENV DBLAB_ENVIRONMENT=gitlab-production-tunnel
 ENV DBLAB_TOKEN=unset
 ENV DBLAB_SSH_KEY=unset
 
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod uga+x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh", "--"]
+
 RUN groupadd -r dblab && useradd -r -g dblab dblab
 USER dblab
 
 EXPOSE 5432
-
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod uga+x /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh", "--"]
