@@ -41,7 +41,7 @@ image:redis:
     IMAGE_NAME: "redis:4.0-alpine"
   script:
     - docker pull $IMAGE_NAME
-    - docker tag -t ${DOCKER_REGISTRY}/${IMAGE_NAME} ${IMAGE_NAME}
+    - docker tag ${DOCKER_REGISTRY}/${IMAGE_NAME} ${IMAGE_NAME}
     - docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}
 
 image:postgres:
@@ -50,7 +50,7 @@ image:postgres:
     IMAGE_NAME: "postgres:11.6"
   script:
     - docker pull $IMAGE_NAME
-    - docker tag -t ${DOCKER_REGISTRY}/${IMAGE_NAME} ${IMAGE_NAME}
+    - docker tag ${DOCKER_REGISTRY}/${IMAGE_NAME} ${IMAGE_NAME}
     - docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}
 
 db:status:
