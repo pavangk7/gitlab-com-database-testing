@@ -20,4 +20,4 @@ iptables -A OUTPUT -j DROP
 # After configuring `iptables` as root, execute
 # the passed command as the non-privileged `app` user.
 
-sudo -u gitlab bash -c "$@"
+sudo -u gitlab "$@"
