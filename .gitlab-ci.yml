@@ -68,7 +68,6 @@ db:status:
     DBLAB_HOST_KEYS: ""
     DBLAB_USER: ""
     DBLAB_PASSWORD: ""
-    DBLAB_SSH_HOST: "${DBLAB_SSH_HOST}"
     DBLAB_ENVIRONMENT: ""
     DBLAB_TOKEN: ""
   script:
