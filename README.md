@@ -36,6 +36,15 @@ The worker additionally runs a local docker registry:
 
 1. Run docker registry: `docker run -d -p 5000:5000 --restart=always --name registry registry:2`
 
+The worker needs to allow containers to manage iptables - add this to `/etc/gitlab-runner/config.toml`:
+
+```
+[[runners]]
+  [runners.docker]
+    # ...
+    cap_add = ["NET_ADMIN", "NET_RAW"]
+```
+
 #### Builder
 
 * Runner tag: `builder`

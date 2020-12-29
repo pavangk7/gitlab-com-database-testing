@@ -5,17 +5,18 @@ ARG GL_SHA
 
 ENV RAILS_ENV=test
 
+RUN apt-get update; apt-get -y install iptables
+RUN groupadd -r gitlab && useradd -r -g gitlab gitlab
+
+USER gitlab
 WORKDIR $GL_REPO
+
 RUN git clone --progress https://gitlab.com/gitlab-org/gitlab.git $GL_REPO
 RUN bundle install
-
-# TODO: Move this up
-RUN apt-get update; apt-get -y install iptables
-
 RUN git fetch origin $GL_SHA
 RUN git reset --hard origin/${GL_SHA}
 RUN bundle install
 
-COPY entrypoint.sh /entrypoint.sh
 USER root
+COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh", "--"]

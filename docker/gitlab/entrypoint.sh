@@ -1,8 +1,5 @@
 #!/usr/bin/env sh
 
-id
-whoami
-
 #
 # iptables configuration
 #
@@ -22,7 +19,5 @@ iptables -A OUTPUT -j DROP
 #
 # After configuring `iptables` as root, execute
 # the passed command as the non-privileged `app` user.
-# TODO
-# sudo -u app sh -c "$@"
 
-sh -c "$@"
+sudo -u gitlab bash -c "$@"
