@@ -38,7 +38,7 @@ image:dblab-ssh:
 image:redis:
   extends: .image:base
   variables:
-    IMAGE_NAME: "redis:4.0-alpine"
+    IMAGE_NAME: "docker.io/library/redis:4.0-alpine"
   script:
     - docker pull $IMAGE_NAME
     - docker tag ${DOCKER_REGISTRY}/${IMAGE_NAME} ${IMAGE_NAME}
@@ -47,7 +47,7 @@ image:redis:
 image:postgres:
   extends: .image:base
   variables:
-    IMAGE_NAME: "postgres:11.6"
+    IMAGE_NAME: "docker.io/library/postgres:11.6"
   script:
     - docker pull $IMAGE_NAME
     - docker tag ${DOCKER_REGISTRY}/${IMAGE_NAME} ${IMAGE_NAME}
