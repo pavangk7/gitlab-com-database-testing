@@ -63,15 +63,7 @@ db:status:
       alias: postgres
     - name: ${DOCKER_REGISTRY}/redis:4.0-alpine
       alias: redis
-  variables:
-    DBLAB_SSH_KEY: ""
-    DBLAB_HOST_KEYS: ""
-    DBLAB_USER: ""
-    DBLAB_PASSWORD: ""
-    DBLAB_ENVIRONMENT: ""
-    DBLAB_TOKEN: ""
   script:
-    - env
     - cd /gitlab
     - ls -l
     - ./prepare.sh
