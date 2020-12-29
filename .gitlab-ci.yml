@@ -68,5 +68,3 @@ db:status:
     - ls -l
     - ./prepare.sh
     - cat config/database.yml
-    - ping 8.8.8.8
-    - rake db:migrate:status
