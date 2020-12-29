@@ -26,6 +26,7 @@ RUN mkdir /home/gitlab; chown gitlab /home/gitlab
 RUN apt-get install -y sudo
 
 USER gitlab
+WORKDIR $GL_REPO
 RUN git config --global user.email "gitlab-org/database-team@gitlab.com"
 RUN git config --global user.name "GitLab Database Team"
 COPY patches patches

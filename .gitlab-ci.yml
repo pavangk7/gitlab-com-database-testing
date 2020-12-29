@@ -73,6 +73,7 @@ db:status:
     DBLAB_TOKEN: ""
   script:
     - env
+    - cd /gitlab
     - ls -l
     - ./prepare.sh
     - cat config/database.yml
