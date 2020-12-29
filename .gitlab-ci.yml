@@ -68,7 +68,7 @@ db:status:
     DBLAB_HOST_KEYS: ""
     DBLAB_USER: ""
     DBLAB_PASSWORD: ""
-    DBLAB_SSH_HOST: ${DBLAB_SSH_HOST}
+    DBLAB_SSH_HOST: "${DBLAB_SSH_HOST}"
     DBLAB_ENVIRONMENT: ""
     DBLAB_TOKEN: ""
   script:
@@ -77,5 +77,5 @@ db:status:
     - ls -l
     - ./prepare.sh
     - cat config/database.yml
-    - curl -v https://google.com
+    - ping 8.8.8.8
     - rake db:migrate:status

@@ -8,6 +8,8 @@ echo "${DBLAB_HOST_KEYS}" > ~/.ssh/known_hosts
 
 cat ~/.ssh/known_hosts
 
+env
+
 echo "DBLABS: ${DBLAB_SSH_HOST}"
 
 ssh -f -N -L 2344:localhost:2345 -i ~/.ssh/id_rsa ${DBLAB_SSH_HOST}
