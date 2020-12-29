@@ -16,7 +16,11 @@ WORKDIR $GL_REPO
 RUN git clone --progress https://gitlab.com/gitlab-org/gitlab.git $GL_REPO
 RUN bundle config set deployment 'true'
 RUN bundle config set clean 'true'
-RUN bundle install --clean --jobs=$(nproc) --path=vendor --retry=3 --without=development --quiet
+RUN bundle config set jobs $(nproc)
+RUN bundle config set path vendor
+RUN bundle config set retry 3
+RUN bundle config
+RUN bundle install
 RUN git fetch origin $GL_SHA
 RUN git reset --hard origin/${GL_SHA}
 RUN bundle install --clean --jobs=$(nproc) --path=vendor --retry=3 --without=development --quiet
