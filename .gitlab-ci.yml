@@ -71,6 +71,6 @@ db:status:
   script:
     - cd /gitlab
     - ./prepare.sh
-    - git status
-    - bundle check
+    - echo $RAILS_ENV
     - bundle exec rake db:migrate:status
+    - bundle exec rake db:migrate
