@@ -24,5 +24,5 @@ echo
 echo "Opening port forwarding on port ${port}"
 
 # This blocks and opens port forwarding for Postgres
-ssh -N -L 5432:localhost:$port -i ~/.ssh/id_rsa ${DBLAB_SSH_HOST}
+ssh -N -L :5432:localhost:$port -i ~/.ssh/id_rsa ${DBLAB_SSH_HOST}
 
