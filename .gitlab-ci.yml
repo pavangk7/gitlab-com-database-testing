@@ -60,6 +60,11 @@ db:status:
     - worker
   variables:
     DBLAB_HOST_KEYS: $DBLAB_HOST_KEYS
+    DBLAB_SSH_KEY: $DBLAB_SSH_KEY
+    DBLAB_TOKEN: $DBLAB_TOKEN
+    DBLAB_USER: $DBLAB_USER
+    DBLAB_PASSWORD: $DBLAB_PASSWORD
+    DBLAB_ENVIRONMENT: $DBLAB_ENVIRONMENT
   services:
     - name: ${DOCKER_REGISTRY}/gitlab-com-migrations-dblab-ssh:latest
       alias: postgres
