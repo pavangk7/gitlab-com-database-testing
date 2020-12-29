@@ -59,7 +59,7 @@ db:status:
   tags:
     - worker
   variables:
-    DBLAB_TEST: 'foo'
+    DBLAB_HOST_KEYS: 'foo'
   services:
     - name: ${DOCKER_REGISTRY}/gitlab-com-migrations-dblab-ssh:latest
       alias: postgres
