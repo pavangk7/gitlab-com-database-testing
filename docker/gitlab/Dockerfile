@@ -23,6 +23,7 @@ RUN bundle install
 # TODO: Move up
 USER root
 RUN mkdir /home/gitlab; chown gitlab /home/gitlab
+RUN apt-get install -y sudo
 
 USER gitlab
 RUN git config --global user.email "gitlab-org/database-team@gitlab.com"

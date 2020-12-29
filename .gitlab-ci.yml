@@ -60,7 +60,9 @@ db:status:
     - worker
   services:
     - name: ${DOCKER_REGISTRY}/gitlab-com-migrations-dblab-ssh:latest
+      alias: postgres
     - name: ${DOCKER_REGISTRY}/redis:4.0-alpine
+      alias: redis
   variables:
     POSTGRES_HOST_AUTH_METHOD: trust
   script:
@@ -73,7 +75,7 @@ db:status:
 
 dblab:
   stage: migrations
-  image: gitlab-com-migrations-dblab-ssh:latest
+  image: ${DOCKER_REGISTRY}/gitlab-com-migrations-dblab-ssh:latest
   tags:
     - worker
   script:
