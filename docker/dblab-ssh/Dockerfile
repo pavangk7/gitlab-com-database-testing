@@ -16,4 +16,5 @@ USER dblab
 EXPOSE 5432
 
 COPY entrypoint.sh /entrypoint.sh
+RUN chmod uga+x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh", "--"]

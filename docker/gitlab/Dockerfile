@@ -34,4 +34,5 @@ COPY prepare.sh prepare.sh
 
 USER root
 COPY entrypoint.sh /entrypoint.sh
+RUN chmod uga+x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh", "--"]
