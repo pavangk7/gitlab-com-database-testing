@@ -71,4 +71,5 @@ db:status:
   script:
     - cd /gitlab
     - ./prepare.sh
+    - git status
     - rake db:migrate:status

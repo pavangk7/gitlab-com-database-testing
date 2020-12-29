@@ -11,11 +11,17 @@ ssh -f -N -L 2344:localhost:2345 -i ~/.ssh/id_rsa ${DBLAB_SSH_HOST}
 
 dblab init --url http://127.0.0.1:2344 --token ${DBLAB_TOKEN} --environment-id ${DBLAB_ENVIRONMENT}
 
-dblab instance status
-
 dblab_info=$(dblab clone create --username ${DBLAB_USER} --password ${DBLAB_PASSWORD})
 
 port=$(echo $dblab_info | jq -r .db.port)
+id=$(echo $dblab_info | jq -r .id)
+
+dblab_cleanup() {
+  echo "Cleaning up and destroying dblab clone $id"
+  dblab clone destroy $id
+}
+
+trap dblab_cleanup TERM INT EXIT
 
 echo "Opening port forwarding on port ${port}"
 
