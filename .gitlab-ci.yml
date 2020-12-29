@@ -21,8 +21,7 @@ image:gitlab:
   extends: .image:base
   script:
     - echo Building ${IMAGE_NAME}
-    - cd docker/gitlab
-    - docker build --build-arg GL_SHA=${GL_SHA} -t ${IMAGE_NAME} .
+    - docker build --build-arg GL_SHA=${GL_SHA} -t ${IMAGE_NAME} docker/gitlab
     - docker tag ${IMAGE_NAME} ${DOCKER_REGISTRY}/${IMAGE_NAME}
     - docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}
 
