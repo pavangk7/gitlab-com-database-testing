@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 
-RUN apt-get update; apt-get -y install curl openssh-client
+RUN apt-get update; apt-get -y install curl openssh-client jq
 
 COPY dblab_install.sh /dblab_install.sh
 RUN bash /dblab_install.sh
