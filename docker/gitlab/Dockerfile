@@ -20,6 +20,8 @@ RUN git reset --hard origin/${GL_SHA}
 RUN bundle install
 
 # Codebase patching
+# TODO: Move up
+RUN mkdir /home/gitlab; chown gitlab /home/gitlab
 RUN git config --global user.email "gitlab-org/database-team@gitlab.com"
 RUN git config --global user.name "GitLab Database Team"
 COPY patches patches
