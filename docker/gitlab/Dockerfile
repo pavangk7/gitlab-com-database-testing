@@ -5,7 +5,6 @@ ARG GL_SHA
 
 ENV RAILS_ENV=test
 
-
 WORKDIR $GL_REPO
 RUN git clone --progress https://gitlab.com/gitlab-org/gitlab.git $GL_REPO
 RUN bundle install
@@ -18,4 +17,5 @@ RUN git reset --hard origin/${GL_SHA}
 RUN bundle install
 
 COPY entrypoint.sh /entrypoint.sh
+USER root
 ENTRYPOINT ["/entrypoint.sh", "--"]

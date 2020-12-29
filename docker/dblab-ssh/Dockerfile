@@ -10,4 +10,5 @@ ENV DBLAB_ENVIRONMENT=gitlab-production-tunnel
 ENV DBLAB_TOKEN=unset
 ENV DBLAB_SSH_KEY=unset
 
+RUN groupadd -r dblab && useradd -r -g dblab dblab
 USER dblab
