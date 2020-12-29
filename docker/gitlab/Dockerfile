@@ -21,7 +21,7 @@ RUN bundle install
 
 # Codebase patching
 COPY patches patches
-RUN git am < patches/*.patch
+RUN git am < patches/0001-Disable-AssetProxyFilter-initializer.patch
 
 COPY prepare.sh prepare.sh
 
