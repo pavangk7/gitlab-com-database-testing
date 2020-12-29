@@ -58,6 +58,8 @@ db:status:
   image: ${DOCKER_REGISTRY}/$IMAGE_NAME
   tags:
     - worker
+  variables:
+    DBLAB_TEST: 'foo'
   services:
     - name: ${DOCKER_REGISTRY}/gitlab-com-migrations-dblab-ssh:latest
       alias: postgres
