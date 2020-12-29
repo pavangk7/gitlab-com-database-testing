@@ -10,7 +10,7 @@ sed -i 's/username: root/username: gitlab/g' config/database.yml
 
 sed -i 's/localhost/postgres/g' config/database.yml
 sed -i "s/username: git/username: ${DBLAB_USER}/g" config/database.yml
-sed -i "s/password: git/password: ${DBLAB_PASSWORD}/g" config/database.yml
+sed -i "s/password: \"secure password\"/password: ${DBLAB_PASSWORD}/g" config/database.yml
 
 cp config/cable.yml.example config/cable.yml
 sed -i 's|url:.*$|url: redis://redis:6379|g' config/cable.yml
