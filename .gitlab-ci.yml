@@ -50,7 +50,7 @@ db:status:
   stage: migrations
   image: $IMAGE_NAME
   tags:
-    - dblab
+    - worker
   services:
     - name: postgres:11.6
       command: ["postgres", "-c", "fsync=off", "-c", "synchronous_commit=off", "-c", "full_page_writes=off"]
