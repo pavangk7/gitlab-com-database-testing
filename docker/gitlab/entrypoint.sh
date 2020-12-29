@@ -1,5 +1,8 @@
 #!/usr/bin/env sh
 
+id
+whoami
+
 #
 # iptables configuration
 #
