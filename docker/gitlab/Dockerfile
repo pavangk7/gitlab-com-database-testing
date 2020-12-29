@@ -21,7 +21,10 @@ RUN bundle install
 
 # Codebase patching
 # TODO: Move up
+USER root
 RUN mkdir /home/gitlab; chown gitlab /home/gitlab
+
+USER gitlab
 RUN git config --global user.email "gitlab-org/database-team@gitlab.com"
 RUN git config --global user.name "GitLab Database Team"
 COPY patches patches
