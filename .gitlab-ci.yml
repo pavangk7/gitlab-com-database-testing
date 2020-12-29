@@ -21,9 +21,19 @@ image:gitlab:
   extends: .image:base
   script:
     - echo Building ${IMAGE_NAME}
-    - docker build --build-arg GL_SHA=${GL_SHA} -t ${IMAGE_NAME} .
-    - docker tag ${IMAGE_NAME} ${DOCKER_REGISTRY}:${IMAGE_NAME}
-    - docker push ${DOCKER_REGISTRY}:${IMAGE_NAME}
+    - docker build --build-arg GL_SHA=${GL_SHA} -t ${IMAGE_NAME} docker/gitlab
+    - docker tag ${IMAGE_NAME} ${DOCKER_REGISTRY}/${IMAGE_NAME}
+    - docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}
+
+image:dblab-ssh:
+  extends: .image:base
+  variables:
+    IMAGE_NAME: "gitlab-com-migrations-dblab-ssh:latest"
+  script:
+    - echo Building ${IMAGE_NAME}
+    - docker build -t ${IMAGE_NAME} docker/dblab-ssh
+    - docker tag ${IMAGE_NAME} ${DOCKER_REGISTRY}/${IMAGE_NAME}
+    - docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}
 
 image:redis:
   extends: .image:base
@@ -31,8 +41,8 @@ image:redis:
     IMAGE_NAME: "redis:4.0-alpine"
   script:
     - docker pull $IMAGE_NAME
-    - docker tag -t ${DOCKER_REGISTRY}:${IMAGE_NAME} ${IMAGE_NAME}
-    - docker push ${DOCKER_REGISTRY}:${IMAGE_NAME}
+    - docker tag -t ${DOCKER_REGISTRY}/${IMAGE_NAME} ${IMAGE_NAME}
+    - docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}
 
 image:postgres:
   extends: .image:base
@@ -40,12 +50,12 @@ image:postgres:
     IMAGE_NAME: "postgres:11.6"
   script:
     - docker pull $IMAGE_NAME
-    - docker tag -t ${DOCKER_REGISTRY}:${IMAGE_NAME} ${IMAGE_NAME}
-    - docker push ${DOCKER_REGISTRY}:${IMAGE_NAME}
+    - docker tag -t ${DOCKER_REGISTRY}/${IMAGE_NAME} ${IMAGE_NAME}
+    - docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}
 
 db:status:
   stage: migrations
-  image: $IMAGE_NAME
+  image: ${DOCKER_REGISTRY}/$IMAGE_NAME
   tags:
     - worker
   services:
@@ -60,3 +70,11 @@ db:status:
     - source scripts/utils.sh
     - source scripts/prepare_build.sh
     - rake db:migrate:status
+
+dblab:
+  stage: migrations
+  image: gitlab-com-migrations-dblab-ssh:latest
+  tags:
+    - worker
+  script:
+    - dblab instance status
