@@ -9,7 +9,7 @@
 # within certain CIDRs,
 # but blocks all other network traffic.
 
-ACCEPT_CIDR="127.16.0.0/12"
+ACCEPT_CIDR="172.16.0.0/12"
 
 iptables -A INPUT -s $ACCEPT_CIDR -j ACCEPT
 iptables -A INPUT -j DROP
