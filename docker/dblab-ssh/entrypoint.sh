@@ -8,7 +8,7 @@ echo "${DBLAB_HOST_KEYS}" > ~/.ssh/known_hosts
 
 cat ~/.ssh/known_hosts
 
-env
+env | grep -i dblab
 
 echo "DBLABS: ${DBLAB_SSH_HOST}"
 
