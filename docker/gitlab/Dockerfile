@@ -19,6 +19,12 @@ RUN git fetch origin $GL_SHA
 RUN git reset --hard origin/${GL_SHA}
 RUN bundle install
 
+# Codebase patching
+COPY patches patches
+RUN git am < patches/*.patch
+
+COPY prepare.sh prepare.sh
+
 USER root
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh", "--"]
