@@ -11,6 +11,7 @@ RUN groupadd -r gitlab && useradd -r -g gitlab gitlab
 USER gitlab
 WORKDIR $GL_REPO
 
+RUN mkdir -p $GL_REPO
 RUN git clone --progress https://gitlab.com/gitlab-org/gitlab.git $GL_REPO
 RUN bundle install
 RUN git fetch origin $GL_SHA

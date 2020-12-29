@@ -12,3 +12,6 @@ ENV DBLAB_SSH_KEY=unset
 
 RUN groupadd -r dblab && useradd -r -g dblab dblab
 USER dblab
+
+COPY entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh", "--"]
