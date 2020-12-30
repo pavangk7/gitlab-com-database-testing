@@ -42,15 +42,6 @@ image:redis:
     - docker tag ${IMAGE_NAME} ${DOCKER_REGISTRY}/${IMAGE_NAME}
     - docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}
 
-image:postgres:
-  extends: .image:base
-  variables:
-    IMAGE_NAME: "postgres:11.6"
-  script:
-    - docker pull $IMAGE_NAME
-    - docker tag ${IMAGE_NAME} ${DOCKER_REGISTRY}/${IMAGE_NAME}
-    - docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}
-
 db:status:
   stage: migrations
   image: ${DOCKER_REGISTRY}/$IMAGE_NAME
