@@ -4,6 +4,8 @@ This project contains automation to test GitLab database migrations on the GitLa
 
 By using thin-clone technology provided by postgres.ai, the dataset used is very close to actual GitLab.com production. This allows us to analyze migrations and their behavior on the actual dataset, before merging code.
 
+For reference, the project is mirrored to the [ops.gitlab.net](https://ops.gitlab.net/gitlab-com/database-team/migration-testing) instance. We execute CI pipelines on this instance only.
+
 ## Architecture
 
 ### Components
@@ -14,7 +16,7 @@ There are a few components involved:
 1. `Runner: worker` - This is a GitLab runner executing application code to test migrations
 1. `dblab` - postgres.ai database labs for thin cloning capabilities
 
-Each runner runs on a separate GCP instance. The `worker` runner comes with a fully isolated network (except for GitLab.com - so it can act as a runner, see discussion below). The idea is to separate the process in two phases:
+Each runner runs on a separate GCP instance. The `worker` runner comes with a fully isolated network (except for ops.gitlab.net - so it can act as a runner, see discussion below). The idea is to separate the process in two phases:
 
 1. Building images - no network isolation necessary
 1. Executing migration testing - network isolation necessary
@@ -174,8 +176,9 @@ Both runners run each on their own GCP instance in the `group-database` project:
 
 The instance with the `worker` runner is locked down additionally through the VPC firewall:
 1. Disallow egress traffic,
-1. except for GitLab.com:443 (for runner communication)
-1. except for SSH and DNS
+1. except for ops.gitlab.net:443 (for runner communication)
+1. except for SSH and DNS.
+1. Disallow ingress traffic.
 
 The `GitLab` docker container that runs on the `worker`, additionally employs iptables in the container:
 1. Disallow any egress/ingress traffic,
