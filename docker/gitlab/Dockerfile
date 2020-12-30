@@ -23,6 +23,7 @@ RUN bundle install
 ARG GL_SHA
 RUN git fetch origin $GL_SHA
 RUN git checkout ${GL_SHA}
+RUN git merge origin/master
 RUN bundle install
 RUN bundle check
 
