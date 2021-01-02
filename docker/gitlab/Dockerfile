@@ -12,6 +12,8 @@ RUN chown gitlab:gitlab $GL_REPO
 USER gitlab
 WORKDIR $GL_REPO
 
+RUN git config --global user.email "gitlab-org/database-team@gitlab.com"
+RUN git config --global user.name "GitLab Database Team"
 RUN git clone --progress https://gitlab.com/gitlab-org/gitlab.git $GL_REPO
 RUN bundle config set deployment 'true'
 RUN bundle config set clean 'true'
@@ -21,8 +23,7 @@ RUN bundle config set retry 3
 RUN bundle install
 
 ARG GL_SHA
-RUN git fetch origin $GL_SHA
-RUN git checkout ${GL_SHA}
+RUN git fetch origin; git checkout ${GL_SHA}
 RUN git merge origin/master
 RUN bundle install
 RUN bundle check
@@ -30,8 +31,6 @@ RUN bundle check
 # Codebase patching
 USER gitlab
 WORKDIR $GL_REPO
-RUN git config --global user.email "gitlab-org/database-team@gitlab.com"
-RUN git config --global user.name "GitLab Database Team"
 COPY patches patches
 RUN git am < patches/0001-Disable-AssetProxyFilter-initializer.patch
 RUN git am < patches/0002-Disable-automatic-schema-dumping-after-migration.patch
