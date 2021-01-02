@@ -8,8 +8,7 @@ default:
 
 variables:
   RAILS_ENV: "test"
-  BUILD_PATH: "/builds/gitlab"
-  GL_REPO: "/repos/gitlab"
+  GL_REPO: "/gitlab"
   IMAGE_NAME: "gitlab-com-migrations:${GL_SHA}"
 
 .image:base:
@@ -59,7 +58,13 @@ db:status:
       alias: postgres
     - name: ${DOCKER_REGISTRY}/redis:4.0-alpine
       alias: redis
+  artifacts:
+    paths:
+      - artifacts
+    expire_in: 1 week
   script:
-    - cd /gitlab
+    - cd ${GL_REPO}
     - ./prepare.sh
-    - bundle exec rake db:migrate
+    - bundle exec rake gitlab:db:migration_testing
+    - cd ${CI_PROJECT_DIR}
+    - mkdir -p artifacts; mv ${GL_REPO}/tmp/migration-stats.json artifacts
