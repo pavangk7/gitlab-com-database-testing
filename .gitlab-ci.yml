@@ -1,6 +1,7 @@
 stages:
   - prepare
   - migrations
+  - final
 
 default:
   interruptible: true
@@ -60,11 +61,19 @@ db:status:
       alias: redis
   artifacts:
     paths:
-      - artifacts
+      - migration-stats.json
     expire_in: 1 week
   script:
     - cd ${GL_REPO}
     - ./prepare.sh
     - bundle exec rake gitlab:db:migration_testing
-    - cd ${CI_PROJECT_DIR}
-    - mkdir -p artifacts; mv ${GL_REPO}/tmp/migration-stats.json artifacts
+    - mkdir -p ${CI_PROJECT_DIR}/artifacts; mv ${GL_REPO}/tmp/migration-stats.json ${CI_PROJECT_DIR}
+
+notify-upstream:
+  stage: final
+  tags:
+    - builder
+  script:
+    - cd notifier
+    - bundle install
+    - bundle exec ruby send_notification.rb ../migration-stats.json
