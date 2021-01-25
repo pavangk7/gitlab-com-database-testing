@@ -13,6 +13,7 @@ ENV DBLAB_USER=unset
 ENV DBLAB_PASSWORD=unset
 ENV DBLAB_ENVIRONMENT=gitlab-production-tunnel
 ENV DBLAB_TOKEN=unset
+ENV DBLAB_CLONE_ID=unset
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod uga+x /entrypoint.sh

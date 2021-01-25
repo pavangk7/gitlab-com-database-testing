@@ -63,7 +63,7 @@ dblab ..> gprd : thin clones
 
 ### Sequence
 
-The following shows the sequence of steps from the CI pipeline point of view. The pipeline starts for a particular GitLab SHA (`$GITLAB_SHA`).
+The following shows the sequence of steps from the CI pipeline point of view. The pipeline starts for a particular GitLab SHA (`$GITLAB_COMMIT_SHA`).
 
 ```plantuml
 @startuml
@@ -81,7 +81,7 @@ participant "database labs" as C
 User -> A: Build docker images
 activate A
 
-A -> D: Build & push GitLab for $GITLAB_SHA
+A -> D: Build & push GitLab for $GITLAB_COMMIT_SHA
 A -> D: Build & push redis
 A -> D: Build & push dblab-ssh
 
@@ -119,7 +119,7 @@ deactivate B
 curl -L "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh" | sudo bash
 
 apt-get upgrade
-GITLAB_RUNNER_DISABLE_SKEL=true apt-get install gitlab-runner docker.io bundler
+GITLAB_RUNNER_DISABLE_SKEL=true apt-get install gitlab-runner docker.io bundler jq
 usermod -aG docker gitlab-runner
 ufw allow ssh
 ufw allow from 10.128.0.0/24 to any port 5000
