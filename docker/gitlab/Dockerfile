@@ -22,8 +22,8 @@ RUN bundle config set path vendor
 RUN bundle config set retry 3
 RUN bundle install
 
-ARG GL_SHA
-RUN git fetch origin; git checkout ${GL_SHA}
+ARG GITLAB_COMMIT_SHA
+RUN git fetch origin; git checkout ${GITLAB_COMMIT_SHA}
 RUN git merge origin/master
 RUN bundle install
 RUN bundle check

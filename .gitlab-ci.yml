@@ -10,7 +10,7 @@ default:
 variables:
   RAILS_ENV: "test"
   GL_REPO: "/gitlab"
-  IMAGE_NAME: "gitlab-com-migrations:${GL_SHA}"
+  IMAGE_NAME: "gitlab-com-migrations:${GITLAB_COMMIT_SHA}"
 
 .image:base:
   stage: prepare
@@ -20,7 +20,7 @@ variables:
 image:gitlab:
   extends: .image:base
   script:
-    - docker build --build-arg GL_SHA=${GL_SHA} -t ${IMAGE_NAME} docker/gitlab
+    - docker build --build-arg GITLAB_COMMIT_SHA=${GITLAB_COMMIT_SHA} -t ${IMAGE_NAME} docker/gitlab
     - docker tag ${IMAGE_NAME} ${DOCKER_REGISTRY}/${IMAGE_NAME}
     - docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}
 

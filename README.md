@@ -63,7 +63,7 @@ dblab ..> gprd : thin clones
 
 ### Sequence
 
-The following shows the sequence of steps from the CI pipeline point of view. The pipeline starts for a particular GitLab SHA (`$GITLAB_SHA`).
+The following shows the sequence of steps from the CI pipeline point of view. The pipeline starts for a particular GitLab SHA (`$GITLAB_COMMIT_SHA`).
 
 ```plantuml
 @startuml
@@ -81,7 +81,7 @@ participant "database labs" as C
 User -> A: Build docker images
 activate A
 
-A -> D: Build & push GitLab for $GITLAB_SHA
+A -> D: Build & push GitLab for $GITLAB_COMMIT_SHA
 A -> D: Build & push redis
 A -> D: Build & push dblab-ssh
 
