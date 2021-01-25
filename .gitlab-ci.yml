@@ -10,6 +10,7 @@ variables:
   RAILS_ENV: "test"
   GITLAB_PATH: "/gitlab"
   IMAGE_NAME: "gitlab-com-database-testing:${GITLAB_COMMIT_SHA}"
+  GITLAB_COMMIT_SHA: "master"
 
 .image:base:
   stage: prepare
