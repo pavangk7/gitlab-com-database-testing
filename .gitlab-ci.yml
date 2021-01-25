@@ -1,16 +1,15 @@
 stages:
   - prepare
-  - migrations
+  - test
   - final
 
 default:
-  interruptible: true
-  timeout: 90m
+  timeout: 300m
 
 variables:
   RAILS_ENV: "test"
-  GL_REPO: "/gitlab"
-  IMAGE_NAME: "gitlab-com-migrations:${GITLAB_COMMIT_SHA}"
+  GITLAB_PATH: "/gitlab"
+  IMAGE_NAME: "gitlab-com-database-testing:${GITLAB_COMMIT_SHA}"
 
 .image:base:
   stage: prepare
@@ -27,7 +26,7 @@ image:gitlab:
 image:dblab-ssh:
   extends: .image:base
   variables:
-    IMAGE_NAME: "gitlab-com-migrations-dblab-ssh:latest"
+    IMAGE_NAME: "gitlab-com-database-testing-dblab-ssh:latest"
   script:
     - docker build -t ${IMAGE_NAME} docker/dblab-ssh
     - docker tag ${IMAGE_NAME} ${DOCKER_REGISTRY}/${IMAGE_NAME}
@@ -42,8 +41,8 @@ image:redis:
     - docker tag ${IMAGE_NAME} ${DOCKER_REGISTRY}/${IMAGE_NAME}
     - docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}
 
-db:status:
-  stage: migrations
+db:migrations:
+  stage: test
   image: ${DOCKER_REGISTRY}/$IMAGE_NAME
   tags:
     - worker
@@ -55,19 +54,19 @@ db:status:
     DBLAB_PASSWORD: $DBLAB_PASSWORD
     DBLAB_ENVIRONMENT: $DBLAB_ENVIRONMENT
   services:
-    - name: ${DOCKER_REGISTRY}/gitlab-com-migrations-dblab-ssh:latest
+    - name: ${DOCKER_REGISTRY}/gitlab-com-database-testing-dblab-ssh:latest
       alias: postgres
     - name: ${DOCKER_REGISTRY}/redis:4.0-alpine
       alias: redis
   artifacts:
     paths:
       - migration-stats.json
-    expire_in: 1 week
+    expire_in: 4 weeks
   script:
-    - cd ${GL_REPO}
+    - cd ${GITLAB_PATH}
     - ./prepare.sh
     - bundle exec rake gitlab:db:migration_testing
-    - mkdir -p ${CI_PROJECT_DIR}/artifacts; mv ${GL_REPO}/tmp/migration-stats.json ${CI_PROJECT_DIR}
+    - mkdir -p ${CI_PROJECT_DIR}/artifacts; mv ${GITLAB_PATH}/tmp/migration-stats.json ${CI_PROJECT_DIR}
 
 notify-upstream:
   stage: final

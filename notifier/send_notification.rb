@@ -31,7 +31,7 @@ begin
     #{migrations_table.join("\n")}
 
     ---
-    Brought to you by [gitlab-org/database-team/gitlab-com-migrations](https://gitlab.com/gitlab-org/database-team/gitlab-com-migrations).
+    Brought to you by [gitlab-org/database-team/gitlab-com-database-testing](https://gitlab.com/gitlab-org/database-team/gitlab-com-database-testing).
   COMMENT
 
   puts comment
