@@ -4,7 +4,7 @@ ARG GITLAB_PATH=/gitlab
 
 ENV RAILS_ENV=test
 
-RUN apt-get update; apt-get -y install iptables sudo
+RUN apt-get update; apt-get -y install iptables sudo jq
 RUN groupadd -r gitlab && useradd -m -r -g gitlab gitlab
 RUN mkdir -p $GITLAB_PATH
 RUN chown gitlab:gitlab $GITLAB_PATH

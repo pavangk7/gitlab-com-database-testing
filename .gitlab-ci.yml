@@ -9,8 +9,8 @@ default:
 variables:
   RAILS_ENV: "test"
   GITLAB_PATH: "/gitlab"
-  IMAGE_NAME: "gitlab-com-database-testing:${GITLAB_COMMIT_SHA}"
   GITLAB_COMMIT_SHA: "master"
+  IMAGE_NAME: "gitlab-com-database-testing:${GITLAB_COMMIT_SHA}"
 
 .image:base:
   stage: prepare
@@ -41,6 +41,13 @@ image:redis:
     - docker pull $IMAGE_NAME
     - docker tag ${IMAGE_NAME} ${DOCKER_REGISTRY}/${IMAGE_NAME}
     - docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}
+
+check:user-allowed:
+  stage: prepare
+  tags:
+    - builder
+  script:
+    - ./check-user-allowed.sh
 
 db:migrations:
   stage: test

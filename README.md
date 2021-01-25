@@ -119,7 +119,7 @@ deactivate B
 curl -L "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh" | sudo bash
 
 apt-get upgrade
-GITLAB_RUNNER_DISABLE_SKEL=true apt-get install gitlab-runner docker.io bundler
+GITLAB_RUNNER_DISABLE_SKEL=true apt-get install gitlab-runner docker.io bundler jq
 usermod -aG docker gitlab-runner
 ufw allow ssh
 ufw allow from 10.128.0.0/24 to any port 5000
