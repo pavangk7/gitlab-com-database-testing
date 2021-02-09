@@ -19,16 +19,19 @@ begin
   stats = JSON.parse(File.read(stats_file))
 
   migrations_table = stats.map do |migration|
-    "| #{migration['version']} | #{migration['walltime'].round(1)}s |"
+    result = (migration['success']) ? ":white_check_mark:" : ":boom:"
+    "| #{migration['migration']} | #{migration['walltime'].round(1)}s | #{result} | "
   end
 
   comment = <<~COMMENT
     ### Database migrations
     Migrations included in this change have been executed on gitlab.com data for testing purposes.
 
-    | Migration | Total runtime |
-    | --------- | ------------- |
+    | Migration | Total runtime | Result |
+    | --------- | ------------- | ------ |
     #{migrations_table.join("\n")}
+
+    For details, please see the [migration testing pipeline](#{ENV['CI_PROJECT_URL']}/-/pipelines/#{ENV['CI_PIPELINE_ID']}) (limited access).
 
     ---
     Brought to you by [gitlab-org/database-team/gitlab-com-database-testing](https://gitlab.com/gitlab-org/database-team/gitlab-com-database-testing).

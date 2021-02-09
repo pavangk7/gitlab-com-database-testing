@@ -71,11 +71,12 @@ db:migrations:
     paths:
       - migration-stats.json
     expire_in: 4 weeks
+    when: always
+  allow_failure: true
   script:
     - cd ${GITLAB_PATH}
     - ./prepare.sh
-    - bundle exec rake gitlab:db:migration_testing
-    - mkdir -p ${CI_PROJECT_DIR}/artifacts; mv ${GITLAB_PATH}/tmp/migration-stats.json ${CI_PROJECT_DIR}
+    - bundle exec rake gitlab:db:migration_testing[${CI_PROJECT_DIR}/migration-stats.json]
 
 notify-upstream:
   stage: final
