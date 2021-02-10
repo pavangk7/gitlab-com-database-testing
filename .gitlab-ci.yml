@@ -83,6 +83,9 @@ notify-upstream:
   stage: final
   tags:
     - builder
+  needs:
+    - job: db:migrations
+      artifacts: true
   script:
     - cd notifier
     - bundle install
