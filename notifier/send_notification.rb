@@ -4,6 +4,7 @@
 require 'gitlab'
 require 'json'
 require 'pry'
+require 'filesize'
 
 gitlab = Gitlab.client(
   endpoint: 'https://gitlab.com/api/v4',
@@ -20,15 +21,17 @@ begin
 
   migrations_table = stats.map do |migration|
     result = (migration['success']) ? ":white_check_mark:" : ":boom:"
-    "| #{migration['migration']} | #{migration['walltime'].round(1)}s | #{result} | "
+    sign = (migration['total_database_size_change'] < 0) ? '-' : '+'
+    size_change = Filesize.from("#{migration['total_database_size_change'].abs} B").pretty
+    "| #{migration['migration']} | #{migration['walltime'].round(1)}s | #{result} | #{sign}#{size_change}"
   end
 
   comment = <<~COMMENT
     ### Database migrations
     Migrations included in this change have been executed on gitlab.com data for testing purposes.
 
-    | Migration | Total runtime | Result |
-    | --------- | ------------- | ------ |
+    | Migration | Total runtime | Result | DB size change |
+    | --------- | ------------- | ------ | -------------- |
     #{migrations_table.join("\n")}
 
     For details, please see the [migration testing pipeline](#{ENV['CI_PROJECT_URL']}/-/pipelines/#{ENV['CI_PIPELINE_ID']}) (limited access).
