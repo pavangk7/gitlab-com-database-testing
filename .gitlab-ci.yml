@@ -72,6 +72,7 @@ db:migrations:
       - migration-stats.json
     expire_in: 4 weeks
     when: always
+  when: manual
   allow_failure: true
   script:
     - cd ${GITLAB_PATH}
