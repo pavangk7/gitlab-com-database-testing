@@ -42,13 +42,6 @@ image:redis:
     - docker tag ${IMAGE_NAME} ${DOCKER_REGISTRY}/${IMAGE_NAME}
     - docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}
 
-check:user-allowed:
-  stage: prepare
-  tags:
-    - builder
-  script:
-    - ./check-user-allowed.sh
-
 db:migrations:
   stage: test
   image: ${DOCKER_REGISTRY}/$IMAGE_NAME
