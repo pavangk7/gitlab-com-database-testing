@@ -42,13 +42,6 @@ image:redis:
     - docker tag ${IMAGE_NAME} ${DOCKER_REGISTRY}/${IMAGE_NAME}
     - docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}
 
-check:user-allowed:
-  stage: prepare
-  tags:
-    - builder
-  script:
-    - ./check-user-allowed.sh
-
 db:migrations:
   stage: test
   image: ${DOCKER_REGISTRY}/$IMAGE_NAME
@@ -72,6 +65,7 @@ db:migrations:
       - migration-stats.json
     expire_in: 4 weeks
     when: always
+  when: manual
   allow_failure: true
   script:
     - cd ${GITLAB_PATH}
@@ -82,6 +76,9 @@ notify-upstream:
   stage: final
   tags:
     - builder
+  needs:
+    - job: db:migrations
+      artifacts: true
   script:
     - cd notifier
     - bundle install
