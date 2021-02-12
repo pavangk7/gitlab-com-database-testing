@@ -16,14 +16,35 @@ merge_request_id = ENV['TOP_UPSTREAM_MERGE_REQUEST_IID']
 
 stats_file = ARGV[0]
 
+UNKNOWN = ':grey_question:'.freeze
+
+def total_size_change(migration)
+  size_change_bytes = migration['total_database_size_change']
+
+  return UNKNOWN unless size_change_bytes
+  sign = (size_change_bytes < 0) ? '-' : '+'
+  size_change = Filesize.from("#{size_change_bytes.abs} B").pretty
+
+  sign + size_change
+end
+
+def success(migration)
+  return UNKNOWN unless migration['success']
+
+  (migration['success']) ? ":white_check_mark:" : ":boom:"
+end
+
+def walltime(migration)
+  return UNKNOWN unless migration['walltime']
+
+  "#{migration['walltime'].round(1)}s"
+end
+
 begin
   stats = JSON.parse(File.read(stats_file))
 
   migrations_table = stats.map do |migration|
-    result = (migration['success']) ? ":white_check_mark:" : ":boom:"
-    sign = (migration['total_database_size_change'] < 0) ? '-' : '+'
-    size_change = Filesize.from("#{migration['total_database_size_change'].abs} B").pretty
-    "| #{migration['migration']} | #{migration['walltime'].round(1)}s | #{result} | #{sign}#{size_change}"
+    "| #{migration['migration']} | #{walltime(migration)} | #{success(migration)} | #{total_size_change(migration)}"
   end
 
   comment = <<~COMMENT
