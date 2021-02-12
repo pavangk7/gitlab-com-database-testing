@@ -40,11 +40,39 @@ def walltime(migration)
   "#{migration['walltime'].round(1)}s"
 end
 
+def pgss_table(migration)
+  return '' unless migration['query_statistics']
+
+  table = migration['query_statistics'].map do |stat|
+    inner = %w(query calls total_time max_time mean_time rows).map { |key| stat[key] }.join('|')
+
+    '|' + inner + '|'
+  end
+
+  <<~TABLE
+    | Query | Calls | Total Time | Max Time | Mean Time | Rows |
+    | ----- | ----- | ---------- | -------- | --------- | ---- |
+    #{table.join("\n")}
+  TABLE
+end
+
+def migration_details(migration)
+  <<~COMMENT
+    ##### Migration: #{migration['migration']}
+
+    #{pgss_table(migration)}
+  COMMENT
+end
+
 begin
   stats = JSON.parse(File.read(stats_file))
 
   migrations_table = stats.map do |migration|
     "| #{migration['migration']} | #{walltime(migration)} | #{success(migration)} | #{total_size_change(migration)}"
+  end
+
+  migration_details = stats.map do |migration|
+    migration_details(migration)
   end
 
   comment = <<~COMMENT
@@ -54,6 +82,8 @@ begin
     | Migration | Total runtime | Result | DB size change |
     | --------- | ------------- | ------ | -------------- |
     #{migrations_table.join("\n")}
+
+    #{migration_details.join("\n")}
 
     For details, please see the [migration testing pipeline](#{ENV['CI_PROJECT_URL']}/-/pipelines/#{ENV['CI_PIPELINE_ID']}) (limited access).
 
