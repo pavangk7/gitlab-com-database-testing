@@ -1,6 +1,6 @@
 require 'filesize'
 require 'erb'
-require 'niceql'
+require_relative 'niceql'
 require 'pg_query'
 
 class Feedback
