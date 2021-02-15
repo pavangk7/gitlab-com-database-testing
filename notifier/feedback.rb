@@ -61,7 +61,8 @@ class Feedback
   end
 
   def format_query(query)
-    Niceql::Prettifier.prettify_sql(query)
+    # We parse/normalize the query here to make sure we're dealing with a SQL query
+    Niceql::Prettifier.prettify_sql(PgQuery.normalize(query))
       .gsub(' ', '&nbsp;')
       .gsub('/*', '&#x2F;&#x2A;')
       .gsub('*/', '&#x2A;&#x2F;')
