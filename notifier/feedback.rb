@@ -13,21 +13,25 @@ class Feedback
   end
 
   def render
-    partial('feedback')
+    erb('feedback').result(binding)
   end
 
   private
 
-  def partial(template)
-    ERB.new(File.read("templates/#{template}.erb"), nil, '<>%').result(binding)
-  end
-
   def render_details(migration)
-    ERB.new(File.read("templates/detail.erb"), nil, '<>%').result(binding)
+    erb('detail').result(binding)
   end
 
   def render_pgss_table(pgss)
-    ERB.new(File.read("templates/pgss_table.erb"), nil, '<>%').result(binding)
+    erb('pgss_table').result(binding)
+  end
+
+  def render_summary_table
+    erb('summary_table').result(binding)
+  end
+
+  def erb(template)
+    ERB.new(File.read("templates/#{template}.erb"), nil, '<>%')
   end
 
   def total_size_change(migration)
