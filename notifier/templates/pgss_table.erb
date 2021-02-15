@@ -1,0 +1,5 @@
+| Query | Calls | Total Time | Max Time | Mean Time | Rows |
+| ----- | ----- | ---------- | -------- | --------- | ---- |
+% pgss.reject { |row| filter_pgss_query?(row['query']) }.each do |row|
+| <pre><%= format_query(row['query']) %></pre> | <%= format_int(row['calls']) %> | <%= format_time(row['total_time']) %> | <%= format_time(row['max_time']) %> | <%= format_time(row['mean_time']) %> | <%= format_int(row['rows']) %> |
+% end

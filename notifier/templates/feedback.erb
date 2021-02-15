@@ -1,0 +1,12 @@
+### Database migrations
+
+Migrations included in this change have been executed on gitlab.com data for testing purposes. For details, please see the [migration testing pipeline](<%= ENV['CI_PROJECT_URL'] %>/-/pipelines/<%= ENV['CI_PIPELINE_ID'] %>) (limited access).
+
+<%= partial('summary_table') %>
+
+% stats.each do |migration|
+<%= render_details(migration) %>
+% end
+
+---
+Brought to you by [gitlab-org/database-team/gitlab-com-database-testing](https://gitlab.com/gitlab-org/database-team/gitlab-com-database-testing).
