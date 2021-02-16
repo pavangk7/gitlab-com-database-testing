@@ -13,7 +13,7 @@ test: &test
   host: postgres
   prepared_statements: false
   variables:
-    statement_timeout: 15s
+    statement_timeout: 120s
 EOF
 
 cp config/cable.yml.example config/cable.yml
