@@ -79,7 +79,13 @@ notify-upstream:
   needs:
     - job: db:migrations
       artifacts: true
+  # Also store artifacts here so we can easily generate direct links to them
+  artifacts:
+    paths:
+      - migration-stats.json
+    expire_in: 4 weeks
+    when: always
   script:
     - cd notifier
     - bundle install
-    - bundle exec ruby send_notification.rb ../migration-stats.json
+    - bundle exec ruby notifier.rb send ../migration-stats.json

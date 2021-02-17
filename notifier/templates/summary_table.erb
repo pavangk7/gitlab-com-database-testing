@@ -1,0 +1,5 @@
+| Migration | Total runtime | Result | DB size change |
+| --------- | ------------- | ------ | -------------- |
+% stats.each do |m|
+| <%= m['migration'] %> | <%= walltime(m) %> | <%= success(m) %> | <%= total_size_change(m) %> |
+% end

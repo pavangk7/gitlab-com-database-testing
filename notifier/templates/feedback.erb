@@ -1,0 +1,16 @@
+### Database migrations
+
+Migrations included in this change have been executed on gitlab.com data for testing purposes. For details, please see the [migration testing pipeline](<%= ENV['CI_PROJECT_URL'] %>/-/pipelines/<%= ENV['CI_PIPELINE_ID'] %>) (limited access). Note that this includes pending migrations from `master`.
+
+<%= render_summary_table %>
+
+% stats.each do |migration|
+<%= render_details(migration) %>
+% end
+
+#### Artifacts
+
+* [Database testing statistics](<%= ENV['CI_PROJECT_URL'] %>/-/jobs/<%= ENV['CI_JOB_ID'] %>/artifacts/raw/migration-stats.json)
+
+---
+Brought to you by [gitlab-org/database-team/gitlab-com-database-testing](https://gitlab.com/gitlab-org/database-team/gitlab-com-database-testing). Contributions welcome! [Epic](https://gitlab.com/groups/gitlab-org/database-team/-/epics/6)
