@@ -89,6 +89,7 @@ class Feedback
       "SELECT pg_advisory_unlock($1)",
       "SELECT current_database()",
       "SELECT $1",
+      "SELECT current_schema",
     ].map(&:downcase)
 
     return true if exclusions.include?(query.downcase)
