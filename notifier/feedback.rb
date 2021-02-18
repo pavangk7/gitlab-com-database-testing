@@ -37,7 +37,7 @@ class Feedback
   def total_size_change(migration)
     size_change_bytes = migration['total_database_size_change']
 
-    return UNKNOWN unless size_change_bytes.nil?
+    return UNKNOWN if size_change_bytes.nil?
 
     sign = (size_change_bytes < 0) ? '-' : '+'
     size_change = Filesize.from("#{size_change_bytes.abs} B").pretty
@@ -46,13 +46,13 @@ class Feedback
   end
 
   def success(migration)
-    return UNKNOWN unless migration['success'].nil?
+    return UNKNOWN if migration['success'].nil?
 
     (migration['success']) ? ":white_check_mark:" : ":boom:"
   end
 
   def walltime(migration)
-    return UNKNOWN unless migration['walltime'].nil?
+    return UNKNOWN if migration['walltime'].nil?
 
     format_time(migration['walltime'], unit: 's')
   end
