@@ -54,7 +54,7 @@ db:migrations:
     DBLAB_USER: $DBLAB_USER
     DBLAB_PASSWORD: $DBLAB_PASSWORD
     DBLAB_ENVIRONMENT: $DBLAB_ENVIRONMENT
-    DBLAB_CLONE_ID: "database-testing-${CI_PIPELINE_IID}"
+    DBLAB_CLONE_ID: "database-testing-${CI_PIPELINE_ID}"
   services:
     - name: ${DOCKER_REGISTRY}/gitlab-com-database-testing-dblab-ssh:latest
       alias: postgres
