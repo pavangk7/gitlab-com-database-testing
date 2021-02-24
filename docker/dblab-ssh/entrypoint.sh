@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -x
 
 if [ -z "${DBLAB_SSH_KEY}" ] || [ "${DBLAB_SSH_KEY}" = "unset" ]; then
   echo "DBLAB_SSH_KEY not set"
@@ -18,15 +18,13 @@ dblab init --url http://127.0.0.1:2344 --token ${DBLAB_TOKEN} --environment-id $
 
 dblab_info=$(dblab clone create --id ${DBLAB_CLONE_ID} --username ${DBLAB_USER} --password ${DBLAB_PASSWORD})
 
+if [ $? -ne 0 ]; then
+  # Clone exists already - we need the port information to open the tunnel
+  dblab_info=$(dblab clone status ${DBLAB_CLONE_ID})
+fi
+
 port=$(echo $dblab_info | jq -r .db.port)
 id=$(echo $dblab_info | jq -r .id)
-
-dblab_cleanup() {
-  echo "Cleaning up and destroying dblab clone $id"
-  dblab clone destroy $id
-}
-
-trap dblab_cleanup TERM INT EXIT
 
 echo "Opening port forwarding on port ${port}"
 

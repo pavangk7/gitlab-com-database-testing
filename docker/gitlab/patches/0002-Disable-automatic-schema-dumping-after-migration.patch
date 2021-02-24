@@ -1,25 +1,22 @@
-From 0bd84872e18d4183310ef44ac790cbb0861d51e0 Mon Sep 17 00:00:00 2001
+From 47984da16be2db9bc307b74a7e5d2f400b1c24c0 Mon Sep 17 00:00:00 2001
 From: Andreas Brandl <abrandl@gitlab.com>
-Date: Tue, 29 Dec 2020 23:24:20 +0100
-Subject: [PATCH] Disable automatic schema dumping after migration
+Date: Wed, 24 Feb 2021 15:44:25 +0100
+Subject: [PATCH] Disable schema dump
 
 ---
- config/environments/test.rb | 2 ++
+ config/environments/development.rb | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/config/environments/test.rb b/config/environments/test.rb
-index 4e359cd308c..0a08c1b7b98 100644
---- a/config/environments/test.rb
-+++ b/config/environments/test.rb
-@@ -50,6 +50,8 @@
- 
-   config.active_job.queue_adapter = :test
- 
-+  config.active_record.dump_schema_after_migration = false
-+
-   if ENV['CI'] && !ENV['RAILS_ENABLE_TEST_LOG']
-     config.logger = ActiveSupport::TaggedLogging.new(Logger.new(nil))
-     config.log_level = :fatal
--- 
-2.29.0
+diff --git a/config/environments/development.rb b/config/environments/development.rb
+index 50d394859bc..38c69fbe205 100644
+--- a/config/environments/development.rb
++++ b/config/environments/development.rb
+@@ -71,4 +71,6 @@
 
+     config.middleware.delete BetterErrors::Middleware
+   end
++
++  config.active_record.dump_schema_after_migration = false
+ end
+--
+2.30.0

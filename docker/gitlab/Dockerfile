@@ -24,7 +24,6 @@ RUN bundle install
 
 ARG GITLAB_COMMIT_SHA
 RUN git fetch origin; git checkout ${GITLAB_COMMIT_SHA}
-RUN git merge origin/master
 RUN bundle install
 RUN bundle check
 

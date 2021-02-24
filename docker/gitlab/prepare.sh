@@ -4,7 +4,7 @@ cp config/gitlab.yml.example config/gitlab.yml
 sed -i 's/bin_path: \/usr\/bin\/git/bin_path: \/usr\/local\/bin\/git/' config/gitlab.yml
 
 cat > config/database.yml <<-EOF
-test: &test
+development: &development
   adapter: postgresql
   encoding: unicode
   database: gitlabhq_dblab

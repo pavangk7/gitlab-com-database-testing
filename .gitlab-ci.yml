@@ -1,13 +1,13 @@
 stages:
   - prepare
   - test
-  - final
+  - bgmigrations
 
 default:
   timeout: 300m
 
 variables:
-  RAILS_ENV: "test"
+  RAILS_ENV: "development"
   GITLAB_PATH: "/gitlab"
   GITLAB_COMMIT_SHA: "master"
   IMAGE_NAME: "gitlab-com-database-testing:${GITLAB_COMMIT_SHA}"
@@ -60,32 +60,53 @@ db:migrations:
       alias: postgres
     - name: ${DOCKER_REGISTRY}/redis:4.0-alpine
       alias: redis
-  artifacts:
-    paths:
-      - migration-stats.json
-    expire_in: 4 weeks
-    when: always
-  when: manual
-  allow_failure: true
   script:
     - cd ${GITLAB_PATH}
     - ./prepare.sh
     - bundle exec rake gitlab:db:migration_testing[${CI_PROJECT_DIR}/migration-stats.json]
 
-notify-upstream:
-  stage: final
+scheduler:
+  stage: bgmigrations
+  image: ${DOCKER_REGISTRY}/$IMAGE_NAME
   tags:
-    - builder
-  needs:
-    - job: db:migrations
-      artifacts: true
-  # Also store artifacts here so we can easily generate direct links to them
-  artifacts:
-    paths:
-      - migration-stats.json
-    expire_in: 4 weeks
-    when: always
+    - worker
+  variables:
+    DBLAB_HOST_KEYS: $DBLAB_HOST_KEYS
+    DBLAB_SSH_KEY: $DBLAB_SSH_KEY
+    DBLAB_TOKEN: $DBLAB_TOKEN
+    DBLAB_USER: $DBLAB_USER
+    DBLAB_PASSWORD: $DBLAB_PASSWORD
+    DBLAB_ENVIRONMENT: $DBLAB_ENVIRONMENT
+    DBLAB_CLONE_ID: "database-testing-${CI_PIPELINE_ID}"
+  services:
+    - name: ${DOCKER_REGISTRY}/gitlab-com-database-testing-dblab-ssh:latest
+      alias: postgres
+    - name: ${DOCKER_REGISTRY}/redis:4.0-alpine
+      alias: redis
   script:
-    - cd notifier
-    - bundle install
-    - bundle exec ruby notifier.rb send ../migration-stats.json
+    - cd ${GITLAB_PATH}
+    - ./prepare.sh
+    - bundle exec rake gitlab:bgmigrations:scheduler
+
+executor:
+  stage: bgmigrations
+  image: ${DOCKER_REGISTRY}/$IMAGE_NAME
+  tags:
+    - worker
+  variables:
+    DBLAB_HOST_KEYS: $DBLAB_HOST_KEYS
+    DBLAB_SSH_KEY: $DBLAB_SSH_KEY
+    DBLAB_TOKEN: $DBLAB_TOKEN
+    DBLAB_USER: $DBLAB_USER
+    DBLAB_PASSWORD: $DBLAB_PASSWORD
+    DBLAB_ENVIRONMENT: $DBLAB_ENVIRONMENT
+    DBLAB_CLONE_ID: "database-testing-${CI_PIPELINE_ID}"
+  services:
+    - name: ${DOCKER_REGISTRY}/gitlab-com-database-testing-dblab-ssh:latest
+      alias: postgres
+    - name: ${DOCKER_REGISTRY}/redis:4.0-alpine
+      alias: redis
+  script:
+    - cd ${GITLAB_PATH}
+    - ./prepare.sh
+    - bundle exec rake gitlab:bgmigrations:executor
