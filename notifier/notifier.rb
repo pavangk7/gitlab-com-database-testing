@@ -28,6 +28,7 @@ class Notifier < Thor
     )
 
     gitlab.create_merge_request_discussion(project_path, merge_request_id, body: comment)
+    gitlab.update_merge_request(project_path, merge_request_id, add_labels: ['database-testing-automation'])
   rescue Gitlab::Error::Error => e
     puts "Ignoring the following error: #{e}"
   rescue => e
