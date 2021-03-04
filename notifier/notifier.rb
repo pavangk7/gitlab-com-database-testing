@@ -27,11 +27,13 @@ class Notifier < Thor
       private_token: ENV['GITLAB_API_TOKEN']
     )
 
-    gitlab.create_merge_request_discussion(project_path, merge_request_id, body: comment)
-  rescue Gitlab::Error::Error => e
-    puts "Ignoring the following error: #{e}"
-  rescue => e
-    puts "Ignoring the following error: #{e}"
+    ignore_errors do
+      gitlab.update_merge_request(project_path, merge_request_id, add_labels: ['database-testing-automation'])
+    end
+
+    ignore_errors do
+      gitlab.create_merge_request_discussion(project_path, merge_request_id, body: comment)
+    end
   end
 
   desc "print FILE", "only print feedback"
@@ -39,6 +41,16 @@ class Notifier < Thor
     stats = JSON.parse(File.read(file))
 
     puts Feedback.new(stats).render
+  end
+
+  private
+
+  def ignore_errors
+    yield
+  rescue Gitlab::Error::Error => e
+    puts "Ignoring the following error: #{e}"
+  rescue => e
+    puts "Ignoring the following error: #{e}"
   end
 end
 
