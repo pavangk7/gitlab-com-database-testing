@@ -146,6 +146,8 @@ ufw enable
 * Runner tag: `worker`
 * Runner type: `docker`
 
+* Crontab entry for `root`: `0 0 * * * docker system prune --volumes -af &>/dev/null`
+
 The worker additionally runs a local docker registry:
 
 1. Run docker registry: `docker run -d -p 5000:5000 --restart=always --name registry registry:2`
@@ -159,11 +161,21 @@ The worker needs to allow containers to manage iptables - add this to `/etc/gitl
     cap_add = ["NET_ADMIN", "NET_RAW"]
 ```
 
+In order to clean up the local registry maintained, we establish the following script into `/usr/local/bin/docker-cleanup`:
+
+```
+echo "/usr/bin/find /var/lib/registry/docker/registry/v2 -type f -path '*_manifests/tags*' -mtime +1 | /usr/bin/xargs /bin/rm" | docker exec -i registry /bin/sh -
+docker exec registry registry garbage-collect /etc/docker/registry/config.yml --delete-untagged=true
+```
+
+And add this as a cronjob for `root`: `0 1 * * * /usr/local/bin/docker-cleanup &>/dev/null`
+
 #### Builder
 
 * Runner tag: `builder`
 * Runner type: `shell`
 
+* Crontab entry for `root`: `0 0 * * * docker system prune --volumes -af &>/dev/null`
 
 ### Security
 
