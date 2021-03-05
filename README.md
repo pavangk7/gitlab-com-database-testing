@@ -164,6 +164,8 @@ The worker needs to allow containers to manage iptables - add this to `/etc/gitl
 * Runner tag: `builder`
 * Runner type: `shell`
 
+* Crontab entry for `root`: `0 0 * * 0 docker system prune --volumes -af &>/dev/null`
+
 
 ### Security
 
