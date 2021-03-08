@@ -6,10 +6,11 @@ require 'pg_query'
 class Feedback
   UNKNOWN = ':grey_question:'.freeze
 
-  attr_reader :stats
+  attr_reader :stats, :migration_filter
 
-  def initialize(stats)
+  def initialize(stats, migration_filter: nil)
     @stats = stats
+    @migration_filter = migration_filter
   end
 
   def render
@@ -17,6 +18,22 @@ class Feedback
   end
 
   private
+
+  def filtered_migrations
+    return stats unless migration_filter
+
+    stats.select do |stat|
+      filtered?(stat)
+    end
+  end
+
+  def all_migrations
+    stats
+  end
+
+  def filtered?(migration)
+    migration_filter.call(migration['migration'])
+  end
 
   def render_details(migration)
     erb('detail').result(binding)

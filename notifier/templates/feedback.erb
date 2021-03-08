@@ -4,7 +4,7 @@ Migrations included in this change have been executed on gitlab.com data for tes
 
 <%= render_summary_table %>
 
-% stats.each do |migration|
+% filtered_migrations.each do |migration|
 <%= render_details(migration) %>
 % end
 

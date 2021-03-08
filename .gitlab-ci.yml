@@ -91,4 +91,4 @@ notify-upstream:
   script:
     - cd notifier
     - bundle install
-    - bundle exec ruby notifier.rb send ../migration-stats.json
+    - bundle exec ruby notifier.rb send ../migration-stats.json ../migrations-on-this-branch.list
