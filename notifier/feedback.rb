@@ -77,12 +77,14 @@ class Feedback
   end
 
   def format_query(query)
-    # We parse/normalize the query here to make sure we're dealing with a SQL query
-    Niceql::Prettifier.prettify_sql(PgQuery.normalize(query))
+    Niceql::Prettifier.prettify_sql(query)
       .gsub(' ', '&nbsp;')
       .gsub('/*', '&#x2F;&#x2A;')
       .gsub('*/', '&#x2A;&#x2F;')
       .gsub("\n", '<br />')
+  rescue => e
+    $stderr.puts "Query formatting error:\n#{e}\nFor query: #{query}"
+    query
   end
 
   def filter_pgss_query?(query)
