@@ -9,6 +9,8 @@ require 'thor'
 require_relative 'feedback'
 require_relative 'result'
 
+IDENTIFIABLE_NOTE_TAG = 'gitlab-org/database-team/gitlab-com-database-testing:identifiable-note'
+
 class Notifier < Thor
   desc "send STATS MIGRATIONS", "send feedback back to merge request"
   def send(statistics_file, migrations_file)
@@ -25,13 +27,29 @@ class Notifier < Thor
       private_token: ENV['GITLAB_API_TOKEN']
     )
 
-    ignore_errors do
+    ignore_errors do # adding the label is optional
       gitlab.update_merge_request(project_path, merge_request_id, add_labels: ['database-testing-automation'])
     end
 
-    ignore_errors do
-      gitlab.create_merge_request_discussion(project_path, merge_request_id, body: comment)
+    # Look for a note to update
+    note = gitlab.merge_request_notes(project_path, merge_request_id).auto_paginate.select do |note|
+      note.body.include?(IDENTIFIABLE_NOTE_TAG)
+    end.max_by { |note| Time.parse(note.created_at) }
+
+    if note && note.type != 'DiscussionNote'
+      # The latest note has not led to a discussion. Update it.
+      gitlab.edit_merge_request_note(project_path, merge_request_id, note.id, comment)
+
+      puts "Updated comment:\n"
+    else
+      # This is the first note or the latest note has been discussed on the MR.
+      # Don't update, create new note instead.
+      note = gitlab.create_merge_request_note(project_path, merge_request_id, comment)
+
+      puts "Posted comment to:\n"
     end
+
+    puts "https://gitlab.com/#{project_path}/-/merge_requests/#{merge_request_id}#note_#{note.id}"
   end
 
   desc "print STATS MIGRATIONS", "only print feedback"
