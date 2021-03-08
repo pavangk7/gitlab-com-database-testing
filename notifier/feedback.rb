@@ -6,11 +6,10 @@ require 'pg_query'
 class Feedback
   UNKNOWN = ':grey_question:'.freeze
 
-  attr_reader :stats, :migration_filter
+  attr_reader :result
 
-  def initialize(stats, migration_filter: nil)
-    @stats = stats
-    @migration_filter = migration_filter
+  def initialize(result)
+    @result = result
   end
 
   def render
@@ -19,20 +18,14 @@ class Feedback
 
   private
 
-  def filtered_migrations
-    return stats unless migration_filter
-
-    stats.select do |stat|
-      filtered?(stat)
+  def migrations_from_branch
+    all_migrations.select do |migration|
+      migration.intro_on_current_branch
     end
   end
 
   def all_migrations
-    stats
-  end
-
-  def filtered?(migration)
-    migration_filter.call(migration['migration'])
+    result.migrations.values
   end
 
   def render_details(migration)
@@ -52,7 +45,7 @@ class Feedback
   end
 
   def total_size_change(migration)
-    size_change_bytes = migration['total_database_size_change']
+    size_change_bytes = migration.statistics.total_database_size_change
 
     return UNKNOWN if size_change_bytes.nil?
 
@@ -63,15 +56,15 @@ class Feedback
   end
 
   def success(migration)
-    return UNKNOWN if migration['success'].nil?
+    return UNKNOWN if migration.statistics.success.nil?
 
-    (migration['success']) ? ":white_check_mark:" : ":boom:"
+    (migration.statistics.success) ? ":white_check_mark:" : ":boom:"
   end
 
   def walltime(migration)
-    return UNKNOWN if migration['walltime'].nil?
+    return UNKNOWN if migration.statistics.walltime.nil?
 
-    format_time(migration['walltime'], unit: 's')
+    format_time(migration.statistics.walltime, unit: 's')
   end
 
   def format_int(number)
@@ -79,6 +72,7 @@ class Feedback
   end
 
   def format_time(time, unit: 'ms')
+    return nil unless time
     "#{Float(time).round(1)} #{unit}"
   end
 

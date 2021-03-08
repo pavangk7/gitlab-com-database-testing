@@ -7,6 +7,7 @@ require 'pry'
 require 'thor'
 
 require_relative 'feedback'
+require_relative 'result'
 
 class Notifier < Thor
   desc "send STATS MIGRATIONS", "send feedback back to merge request"
@@ -41,16 +42,9 @@ class Notifier < Thor
   private
 
   def feedback_for(statistics_file, migrations_file)
-    stats = JSON.parse(File.read(statistics_file))
-    migration_filter = migration_filter(migrations_file)
+    result = Result.from_files(statistics_file, migrations_file)
 
-    Feedback.new(stats, migration_filter: migration_filter)
-  end
-
-  def migration_filter(file)
-    migrations = Set.new(File.readlines(file).map(&:strip).map(&:to_i))
-
-    ->(version) { migrations.include?(version) }
+    Feedback.new(result)
   end
 
   def ignore_errors

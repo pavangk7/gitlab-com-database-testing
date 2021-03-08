@@ -63,7 +63,7 @@ db:migrations:
   artifacts:
     paths:
       - migration-stats.json
-      - migrations-on-this-branch.list
+      - migrations.json
     expire_in: 4 weeks
     when: always
   when: manual
@@ -71,8 +71,8 @@ db:migrations:
   script:
     - cd ${GITLAB_PATH}
     - ./prepare.sh
+    - bundle exec ruby list-migrations.rb > ${CI_PROJECT_DIR}/migrations.json
     - bundle exec rake gitlab:db:migration_testing[${CI_PROJECT_DIR}/migration-stats.json]
-    - git diff --name-only origin/master...HEAD db/post_migrate db/migrate | grep -Po '(?<=/)([0-9]+)(?=\_)' > ${CI_PROJECT_DIR}/migrations-on-this-branch.list
 
 notify-upstream:
   stage: final
@@ -85,10 +85,10 @@ notify-upstream:
   artifacts:
     paths:
       - migration-stats.json
-      - migrations-on-this-branch.list
+      - migrations.json
     expire_in: 4 weeks
     when: always
   script:
     - cd notifier
     - bundle install
-    - bundle exec ruby notifier.rb send ../migration-stats.json ../migrations-on-this-branch.list
+    - bundle exec ruby notifier.rb send ../migration-stats.json ../migrations.json
