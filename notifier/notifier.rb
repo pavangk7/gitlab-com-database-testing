@@ -7,20 +7,18 @@ require 'pry'
 require 'thor'
 
 require_relative 'feedback'
+require_relative 'result'
 
 class Notifier < Thor
-  desc "send FILE", "send feedback back to merge request"
-  def send(file)
-
+  desc "send STATS MIGRATIONS", "send feedback back to merge request"
+  def send(statistics_file, migrations_file)
     project_path = ENV['TOP_UPSTREAM_SOURCE_PROJECT']
     merge_request_id = ENV['TOP_UPSTREAM_MERGE_REQUEST_IID']
 
     raise "Project path missing: Specify TOP_UPSTREAM_SOURCE_PROJECT" unless project_path
     raise "Upstream merge request id missing: Specify TOP_UPSTREAM_MERGE_REQUEST_IID" unless merge_request_id
 
-
-    stats = JSON.parse(File.read(file))
-    comment = Feedback.new(stats).render
+    comment = feedback_for(statistics_file, migrations_file).render
 
     gitlab = Gitlab.client(
       endpoint: 'https://gitlab.com/api/v4',
@@ -36,14 +34,18 @@ class Notifier < Thor
     end
   end
 
-  desc "print FILE", "only print feedback"
-  def print(file)
-    stats = JSON.parse(File.read(file))
-
-    puts Feedback.new(stats).render
+  desc "print STATS MIGRATIONS", "only print feedback"
+  def print(statistics_file, migrations_file)
+    puts feedback_for(statistics_file, migrations_file).render
   end
 
   private
+
+  def feedback_for(statistics_file, migrations_file)
+    result = Result.from_files(statistics_file, migrations_file)
+
+    Feedback.new(result)
+  end
 
   def ignore_errors
     yield
