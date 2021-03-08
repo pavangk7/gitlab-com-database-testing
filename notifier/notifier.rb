@@ -30,7 +30,9 @@ class Notifier < Thor
     end
 
     ignore_errors do
-      gitlab.create_merge_request_discussion(project_path, merge_request_id, body: comment)
+      note = gitlab.create_merge_request_note(project_path, merge_request_id, comment)
+      puts "Posted comment to:\n"
+      puts "https://gitlab.com/#{project_path}/-/merge_requests/#{merge_request_id}#note_#{note.id}"
     end
   end
 
