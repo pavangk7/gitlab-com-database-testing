@@ -113,5 +113,8 @@ class Feedback
     return true if tables.uniq == ['ar_internal_metadata']
 
     false
+  rescue PgQuery::ParseError => e
+    $stderr.puts "Query parse error:\n#{e}\nFor query: #{query}"
+    false
   end
 end
