@@ -150,7 +150,8 @@ ufw enable
 
 The worker additionally runs a local docker registry:
 
-1. Run docker registry: `docker run -d -p 5000:5000 --restart=always --name registry registry:2`
+1. Create volume: `docker volume create registry`
+1. Run docker registry: `docker run -d -p 5000:5000 -v registry:/var/lib/registry --env REGISTRY_STORAGE_DELETE_ENABLED=true --restart=always --name registry registry:2`
 
 The worker needs to allow containers to manage iptables - add this to `/etc/gitlab-runner/config.toml`:
 
@@ -161,14 +162,7 @@ The worker needs to allow containers to manage iptables - add this to `/etc/gitl
     cap_add = ["NET_ADMIN", "NET_RAW"]
 ```
 
-In order to clean up the local registry maintained, we establish the following script into `/usr/local/bin/docker-cleanup`:
-
-```
-echo "/usr/bin/find /var/lib/registry/docker/registry/v2 -type f -path '*_manifests/tags*' -mtime +1 | /usr/bin/xargs /bin/rm" | docker exec -i registry /bin/sh -
-docker exec registry registry garbage-collect /etc/docker/registry/config.yml --delete-untagged=true
-```
-
-And add this as a cronjob for `root`: `0 1 * * * /usr/local/bin/docker-cleanup &>/dev/null`
+In order to clean up the local registry maintained, we use the script from `misc/registry_cleanup.sh` and add this as a cronjob for `root`: `0 1 * * * /usr/local/bin/docker-cleanup &>> /var/log/docker-cleanup.log`
 
 #### Builder
 
