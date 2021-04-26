@@ -34,7 +34,8 @@ COPY patches patches
 RUN git am < patches/0001-Disable-AssetProxyFilter-initializer.patch
 RUN git am < patches/0002-Disable-automatic-schema-dumping-after-migration.patch
 
-COPY list-migrations.rb list-migrations.rb
+COPY list_migrations.rb list_migrations.rb
+COPY clone_details.rb clone_details.rb
 COPY prepare.sh prepare.sh
 
 USER root

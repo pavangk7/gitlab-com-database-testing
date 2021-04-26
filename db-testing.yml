@@ -71,7 +71,8 @@ db:migrations:
     - ./prepare.sh
     - bundle exec rake gitlab:db:migration_testing
     - mv tmp/migration-testing/ ${CI_PROJECT_DIR}
-    - bundle exec ruby list-migrations.rb > ${CI_PROJECT_DIR}/migration-testing/migrations.json
+    - bundle exec ruby list_migrations.rb > ${CI_PROJECT_DIR}/migration-testing/migrations.json
+    - bundle exec ruby clone_details.rb postgres > ${CI_PROJECT_DIR}/migration-testing/clone-details.json
 
 notify-upstream:
   stage: final
@@ -89,4 +90,4 @@ notify-upstream:
   script:
     - cd notifier
     - bundle install
-    - bundle exec ruby notifier.rb send ../migration-testing/migration-stats.json ../migration-testing/migrations.json
+    - bundle exec ruby notifier.rb send ../migration-testing/migration-stats.json ../migration-testing/migrations.json ../migration-testing/clone-details.json

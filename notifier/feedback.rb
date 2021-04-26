@@ -31,6 +31,10 @@ class Feedback
     erb('detail').result(binding)
   end
 
+  def render_clone_details(clone_details)
+    erb('clone_details').result(binding)
+  end
+
   def render_pgss_table(pgss)
     erb('pgss_table').result(binding)
   end

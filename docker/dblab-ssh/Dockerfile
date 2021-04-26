@@ -1,6 +1,8 @@
 FROM ubuntu:20.04
 
-RUN apt-get update; apt-get -y install curl openssh-client jq
+RUN apt-get update; apt-get -y install curl jq openssh-client webfs \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
 
 COPY dblab_install.sh /dblab_install.sh
 RUN bash /dblab_install.sh
@@ -22,4 +24,4 @@ ENTRYPOINT ["/entrypoint.sh", "--"]
 RUN groupadd -r dblab && useradd -m -r -g dblab dblab
 USER dblab
 
-EXPOSE 5432
+EXPOSE 5432 8000
