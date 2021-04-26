@@ -15,7 +15,7 @@ uname_os() {
 }
 
 curl --location --fail --output ~/.dblab/dblab \
-  https://storage.googleapis.com/database-lab-cli/${cli_version}/dblab-$(uname_os)-amd64 \
+  "https://storage.googleapis.com/database-lab-cli/${cli_version}/dblab-$(uname_os)-amd64" \
   && chmod a+x ~/.dblab/dblab
 
 {
@@ -23,10 +23,14 @@ curl --location --fail --output ~/.dblab/dblab \
     && mv ~/.dblab/dblab /usr/local/bin/dblab 2> /dev/null \
     && echo 'Done!'
 } || {
-  echo 'Database Lab client CLI is installed to "~/.dblab/dblab".'
-  echo 'Add this path to $PATH or, alternatively, move the binary to the global space:'
-  echo '    sudo mv ~/.dblab/dblab /usr/local/bin/dblab'
+  cat <<SUCCESS
+Database Lab client CLI is installed to "~/.dblab/dblab".
+Add this path to $PATH or, alternatively, move the binary to the global space:
+    sudo mv ~/.dblab/dblab /usr/local/bin/dblab'
+SUCCESS
 }
 
-echo 'To start using Database Lab client CLI, run:'
-echo '    dblab init'
+cat <<COMPLETE
+To start using Database Lab client CLI, run:
+    dblab init
+COMPLETE

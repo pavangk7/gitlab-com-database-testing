@@ -15,3 +15,11 @@ lint:
     - cd notifier
     - bundle install
     - bundle exec rubocop
+
+shellcheck:
+  stage: test
+  image: koalaman/shellcheck-alpine:stable
+  before_script:
+    - shellcheck --version
+  script:
+    - shellcheck docker/**/*.sh
