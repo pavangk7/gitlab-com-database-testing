@@ -4,7 +4,7 @@ This project contains automation to test GitLab database migrations on the GitLa
 
 By using thin-clone technology provided by postgres.ai, the dataset used is very close to actual GitLab.com production. This allows us to analyze migrations and their behavior on the actual dataset, before merging code.
 
-For reference, the project is mirrored to the [ops.gitlab.net](https://ops.gitlab.net/gitlab-com/database-team/migration-testing) instance. We execute CI pipelines on this instance only.
+For reference, the project is mirrored to the [ops.gitlab.net](https://ops.gitlab.net/gitlab-com/database-team/migration-testing) instance. Database testing jobs are defined in a separate file (`db-testing.yml`) and are executed on this instance only.
 
 ## Architecture
 
