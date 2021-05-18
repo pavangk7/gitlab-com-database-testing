@@ -33,8 +33,8 @@ class Result
   end
 
   def self.to_recursive_ostruct(hash)
-    OpenStruct.new(hash.each_with_object({}) do |(key, val), memo|
-      memo[key] = val.is_a?(Hash) ? to_recursive_ostruct(val) : val
+    OpenStruct.new(hash.transform_values do |val|
+      val.is_a?(Hash) ? to_recursive_ostruct(val) : val
     end)
   end
 end

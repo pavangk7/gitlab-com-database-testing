@@ -1,10 +1,11 @@
+# frozen_string_literal: true
 require 'filesize'
 require 'erb'
 require_relative 'niceql'
 require 'pg_query'
 
 class Feedback
-  UNKNOWN = ':grey_question:'.freeze
+  UNKNOWN = ':grey_question:'
 
   attr_reader :result
 
@@ -19,9 +20,7 @@ class Feedback
   private
 
   def migrations_from_branch
-    all_migrations.select do |migration|
-      migration.intro_on_current_branch
-    end
+    all_migrations.select(&:intro_on_current_branch)
   end
 
   def all_migrations
@@ -49,7 +48,7 @@ class Feedback
 
     return UNKNOWN if size_change_bytes.nil?
 
-    sign = size_change_bytes < 0 ? '-' : '+'
+    sign = size_change_bytes.negative? ? '-' : '+'
     size_change = Filesize.from("#{size_change_bytes.abs} B").pretty
 
     sign + size_change
