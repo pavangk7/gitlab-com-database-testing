@@ -41,7 +41,7 @@ class Feedback
   end
 
   def erb(template)
-    ERB.new(File.read("templates/#{template}.erb"), nil, '<>%')
+    ERB.new(File.read("templates/#{template}.erb"), trim_mode: '<>%')
   end
 
   def total_size_change(migration)
@@ -49,7 +49,7 @@ class Feedback
 
     return UNKNOWN if size_change_bytes.nil?
 
-    sign = (size_change_bytes < 0) ? '-' : '+'
+    sign = size_change_bytes < 0 ? '-' : '+'
     size_change = Filesize.from("#{size_change_bytes.abs} B").pretty
 
     sign + size_change
@@ -58,7 +58,7 @@ class Feedback
   def success(migration)
     return UNKNOWN if migration.statistics.success.nil?
 
-    (migration.statistics.success) ? ":white_check_mark:" : ":boom:"
+    migration.statistics.success ? ":white_check_mark:" : ":boom:"
   end
 
   def walltime(migration)
@@ -73,6 +73,7 @@ class Feedback
 
   def format_time(time, unit: 'ms')
     return nil unless time
+
     "#{Float(time).round(1)} #{unit}"
   end
 
@@ -82,8 +83,8 @@ class Feedback
       .gsub('/*', '&#x2F;&#x2A;')
       .gsub('*/', '&#x2A;&#x2F;')
       .gsub("\n", '<br />')
-  rescue => e
-    $stderr.puts "Query formatting error:\n#{e}\nFor query: #{query}"
+  rescue StandardError => e
+    warn "Query formatting error:\n#{e}\nFor query: #{query}"
     query
   end
 
@@ -102,7 +103,7 @@ class Feedback
       "SELECT pg_advisory_unlock($1)",
       "SELECT current_database()",
       "SELECT $1",
-      "SELECT current_schema",
+      "SELECT current_schema"
     ].map(&:downcase)
 
     return true if exclusions.include?(query.downcase)
@@ -116,7 +117,7 @@ class Feedback
 
     false
   rescue PgQuery::ParseError => e
-    $stderr.puts "Query parse error:\n#{e}\nFor query: #{query}"
+    warn "Query parse error:\n#{e}\nFor query: #{query}"
     false
   end
 end

@@ -69,7 +69,7 @@ class Notifier < Thor
     yield
   rescue Gitlab::Error::Error => e
     puts "Ignoring the following error: #{e}"
-  rescue => e
+  rescue StandardError => e
     puts "Ignoring the following error: #{e}"
   end
 end
