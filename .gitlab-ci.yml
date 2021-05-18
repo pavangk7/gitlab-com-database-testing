@@ -1,0 +1,17 @@
+include:
+  - template: Security/Dependency-Scanning.gitlab-ci.yml
+  - template: Security/License-Scanning.gitlab-ci.yml
+  - template: Security/SAST.gitlab-ci.yml
+  - template: Security/Secret-Detection.gitlab-ci.yml
+
+license_scanning:
+  variables:
+    LICENSE_FINDER_CLI_OPTS: "--recursive"
+
+lint:
+  stage: test
+  image: ruby:2.7
+  script:
+    - cd notifier
+    - bundle install
+    - bundle exec rubocop

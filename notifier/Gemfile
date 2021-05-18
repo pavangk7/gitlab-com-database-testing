@@ -6,3 +6,5 @@ gem 'filesize'
 gem 'thor'
 gem 'niceql'
 gem 'pg_query'
+gem 'gitlab-styles', require: false
+gem 'rubocop'
