@@ -37,4 +37,6 @@ class Result
       val.is_a?(Hash) ? to_recursive_ostruct(val) : val
     end)
   end
+
+  private_class_method :to_recursive_ostruct
 end
