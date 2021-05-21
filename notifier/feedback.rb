@@ -91,6 +91,7 @@ class Feedback
     return true if query.downcase.start_with?(/commit|show|reset|begin|release savepoint|savepoint|set|rollback/)
     return true if query.include?('/* pgssignore /*')
 
+    # rubocop:disable Layout/LineLength
     exclusions = [
       "select pg_database_size(current_database()) /*application:test*/",
       "SELECT \"schema_migrations\".\"version\" FROM \"schema_migrations\" ORDER BY \"schema_migrations\".\"version\" ASC /*application:test*/",
@@ -104,6 +105,7 @@ class Feedback
       "SELECT $1",
       "SELECT current_schema"
     ].map(&:downcase)
+    # rubocop:enable Layout/LineLength
 
     return true if exclusions.include?(query.downcase)
 

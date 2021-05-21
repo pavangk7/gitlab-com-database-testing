@@ -32,9 +32,11 @@ class Notifier < Thor
     end
 
     # Look for a note to update
-    note = gitlab.merge_request_notes(project_path, merge_request_id).auto_paginate.select do |note|
+    db_testing_notes = gitlab.merge_request_notes(project_path, merge_request_id).auto_paginate.select do |note|
       note.body.include?(IDENTIFIABLE_NOTE_TAG)
-    end.max_by { |note| Time.parse(note.created_at) }
+    end
+
+    note = db_testing_notes.max_by { |note| Time.parse(note.created_at) }
 
     if note && note.type != 'DiscussionNote'
       # The latest note has not led to a discussion. Update it.

@@ -33,7 +33,7 @@ class Result
   end
 
   def self.to_recursive_ostruct(hash)
-    OpenStruct.new(hash.transform_values do |val|
+    OpenStruct.new(hash.transform_values do |val| # rubocop:disable Performance/OpenStruct
       val.is_a?(Hash) ? to_recursive_ostruct(val) : val
     end)
   end
