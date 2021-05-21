@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'niceql'
 
 module Niceql
@@ -5,9 +6,11 @@ module Niceql
     def self.colorize_verb(str)
       str
     end
+
     def self.colorize_str(str)
       str
     end
+
     def self.colorize_err(err)
       str
     end
