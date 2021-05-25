@@ -20,15 +20,24 @@ dblab_info=$(dblab clone create --id "${DBLAB_CLONE_ID}" --username "${DBLAB_USE
 
 port=$(echo "$dblab_info" | jq -r .db.port)
 id=$(echo "$dblab_info" | jq -r .id)
-
-dblab_cleanup() {
-  echo "Cleaning up and destroying dblab clone $id"
-  dblab clone destroy "$id"
-}
-
-trap dblab_cleanup TERM INT EXIT
+createdAt=$(echo "$dblab_info" | jq -r .createdAt)
+cloneStateTimestamp=$(echo "$dblab_info" | jq -r .snapshot.dataStateAt)
+maxIdleMinutes=$(echo "$dblab_info" | jq -r .metadata.maxIdleMinutes)
 
 echo "Opening port forwarding on port ${port}"
+
+mkdir -p ~/webInfo
+cat <<INFO > ~/webInfo/info.json
+{
+  "createdAt": "$createdAt",
+  "cloneStateTimestamp": "$cloneStateTimestamp",
+  "cloneId": "$id",
+  "maxIdleMinutes": $maxIdleMinutes
+}
+INFO
+webfsd -p 8000 -r ~/webInfo
+
+echo "Started server with clone info on port 8000"
 
 # This blocks and opens port forwarding for Postgres
 ssh -N -L ":5432:localhost:$port" -i ~/.ssh/id_rsa "${DBLAB_SSH_HOST}"

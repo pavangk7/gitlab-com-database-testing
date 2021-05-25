@@ -3,7 +3,7 @@
 require 'ostruct'
 
 class Result
-  def self.from_files(statistics_file, migrations_file)
+  def self.from_files(statistics_file, migrations_file, clone_details_file)
     stats = JSON.parse(File.read(statistics_file)).each_with_object({}) do |stat, h|
       version = stat['migration']
       h[version] = stat
@@ -17,19 +17,23 @@ class Result
       h[version] = to_recursive_ostruct(migration)
     end
 
+    # Attach clone details
+    clone_details = OpenStruct.new(JSON.parse(File.read(clone_details_file)))
+
     # Migrations with statistics have been executed in this run, others not
     # Limit to executed migrations
     migrations = migrations.select do |_, migration|
       !migration['statistics'].nil?
     end
 
-    Result.new(migrations)
+    Result.new(migrations, clone_details)
   end
 
-  attr_reader :migrations
+  attr_reader :migrations, :clone_details
 
-  def initialize(migrations)
+  def initialize(migrations, clone_details)
     @migrations = migrations
+    @clone_details = clone_details
   end
 
   def self.to_recursive_ostruct(hash)
