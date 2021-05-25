@@ -1,3 +1,10 @@
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      variables:
+        CI_COMMIT_BRANCH: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
+    - when: always
+
 include:
   - template: Security/Dependency-Scanning.gitlab-ci.yml
   - template: Security/License-Scanning.gitlab-ci.yml
@@ -22,4 +29,15 @@ shellcheck:
   before_script:
     - shellcheck --version
   script:
-    - shellcheck docker/**/*.sh
+    - shellcheck docker/**/*.sh misc/trigger-test-pipeline.sh
+
+run pipeline:
+  stage: test
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: manual
+  image: python:alpine
+  before_script:
+    - apk add --update curl jq
+  script:
+    - ./misc/trigger-test-pipeline.sh

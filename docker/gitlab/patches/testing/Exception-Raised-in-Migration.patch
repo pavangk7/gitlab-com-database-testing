@@ -1,0 +1,35 @@
+From 9e41b4886f586be17baca742e36729cf48033baa Mon Sep 17 00:00:00 2001
+From: Alex Ives <aives@gitlab.com>
+Date: Wed, 2 Jun 2021 15:21:10 -0500
+Subject: [PATCH 2/2] Adds a database migration that throws an exception on run
+
+---
+ db/migrate/20210602201834_migration_throws_exception.rb | 6 ++++++
+ db/schema_migrations/20210602201834                     | 1 +
+ 2 files changed, 7 insertions(+)
+ create mode 100644 db/migrate/20210602201834_migration_throws_exception.rb
+ create mode 100644 db/schema_migrations/20210602201834
+
+diff --git a/db/migrate/20210602201834_migration_throws_exception.rb b/db/migrate/20210602201834_migration_throws_exception.rb
+new file mode 100644
+index 00000000000..117c1d60445
+--- /dev/null
++++ b/db/migrate/20210602201834_migration_throws_exception.rb
+@@ -0,0 +1,6 @@
++# frozen_string_literal: true
++class MigrationThrowsException < ActiveRecord::Migration[6.1]
++  def change
++    raise RuntimeError("The framework should handle this exception")
++  end
++end
+diff --git a/db/schema_migrations/20210602201834 b/db/schema_migrations/20210602201834
+new file mode 100644
+index 00000000000..480a9c3f24e
+--- /dev/null
++++ b/db/schema_migrations/20210602201834
+@@ -0,0 +1 @@
++63d17e63dca8d531034d829277c3c6facd9e01e91b1e4574ff3c6ef98f640112
+\ No newline at end of file
+-- 
+2.31.1
+
