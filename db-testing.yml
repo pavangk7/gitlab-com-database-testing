@@ -70,7 +70,7 @@ db:migrations:
   script:
     - cd ${GITLAB_PATH}
     - ./prepare.sh
-    - bundle exec rake gitlab:db:migration_testing
+    - bundle exec rake gitlab:db:migration_testing || true
     - mv tmp/migration-testing/ ${CI_PROJECT_DIR}
     - bundle exec ruby list_migrations.rb > ${CI_PROJECT_DIR}/migration-testing/migrations.json
     - bundle exec ruby clone_details.rb postgres > ${CI_PROJECT_DIR}/migration-testing/clone-details.json
