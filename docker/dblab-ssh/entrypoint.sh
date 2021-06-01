@@ -12,7 +12,7 @@ echo "${DBLAB_SSH_KEY}" > ~/.ssh/id_rsa
 chmod 0400 ~/.ssh/id_rsa
 echo "${DBLAB_HOST_KEYS}" > ~/.ssh/known_hosts
 
-ssh -f -N -L 2345:localhost:${DBLAB_API_PORT} -i ~/.ssh/id_rsa "${DBLAB_SSH_HOST}"
+ssh -f -N -L 2345:localhost:"${DBLAB_API_PORT}" -i ~/.ssh/id_rsa "${DBLAB_SSH_HOST}"
 
 dblab init --url http://127.0.0.1:2345 --token "${DBLAB_TOKEN}" --environment-id "${DBLAB_ENVIRONMENT}"
 
