@@ -7,3 +7,6 @@ AllCops:
 
 CodeReuse/ActiveRecord:
   Enabled: false
+
+Performance/OpenStruct:
+  Enabled: false
