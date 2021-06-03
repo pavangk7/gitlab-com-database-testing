@@ -1,5 +1,5 @@
-| Migration | Total runtime | Result | DB size change | Note |
-| --------- | ------------- | ------ | -------------- | ---- |
-% all_migrations.each do |m|
-| <%= m.version %> | <%= walltime(m) %> | <%= success(m) %> | <%= total_size_change(m) %> | <%= (!m.intro_on_current_branch) ? '(unrelated to this MR, but merged and pending on GitLab.com)' : '' %> |
+| Migration | Total runtime | Result | DB size change |
+| --------- | ------------- | ------ | -------------- |
+% migrations_from_branch.each do |m|
+| <%= m.version %> | <%= walltime(m) %> | <%= success(m) %> | <%= total_size_change(m) %> |
 % end
