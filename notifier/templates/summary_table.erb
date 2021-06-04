@@ -1,5 +1,5 @@
-| Migration | Total runtime | Result | DB size change |
-| --------- | ------------- | ------ | -------------- |
+| Migration | Type | Total runtime | Result | DB size change |
+| --------- | ---- | ------------- | ------ | -------------- |
 % migrations_from_branch.each do |m|
-| <%= m.version %> | <%= walltime(m) %> | <%= success(m) %> | <%= total_size_change(m) %> |
+| <%= m.version %> - <%= m.name %> | <%= type(m) %> | <%= walltime(m) %> | <%= success(m) %> | <%= total_size_change(m) %> |
 % end

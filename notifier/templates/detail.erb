@@ -1,5 +1,6 @@
-#### Migration: <%= migration.version %>
+#### Migration: <%= migration.version %> - <%= migration.name %>
 
+* Type: <%= type(migration) %>
 * Duration: <%= walltime(migration) %>
 * Database size change: <%= total_size_change(migration) %>
 

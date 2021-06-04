@@ -1,0 +1,87 @@
+From d765291011a493fb90c08fec2e43dc101776ba6f Mon Sep 17 00:00:00 2001
+From: Alex Ives <aives@gitlab.com>
+Date: Fri, 4 Jun 2021 18:24:03 -0500
+Subject: [PATCH] Drop table in post migration
+
+---
+ .../20210604232017_drop_test_table.rb         |  7 ++++++
+ db/schema_migrations/20210604232017           |  1 +
+ db/structure.sql                              | 25 -------------------
+ 3 files changed, 8 insertions(+), 25 deletions(-)
+ create mode 100644 db/post_migrate/20210604232017_drop_test_table.rb
+ create mode 100644 db/schema_migrations/20210604232017
+
+diff --git a/db/post_migrate/20210604232017_drop_test_table.rb b/db/post_migrate/20210604232017_drop_test_table.rb
+new file mode 100644
+index 00000000000..828951740e2
+--- /dev/null
++++ b/db/post_migrate/20210604232017_drop_test_table.rb
+@@ -0,0 +1,7 @@
++# frozen_string_literal: true
++
++class DropTestTable < ActiveRecord::Migration[6.1]
++  def change
++    drop_table :test_tables
++  end
++end
+diff --git a/db/schema_migrations/20210604232017 b/db/schema_migrations/20210604232017
+new file mode 100644
+index 00000000000..1baa097d41e
+--- /dev/null
++++ b/db/schema_migrations/20210604232017
+@@ -0,0 +1 @@
++174477b77cfbad202466fc645b67b8c188f8da31e621224cb32d5fbcf50d9c68
+\ No newline at end of file
+diff --git a/db/structure.sql b/db/structure.sql
+index c6524149b4a..d8add15b68d 100644
+--- a/db/structure.sql
++++ b/db/structure.sql
+@@ -18324,26 +18324,6 @@ CREATE SEQUENCE terraform_states_id_seq
+ 
+ ALTER SEQUENCE terraform_states_id_seq OWNED BY terraform_states.id;
+ 
+-CREATE TABLE test_tables (
+-    id bigint NOT NULL,
+-    stars bigint DEFAULT 0 NOT NULL,
+-    created_at timestamp(6) without time zone NOT NULL,
+-    updated_at timestamp(6) without time zone NOT NULL,
+-    title text,
+-    notes text,
+-    CONSTRAINT check_0770ba173a CHECK ((char_length(title) <= 128)),
+-    CONSTRAINT check_9cfc473dbc CHECK ((char_length(notes) <= 1024))
+-);
+-
+-CREATE SEQUENCE test_tables_id_seq
+-    START WITH 1
+-    INCREMENT BY 1
+-    NO MINVALUE
+-    NO MAXVALUE
+-    CACHE 1;
+-
+-ALTER SEQUENCE test_tables_id_seq OWNED BY test_tables.id;
+-
+ CREATE TABLE timelogs (
+     id integer NOT NULL,
+     time_spent integer NOT NULL,
+@@ -20300,8 +20280,6 @@ ALTER TABLE ONLY terraform_state_versions ALTER COLUMN id SET DEFAULT nextval('t
+ 
+ ALTER TABLE ONLY terraform_states ALTER COLUMN id SET DEFAULT nextval('terraform_states_id_seq'::regclass);
+ 
+-ALTER TABLE ONLY test_tables ALTER COLUMN id SET DEFAULT nextval('test_tables_id_seq'::regclass);
+-
+ ALTER TABLE ONLY timelogs ALTER COLUMN id SET DEFAULT nextval('timelogs_id_seq'::regclass);
+ 
+ ALTER TABLE ONLY todos ALTER COLUMN id SET DEFAULT nextval('todos_id_seq'::regclass);
+@@ -21945,9 +21923,6 @@ ALTER TABLE ONLY terraform_state_versions
+ ALTER TABLE ONLY terraform_states
+     ADD CONSTRAINT terraform_states_pkey PRIMARY KEY (id);
+ 
+-ALTER TABLE ONLY test_tables
+-    ADD CONSTRAINT test_tables_pkey PRIMARY KEY (id);
+-
+ ALTER TABLE ONLY timelogs
+     ADD CONSTRAINT timelogs_pkey PRIMARY KEY (id);
+ 
+-- 
+2.31.1
+

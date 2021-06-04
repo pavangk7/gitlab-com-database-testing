@@ -70,6 +70,10 @@ class Feedback
     format_time(migration.statistics.walltime, unit: 's')
   end
 
+  def type(migration)
+    migration.type.tr("_", " ").capitalize
+  end
+
   def format_int(number)
     Integer(number)
   end
