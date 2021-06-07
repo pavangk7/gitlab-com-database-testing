@@ -1,0 +1,100 @@
+From 56c1014dc4a227eafe31793ddec7605d4988fae6 Mon Sep 17 00:00:00 2001
+From: Alex Ives <aives@gitlab.com>
+Date: Wed, 2 Jun 2021 09:50:54 -0500
+Subject: [PATCH] Test creating a table
+
+---
+ .../20210602144718_create_test_table.rb       | 20 +++++++++++++++
+ db/schema_migrations/20210602144718           |  1 +
+ db/structure.sql                              | 25 +++++++++++++++++++
+ 3 files changed, 46 insertions(+)
+ create mode 100644 db/migrate/20210602144718_create_test_table.rb
+ create mode 100644 db/schema_migrations/20210602144718
+
+diff --git a/db/migrate/20210602144718_create_test_table.rb b/db/migrate/20210602144718_create_test_table.rb
+new file mode 100644
+index 00000000000..71d1890dba8
+--- /dev/null
++++ b/db/migrate/20210602144718_create_test_table.rb
+@@ -0,0 +1,20 @@
++# frozen_string_literal: true
++
++class CreateTestTable < ActiveRecord::Migration[6.0]
++  include Gitlab::Database::MigrationHelpers
++  def up
++    create_table_with_constraints :test_tables do |t|
++      t.bigint :stars, default: 0, null: false
++      t.timestamps
++      t.text :title
++      t.text :notes
++
++      t.text_limit :title, 128
++      t.text_limit :notes, 1024
++    end
++  end
++
++  def down
++    drop_table :test_tables
++  end
++end
+diff --git a/db/schema_migrations/20210602144718 b/db/schema_migrations/20210602144718
+new file mode 100644
+index 00000000000..52060c52eae
+--- /dev/null
++++ b/db/schema_migrations/20210602144718
+@@ -0,0 +1 @@
++bc65ca60b5cdb7b36e9b16eebbe3a4ff6edd0ea65990a8ccefaf19cdb10af1a1
+\ No newline at end of file
+diff --git a/db/structure.sql b/db/structure.sql
+index d8add15b68d..c6524149b4a 100644
+--- a/db/structure.sql
++++ b/db/structure.sql
+@@ -18324,6 +18324,26 @@ CREATE SEQUENCE terraform_states_id_seq
+ 
+ ALTER SEQUENCE terraform_states_id_seq OWNED BY terraform_states.id;
+ 
++CREATE TABLE test_tables (
++    id bigint NOT NULL,
++    stars bigint DEFAULT 0 NOT NULL,
++    created_at timestamp(6) without time zone NOT NULL,
++    updated_at timestamp(6) without time zone NOT NULL,
++    title text,
++    notes text,
++    CONSTRAINT check_0770ba173a CHECK ((char_length(title) <= 128)),
++    CONSTRAINT check_9cfc473dbc CHECK ((char_length(notes) <= 1024))
++);
++
++CREATE SEQUENCE test_tables_id_seq
++    START WITH 1
++    INCREMENT BY 1
++    NO MINVALUE
++    NO MAXVALUE
++    CACHE 1;
++
++ALTER SEQUENCE test_tables_id_seq OWNED BY test_tables.id;
++
+ CREATE TABLE timelogs (
+     id integer NOT NULL,
+     time_spent integer NOT NULL,
+@@ -20280,6 +20300,8 @@ ALTER TABLE ONLY terraform_state_versions ALTER COLUMN id SET DEFAULT nextval('t
+ 
+ ALTER TABLE ONLY terraform_states ALTER COLUMN id SET DEFAULT nextval('terraform_states_id_seq'::regclass);
+ 
++ALTER TABLE ONLY test_tables ALTER COLUMN id SET DEFAULT nextval('test_tables_id_seq'::regclass);
++
+ ALTER TABLE ONLY timelogs ALTER COLUMN id SET DEFAULT nextval('timelogs_id_seq'::regclass);
+ 
+ ALTER TABLE ONLY todos ALTER COLUMN id SET DEFAULT nextval('todos_id_seq'::regclass);
+@@ -21923,6 +21945,9 @@ ALTER TABLE ONLY terraform_state_versions
+ ALTER TABLE ONLY terraform_states
+     ADD CONSTRAINT terraform_states_pkey PRIMARY KEY (id);
+ 
++ALTER TABLE ONLY test_tables
++    ADD CONSTRAINT test_tables_pkey PRIMARY KEY (id);
++
+ ALTER TABLE ONLY timelogs
+     ADD CONSTRAINT timelogs_pkey PRIMARY KEY (id);
+ 
+-- 
+2.31.1
+

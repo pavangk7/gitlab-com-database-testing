@@ -16,6 +16,12 @@ test: &test
     statement_timeout: 120s
 EOF
 
+if test "$VALIDATION_PIPELINE"; then
+  echo "Applying test patch"
+  git am < /gitlab/patches/testing/New-Table-Migration.patch
+  git am < /gitlab/patches/testing/Exception-Raised-in-Migration.patch
+fi
+
 cp config/cable.yml.example config/cable.yml
 sed -i 's|url:.*$|url: redis://redis:6379|g' config/cable.yml
 
