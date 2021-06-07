@@ -19,6 +19,7 @@ EOF
 if test "$VALIDATION_PIPELINE"; then
   echo "Applying test patch"
   git am < /gitlab/patches/testing/New-Table-Migration.patch
+  git am < /gitlab/patches/testing/Drop-table-in-post-migration.patch
   git am < /gitlab/patches/testing/Exception-Raised-in-Migration.patch
 fi
 
