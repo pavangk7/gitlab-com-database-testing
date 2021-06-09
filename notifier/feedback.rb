@@ -58,6 +58,10 @@ class Feedback
     ERB.new(File.read("templates/#{template}.erb"), trim_mode: '<>%')
   end
 
+  def warnings
+    Warnings.new(result)
+  end
+
   def total_size_change(migration)
     size_change_bytes = migration.total_database_size_change
 
@@ -71,8 +75,16 @@ class Feedback
 
   def success(migration)
     return UNKNOWN if migration.success.nil?
+    return ':boom:' unless migration.success?
+    return ':warning:' if migration.warning?
 
-    migration.success? ? ":white_check_mark:" : ":boom:"
+    ':white_check_mark:'
+  end
+
+  def warning(migration)
+    return UNKNOWN if migration.success.nil?
+    return ':boom:' unless migration.success?
+    return ':warning:' if migration.warning?
   end
 
   def walltime(migration)
@@ -93,16 +105,5 @@ class Feedback
     return nil unless time
 
     "#{Float(time).round(1)} #{unit}"
-  end
-
-  def format_query(query)
-    Niceql::Prettifier.prettify_sql(query)
-      .gsub(' ', '&nbsp;')
-      .gsub('/*', '&#x2F;&#x2A;')
-      .gsub('*/', '&#x2A;&#x2F;')
-      .gsub("\n", '<br />')
-  rescue StandardError => e
-    warn "Query formatting error:\n#{e}\nFor query: #{query}"
-    query
   end
 end

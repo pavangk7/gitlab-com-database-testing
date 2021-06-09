@@ -5,6 +5,7 @@ class Migration
   POST_DEPLOY_MIGRATION_GUIDANCE_SECONDS = (10 * 60)
   TYPE_REGULAR = 'regular'
   TYPE_POST_DEPLOY = 'post_deploy'
+  TIMING_GUIDELINES = "https://docs.gitlab.com/ee/development/database_review.html#timing-guidelines-for-migrations"
 
   attr_accessor :version, :path, :name, :statistics, :total_database_size_change,
                 :queries, :type, :walltime, :intro_on_current_branch, :success
@@ -42,12 +43,33 @@ class Migration
     walltime > time_guidance
   end
 
+  def important_queries
+    queries.reject(&:excluded?)
+  end
+
   def queries_with_warnings
-    @queries_with_warnings ||= queries.select(&:exceeds_time_guidance?)
+    @queries_with_warnings ||= important_queries.select(&:exceeds_time_guidance?)
   end
 
   def has_queries_with_warnings?
     queries_with_warnings.any?
+  end
+
+  def name_formatted
+    "<b>#{version} - #{name}</b>"
+  end
+
+  def warnings
+    warnings = queries_with_warnings.map { |q| q.warning(name_formatted) }
+
+    warnings << "#{name_formatted} did not complete successfully, check the job log for details" unless success?
+
+    if exceeds_time_guidance?
+      warnings << "#{name_formatted} [exceeded timing guidelines](#{TIMING_GUIDELINES})."\
+                  "This migration should not exceed #{time_guidance}s, but was #{walltime}s"
+    end
+
+    warnings
   end
 
   def warning?

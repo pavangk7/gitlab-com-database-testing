@@ -3,6 +3,6 @@
 | Query | Calls | Total Time | Max Time | Mean Time | Rows |
 | ----- | ----- | ---------- | -------- | --------- | ---- |
 % pgss_rows.each do |query|
-| <pre><%= format_query(query.query) %></pre> | <%= format_int(query.calls) %> | <%= format_time(query.total_time) %> | <%= format_time(query.max_time) %> | <%= format_time(query.mean_time) %> | <%= format_int(query.rows) %> |
+| <pre><%= query.formatted_query %></pre> | <%= format_int(query.calls) %> | <%= format_time(query.total_time) %> | <%= format_time(query.max_time) %> | <%= format_time(query.mean_time) %> | <%= format_int(query.rows) %> |
 % end
 % end

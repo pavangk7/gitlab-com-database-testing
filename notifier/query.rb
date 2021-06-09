@@ -4,6 +4,7 @@ require 'pg_query'
 
 class Query
   QUERY_GUIDANCE_MILLISECONDS = 100
+  TIMING_GUIDELINES = 'https://docs.gitlab.com/ee/development/query_performance.html#timing-guidelines-for-queries'
 
   # rubocop:disable Layout/LineLength
   EXCLUSIONS = [
@@ -32,8 +33,32 @@ class Query
     @rows = pgss_row['rows']
   end
 
+  def formatted_query
+    Niceql::Prettifier.prettify_sql(query)
+      .gsub(' ', '&nbsp;')
+      .gsub('/*', '&#x2F;&#x2A;')
+      .gsub('*/', '&#x2A;&#x2F;')
+      .gsub("\n", '<br />')
+  rescue StandardError => e
+    warn "Query formatting error:\n#{e}\nFor query: #{query}"
+    query
+  end
+
   def exceeds_time_guidance?
     max_time > QUERY_GUIDANCE_MILLISECONDS
+  end
+
+  def timing
+    if calls == 1
+      "it was #{max_time}"
+    else
+      "the longest was #{max_time}ms, and the average was #{mean_time}ms"
+    end
+  end
+
+  def warning(migration_name)
+    "#{migration_name} had a query that [exceeded timing guidelines](#{TIMING_GUIDELINES}). Run time "\
+    "should not exceed 100ms, but #{timing} <pre>#{formatted_query}</pre>"
   end
 
   def excluded?
