@@ -1,3 +1,5 @@
 .env
 .idea
 notifier/vendor
+notifier/spec/examples.txt
+tmp

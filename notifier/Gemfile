@@ -1,11 +1,16 @@
 # frozen_string_literal: true
 source 'https://rubygems.org'
 
-gem 'gitlab'
-gem 'pry'
 gem 'filesize'
-gem 'thor'
+gem 'gitlab'
+gem 'gitlab-styles', require: false
 gem 'niceql'
 gem 'pg_query'
-gem 'gitlab-styles', require: false
-gem 'rubocop'
+gem 'pry'
+gem 'thor'
+
+group :test do
+  gem 'rspec'
+  gem 'rspec_junit_formatter'
+  gem 'rubocop'
+end
