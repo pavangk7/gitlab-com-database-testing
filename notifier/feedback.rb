@@ -23,6 +23,10 @@ class Feedback
     all_migrations.select(&:intro_on_current_branch)
   end
 
+  def other_migrations
+    all_migrations.reject(&:intro_on_current_branch)
+  end
+
   def all_migrations
     result.migrations.values
   end
@@ -39,8 +43,16 @@ class Feedback
     erb('pgss_table').result(binding)
   end
 
-  def render_summary_table
-    erb('summary_table').result(binding)
+  def render_migrations_from_branch_summary
+    b = binding
+    b.local_variable_set(:migrations, migrations_from_branch)
+    erb('summary_table').result(b)
+  end
+
+  def render_other_migrations_summary
+    b = binding
+    b.local_variable_set(:migrations, other_migrations)
+    erb('summary_table').result(b)
   end
 
   def erb(template)
