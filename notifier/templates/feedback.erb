@@ -3,11 +3,17 @@
 
 Migrations included in this change have been executed on gitlab.com data for testing purposes. For details, please see the [migration testing pipeline](<%= ENV['CI_PROJECT_URL'] %>/-/pipelines/<%= ENV['CI_PIPELINE_ID'] %>) (limited access).
 
-<%= render_summary_table %>
+<%= render_migrations_from_branch_summary %>
 
 % migrations_from_branch.each do |migration|
 <%= render_details(migration) %>
 % end
+
+<details>
+  <summary>Other migrations pending on GitLab.com</summary>
+
+  <%= render_other_migrations_summary %>
+</details>
 
 #### Clone Details
 <%= render_clone_details(result.clone_details) %>
