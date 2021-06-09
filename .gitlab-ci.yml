@@ -31,6 +31,20 @@ shellcheck:
   script:
     - shellcheck docker/**/*.sh misc/trigger-test-pipeline.sh
 
+rspec:
+  stage: test
+  image: ruby:2.7
+  script:
+    - cd notifier
+    - bundle install
+    - bundle exec bundle exec rspec --format progress --format RspecJunitFormatter --out rspec.xml
+  artifacts:
+    when: always
+    paths:
+      - rspec.xml
+    reports:
+      junit: rspec.xml
+
 run pipeline:
   stage: test
   rules:
