@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'ostruct'
+require 'json'
 
 class Result
   def self.from_files(statistics_file, migrations_file, clone_details_file)
@@ -13,8 +14,7 @@ class Result
     migrations = JSON.parse(File.read(migrations_file)).each_with_object({}) do |(version, migration), h|
       version = version.to_i
 
-      migration['statistics'] = stats[version]
-      h[version] = to_recursive_ostruct(migration)
+      h[version] = Migration.new(migration, stats[version])
     end
 
     # Attach clone details
@@ -23,7 +23,7 @@ class Result
     # Migrations with statistics have been executed in this run, others not
     # Limit to executed migrations
     migrations = migrations.select do |_, migration|
-      !migration['statistics'].nil?
+      migration.was_run?
     end
 
     Result.new(migrations, clone_details)
@@ -35,12 +35,4 @@ class Result
     @migrations = migrations
     @clone_details = clone_details
   end
-
-  def self.to_recursive_ostruct(hash)
-    OpenStruct.new(hash.transform_values do |val|
-      val.is_a?(Hash) ? to_recursive_ostruct(val) : val
-    end)
-  end
-
-  private_class_method :to_recursive_ostruct
 end
