@@ -16,8 +16,6 @@ class Feedback
     erb('feedback').result(binding)
   end
 
-  private
-
   def migrations_from_branch
     all_migrations.select(&:intro_on_current_branch?)
   end
@@ -26,8 +24,19 @@ class Feedback
     all_migrations.reject(&:intro_on_current_branch)
   end
 
+  private
+
   def all_migrations
-    result.migrations.values
+    migrations = result.migrations.values
+
+    regular_migrations = migrations
+                           .select { |m| m.type == Migration::TYPE_REGULAR }
+                           .sort_by(&:version)
+    post_migrations = migrations
+                        .select { |m| m.type == Migration::TYPE_POST_DEPLOY }
+                        .sort_by(&:version)
+
+    regular_migrations.concat(post_migrations)
   end
 
   def render_details(migration)
