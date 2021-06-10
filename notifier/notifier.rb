@@ -2,11 +2,11 @@
 # frozen_string_literal: true
 
 require 'gitlab'
-require 'json'
-require 'pry'
 require 'thor'
 
 require_relative 'feedback'
+require_relative 'migration'
+require_relative 'query'
 require_relative 'result'
 
 IDENTIFIABLE_NOTE_TAG = 'gitlab-org/database-team/gitlab-com-database-testing:identifiable-note'

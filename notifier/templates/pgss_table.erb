@@ -1,8 +1,8 @@
-% pgss_rows = pgss.reject { |row| filter_pgss_query?(row['query']) }
+% pgss_rows = pgss.reject(&:excluded?)
 % unless pgss_rows.empty?
 | Query | Calls | Total Time | Max Time | Mean Time | Rows |
 | ----- | ----- | ---------- | -------- | --------- | ---- |
-% pgss_rows.each do |row|
-| <pre><%= format_query(row['query']) %></pre> | <%= format_int(row['calls']) %> | <%= format_time(row['total_time']) %> | <%= format_time(row['max_time']) %> | <%= format_time(row['mean_time']) %> | <%= format_int(row['rows']) %> |
+% pgss_rows.each do |query|
+| <pre><%= format_query(query.query) %></pre> | <%= format_int(query.calls) %> | <%= format_time(query.total_time) %> | <%= format_time(query.max_time) %> | <%= format_time(query.mean_time) %> | <%= format_int(query.rows) %> |
 % end
 % end

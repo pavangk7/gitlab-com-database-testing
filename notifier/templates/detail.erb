@@ -4,6 +4,6 @@
 * Duration: <%= walltime(migration) %>
 * Database size change: <%= total_size_change(migration) %>
 
-% if migration.statistics.query_statistics
-<%= render_pgss_table(migration.statistics.query_statistics) %>
+% if migration.queries.any?
+<%= render_pgss_table(migration.queries) %>
 % end
