@@ -37,7 +37,8 @@ rspec:
   script:
     - cd notifier
     - bundle install
-    - bundle exec bundle exec rspec --format progress --format RspecJunitFormatter --out rspec.xml
+    - bundle exec rspec --format progress --format RspecJunitFormatter --out rspec.xml
+    - mv rspec.xml ..
   artifacts:
     when: always
     paths:
