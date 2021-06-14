@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require 'spec_helper'
 
-describe Query do
+RSpec.describe Query do
   let(:pg_pass) do
     {
       "query": "select pg_database_size(current_database()) /*application:test*/",

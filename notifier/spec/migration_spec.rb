@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Migration do
+RSpec.describe Migration do
   let(:good_queries) do
     [
       {
