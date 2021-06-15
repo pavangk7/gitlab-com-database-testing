@@ -149,4 +149,10 @@ describe Migration do
       expect(subject.warning?).to be true
     end
   end
+
+  describe '#important_queries' do
+    it 'returns only unexcluded queries' do
+      expect(subject.important_queries.size).to eq(2)
+    end
+  end
 end

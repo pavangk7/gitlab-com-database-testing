@@ -1,6 +1,8 @@
 <!-- <%= IDENTIFIABLE_NOTE_TAG %> -->
 ### Database migrations
 
+<%= warnings.render %>
+
 Migrations included in this change have been executed on gitlab.com data for testing purposes. For details, please see the [migration testing pipeline](<%= ENV['CI_PROJECT_URL'] %>/-/pipelines/<%= ENV['CI_PIPELINE_ID'] %>) (limited access).
 
 <%= render_migrations_from_branch_summary %>

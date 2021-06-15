@@ -8,6 +8,7 @@ require_relative 'feedback'
 require_relative 'migration'
 require_relative 'query'
 require_relative 'result'
+require_relative 'warnings'
 
 IDENTIFIABLE_NOTE_TAG = 'gitlab-org/database-team/gitlab-com-database-testing:identifiable-note'
 

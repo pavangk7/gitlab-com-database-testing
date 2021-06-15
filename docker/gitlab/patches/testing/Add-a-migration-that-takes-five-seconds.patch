@@ -1,0 +1,40 @@
+From 8e2b510728febe8bf22f379ff797a81bff03f61a Mon Sep 17 00:00:00 2001
+From: Alex Ives <aives@gitlab.com>
+Date: Thu, 10 Jun 2021 15:59:11 -0500
+Subject: [PATCH] Add commit that takes 5 seconds
+
+---
+ ...233011_regular_migration_with_five_second_query.rb | 11 +++++++++++
+ db/schema_migrations/20210603233011                   |  1 +
+ 2 files changed, 12 insertions(+)
+ create mode 100644 db/migrate/20210603233011_regular_migration_with_five_second_query.rb
+ create mode 100644 db/schema_migrations/20210603233011
+
+diff --git a/db/migrate/20210603233011_regular_migration_with_five_second_query.rb b/db/migrate/20210603233011_regular_migration_with_five_second_query.rb
+new file mode 100644
+index 00000000000..f8aca061f22
+--- /dev/null
++++ b/db/migrate/20210603233011_regular_migration_with_five_second_query.rb
+@@ -0,0 +1,11 @@
++# frozen_string_literal: true
++
++class RegularMigrationWithFiveSecondQuery < ActiveRecord::Migration[6.1]
++  def up
++    execute 'SELECT pg_sleep(5);'
++  end
++
++  def down
++    execute 'SELECT pg_sleep(5);'
++  end
++end
+diff --git a/db/schema_migrations/20210603233011 b/db/schema_migrations/20210603233011
+new file mode 100644
+index 00000000000..cd5736cf2c7
+--- /dev/null
++++ b/db/schema_migrations/20210603233011
+@@ -0,0 +1 @@
++0673961fd0e606a68ae257bfe777712d8e808293dd0526320fc471493957c987
+\ No newline at end of file
+-- 
+2.32.0
+
