@@ -4,6 +4,7 @@ require 'pg_query'
 
 class Query
   QUERY_GUIDANCE_MILLISECONDS = 100
+  CONCURRENT_QUERY_GUIDANCE_MILLISECONDS = 5 * 60 * 1000
   TIMING_GUIDELINES = 'https://docs.gitlab.com/ee/development/query_performance.html#timing-guidelines-for-queries'
 
   # rubocop:disable Layout/LineLength
@@ -44,8 +45,18 @@ class Query
     query
   end
 
+  def concurrent?
+    query.downcase.include?('create index concurrently')
+  end
+
+  def time_guidance
+    return CONCURRENT_QUERY_GUIDANCE_MILLISECONDS if concurrent?
+
+    QUERY_GUIDANCE_MILLISECONDS
+  end
+
   def exceeds_time_guidance?
-    max_time > QUERY_GUIDANCE_MILLISECONDS
+    max_time > time_guidance
   end
 
   def timing
@@ -58,7 +69,7 @@ class Query
 
   def warning(migration_name)
     "#{migration_name} had a query that [exceeded timing guidelines](#{TIMING_GUIDELINES}). Run time "\
-    "should not exceed 100ms, but #{timing} <pre>#{formatted_query}</pre>"
+    "should not exceed #{time_guidance}ms, but #{timing} <pre>#{formatted_query}</pre>"
   end
 
   def excluded?
