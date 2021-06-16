@@ -95,4 +95,8 @@ class Migration
       Query.new(query)
     end
   end
+
+  def sort_key
+    [type == TYPE_REGULAR ? 0 : 1, version]
+  end
 end

@@ -95,6 +95,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activesupport
   filesize
   gitlab
   gitlab-styles

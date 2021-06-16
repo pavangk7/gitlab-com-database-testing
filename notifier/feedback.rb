@@ -1,12 +1,15 @@
 # frozen_string_literal: true
 require 'filesize'
 require 'erb'
+require 'active_support/core_ext/module/delegation'
 require_relative 'niceql'
 
 class Feedback
   UNKNOWN = ':grey_question:'
 
   attr_reader :result
+
+  delegate :migrations_from_branch, :other_migrations, to: :result
 
   def initialize(result)
     @result = result
@@ -16,28 +19,7 @@ class Feedback
     erb('feedback').result(binding)
   end
 
-  def migrations_from_branch
-    all_migrations.select(&:intro_on_current_branch?)
-  end
-
-  def other_migrations
-    all_migrations.reject(&:intro_on_current_branch)
-  end
-
   private
-
-  def all_migrations
-    migrations = result.migrations.values
-
-    regular_migrations = migrations
-                           .select { |m| m.type == Migration::TYPE_REGULAR }
-                           .sort_by(&:version)
-    post_migrations = migrations
-                        .select { |m| m.type == Migration::TYPE_POST_DEPLOY }
-                        .sort_by(&:version)
-
-    regular_migrations.concat(post_migrations)
-  end
 
   def render_details(migration)
     erb('detail').result(binding)
