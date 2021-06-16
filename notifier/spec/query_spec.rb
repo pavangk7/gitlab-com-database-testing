@@ -4,12 +4,12 @@ require 'spec_helper'
 describe Query do
   let(:pg_pass) do
     {
-      "query": "select pg_database_size(current_database()) /*application:test*/",
-      "calls": 1,
-      "total_time": 269.888734,
-      "max_time": 269.888734,
-      "mean_time": 269.888734,
-      "rows": 0
+      "query" => "select pg_database_size(current_database()) /*application:test*/",
+      "calls" => 1,
+      "total_time" => 269.888734,
+      "max_time" => 269.888734,
+      "mean_time" => 269.888734,
+      "rows" => 0
     }
   end
 
@@ -56,6 +56,13 @@ describe Query do
       subject.max_time = described_class::QUERY_GUIDANCE_MILLISECONDS * 2
 
       expect(subject.exceeds_time_guidance?).to be true
+    end
+
+    it 'returns false if concurrent operations are below 5 minutes' do
+      pg_pass['query'] = 'CREATE INDEX CONCURRENTLY index_ci_runners_on_token_lower '\
+                         'ON ci_runners (LOWER(token)) /*application:test*/'
+
+      expect(subject.exceeds_time_guidance?).to be false
     end
 
     it 'returns false if max time less than QUERY_GUIDANCE_MILLISECONDS' do
