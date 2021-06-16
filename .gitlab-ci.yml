@@ -48,9 +48,7 @@ rspec:
 
 run pipeline:
   stage: test
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-      when: manual
+  when: manual
   image: python:alpine
   before_script:
     - apk add --update curl jq
