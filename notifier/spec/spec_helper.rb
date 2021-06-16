@@ -20,6 +20,8 @@ RSpec.configure do |config|
 
   config.order = :random
   Kernel.srand config.seed
+
+  config.disable_monkey_patching!
 end
 
 def file_fixture(path)

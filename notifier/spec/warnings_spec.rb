@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Warnings do
+RSpec.describe Warnings do
   let(:clone_details) { file_fixture('migration-testing/clone-details.json') }
   let(:migration_stats) { file_fixture('migration-testing/migration-stats.json') }
   let(:migrations) { file_fixture('migration-testing/migrations.json') }
