@@ -8,15 +8,16 @@ class Migration
   TIMING_GUIDELINES = "https://docs.gitlab.com/ee/development/database_review.html#timing-guidelines-for-migrations"
 
   attr_accessor :version, :path, :name, :statistics, :total_database_size_change,
-                :queries, :type, :walltime, :intro_on_current_branch, :success
+                :queries, :type, :walltime, :intro_on_current_branch, :success,
+                :query_executions
 
-  def initialize(migration, stats)
+  def initialize(migration, stats, query_details)
     @version = migration['version']
     @path = migration['path']
     @name = migration['name']
     @type = migration['type']
     @intro_on_current_branch = migration['intro_on_current_branch']
-
+    @query_executions = query_details.map { |qd| QueryExecution.new(qd) }
     init_stats(stats)
   end
 

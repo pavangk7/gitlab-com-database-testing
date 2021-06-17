@@ -57,7 +57,7 @@ RSpec.describe Migration do
     }
   end
 
-  subject(:migration) { described_class.new(migration_hash, stats) }
+  subject(:migration) { described_class.new(migration_hash, stats, []) }
 
   it 'loads from the result json hash' do
     expect { subject }.not_to raise_error
@@ -70,7 +70,7 @@ RSpec.describe Migration do
 
   describe '#was_run?' do
     it 'returns false if the migration has no statistics' do
-      subject = described_class.new(migration_hash, nil)
+      subject = described_class.new(migration_hash, nil, [])
 
       expect(subject.was_run?).to be false
     end
@@ -160,7 +160,8 @@ RSpec.describe Migration do
     it 'returns a representation of type and version' do
       post_migration = described_class.new(
         { 'version' => 42, 'type' => Migration::TYPE_POST_DEPLOY, 'intro_on_current_branch' => true },
-        nil
+        nil,
+        []
       )
 
       expect(subject.sort_key).to eq([0, 20210602144718])

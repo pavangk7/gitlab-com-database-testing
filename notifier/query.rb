@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'pg_query'
+require_relative 'query_execution'
 
 class Query
   QUERY_GUIDANCE_MILLISECONDS = 100
@@ -23,7 +24,7 @@ class Query
   ].map(&:downcase).freeze
   # rubocop:enable Layout/LineLength
 
-  attr_accessor :query, :calls, :total_time, :max_time, :mean_time, :rows
+  attr_accessor :query, :calls, :total_time, :max_time, :mean_time, :rows, :executions
 
   def initialize(pgss_row)
     @query = pgss_row['query']

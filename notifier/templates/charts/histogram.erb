@@ -1,0 +1,11 @@
+<details>
+<summary><%= title %></summary>
+
+| Query Runtime | Count |
+|---------------|-------|
+<% data.each do |bucket, executions| -%>
+|<%= bucket_label(bucket) %> | <%= executions.count %> |
+<% end %>
+</details>
+
+<% # The blank line above is important, without it the </details> messes up markdown later in the file %>

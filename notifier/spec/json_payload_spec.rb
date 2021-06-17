@@ -6,8 +6,9 @@ RSpec.describe JsonPayload do
   let(:clone_details) { file_fixture('migration-testing/clone-details.json') }
   let(:migration_stats) { file_fixture('migration-testing/migration-stats.json') }
   let(:migrations) { file_fixture('migration-testing/migrations.json') }
+  let(:query_details_dir) { file_fixture('migration-testing/') }
 
-  let(:result) { Result.from_files(migration_stats, migrations, clone_details) }
+  let(:result) { Result.from_files(migration_stats, migrations, clone_details, query_details_dir) }
 
   subject do
     encoded = described_class.new.encode(result)

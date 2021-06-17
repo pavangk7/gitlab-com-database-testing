@@ -4,17 +4,24 @@ require 'ostruct'
 require 'json'
 
 class Result
-  def self.from_files(statistics_file, migrations_file, clone_details_file)
-    stats = JSON.parse(File.read(statistics_file)).each_with_object({}) do |stat, h|
+  def self.from_files(statistics_file, migrations_file, clone_details_file, query_details_path)
+    stats = read_to_json(statistics_file).each_with_object({}) do |stat, h|
       version = stat['migration']
       h[version] = stat
     end
 
     # Attach statistics to each migration
-    migrations = JSON.parse(File.read(migrations_file)).each_with_object({}) do |(version, migration), h|
+    migrations = read_to_json(migrations_file).each_with_object({}) do |(version, migration), h|
       version = version.to_i
 
-      h[version] = Migration.new(migration, stats[version])
+      details_path = File.join(query_details_path, "#{version}-query-details.json")
+      query_details = if File.exist?(details_path)
+                        read_to_json(details_path)
+                      else
+                        []
+                      end
+
+      h[version] = Migration.new(migration, stats[version], query_details)
     end
 
     # Attach clone details
@@ -48,5 +55,9 @@ class Result
 
   def sorted_migrations
     migrations.values.sort_by(&:sort_key)
+  end
+
+  def self.read_to_json(path)
+    JSON.parse(File.read(path))
   end
 end

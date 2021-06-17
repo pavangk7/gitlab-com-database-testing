@@ -7,3 +7,5 @@
 % if migration.queries.any?
 <%= render_pgss_table(migration.queries) %>
 % end
+
+<%= render_migration_histogram(migration) %>
