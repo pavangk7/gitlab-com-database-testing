@@ -5,7 +5,7 @@ require_relative 'query_execution'
 
 class Query
   QUERY_GUIDANCE_MILLISECONDS = 100
-  CONCURRENT_QUERY_GUIDANCE_MILLISECONDS = 5 * 60 * 1000
+  CONCURRENT_QUERY_GUIDANCE_MILLISECONDS = 5.minutes.in_milliseconds
   TIMING_GUIDELINES = 'https://docs.gitlab.com/ee/development/query_performance.html#timing-guidelines-for-queries'
 
   # rubocop:disable Layout/LineLength
@@ -37,7 +37,6 @@ class Query
 
   def formatted_query
     Niceql::Prettifier.prettify_sql(query)
-      .gsub(' ', '&nbsp;')
       .gsub('/*', '&#x2F;&#x2A;')
       .gsub('*/', '&#x2A;&#x2F;')
       .gsub("\n", '<br />')
@@ -62,15 +61,16 @@ class Query
 
   def timing
     if calls == 1
-      "it was #{max_time}"
+      "it was #{max_time.truncate(2)}"
     else
-      "the longest was #{max_time}ms, and the average was #{mean_time}ms"
+      "the longest was #{max_time.truncate(2)}ms, and the average was #{mean_time.truncate(2)}ms"
     end
   end
 
   def warning(migration_name)
     "#{migration_name} had a query that [exceeded timing guidelines](#{TIMING_GUIDELINES}). Run time "\
-    "should not exceed #{time_guidance}ms, but #{timing} <pre>#{formatted_query}</pre>"
+    "should not exceed #{time_guidance}ms, but was #{timing}ms. Please consider possible options to "\
+    "improve the query performance. <br/><pre>#{formatted_query}</pre>"
   end
 
   def excluded?

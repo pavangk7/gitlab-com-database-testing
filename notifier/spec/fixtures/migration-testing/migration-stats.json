@@ -264,6 +264,20 @@
     ]
   },
   {
+    "migration": 20200325104758,
+    "walltime": 305.9509822260588408,
+    "success": true,
+    "total_database_size_change": 32768,
+    "query_statistics": []
+  },
+  {
+    "migration": 20201015154529,
+    "walltime": 1501.9509822260588408,
+    "success": true,
+    "total_database_size_change": 32768,
+    "query_statistics": []
+  },
+  {
     "migration": 20210604232017,
     "walltime": 1.1652476582676172,
     "success": true,

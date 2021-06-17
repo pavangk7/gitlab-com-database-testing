@@ -14,8 +14,8 @@ RSpec.describe Warnings do
 
   describe '#render' do
     it 'renders a few things' do
-      allow(migration).to receive(:exceeds_time_guidance?).and_return(true)
       allow(migration).to receive(:success?).and_return(false)
+      allow(migration).to receive(:walltime).and_return(Migration::SRE_NOTIFICATION_GUIDANCE * 2)
       allow(migration).to receive(:queries_with_warnings).and_return(
         [Query.new({
                      "query" => "select * from users limit 1000 /*application:test*/",
@@ -27,9 +27,10 @@ RSpec.describe Warnings do
                    })])
 
       expect(subject.render).to include('did not complete')
-      expect(subject.render).to include('This migration should not exceed')
-      expect(subject.render).to include('should not exceed 100ms')
-      expect(subject.render).to include('222.49203')
+      expect(subject.render).to include('[background migration]')
+      expect(subject.render).to include('[post-deploy migration]')
+      expect(subject.render).to include('(`@gitlab-org/release/managers`)')
+      expect(subject.render).to include('222.49')
     end
 
     it 'excludes migrations not introduced on current branch' do

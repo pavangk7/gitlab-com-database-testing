@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 class Migration
-  REGULAR_MIGRATION_GUIDANCE_SECONDS = (3 * 60)
-  POST_DEPLOY_MIGRATION_GUIDANCE_SECONDS = (10 * 60)
+  REGULAR_MIGRATION_GUIDANCE_SECONDS = 3.minutes.freeze
+  POST_DEPLOY_MIGRATION_GUIDANCE_SECONDS = 10.minutes.freeze
+  SRE_NOTIFICATION_GUIDANCE = 20.minutes.freeze
   TYPE_REGULAR = 'regular'
   TYPE_POST_DEPLOY = 'post_deploy'
-  TIMING_GUIDELINES = "https://docs.gitlab.com/ee/development/database_review.html#timing-guidelines-for-migrations"
+  TIMING_GUIDELINES = 'https://docs.gitlab.com/ee/development/database_review.html#timing-guidelines-for-migrations'
+  POST_DEPLOY_MIGRATION_GUIDE = 'https://docs.gitlab.com/ee/development/post_deployment_migrations.html'
+  BACKGROUND_MIGRATION_GUIDE = 'https://docs.gitlab.com/ee/development/background_migrations.html'
 
   attr_accessor :version, :path, :name, :statistics, :total_database_size_change,
                 :queries, :type, :walltime, :intro_on_current_branch, :success,
@@ -40,6 +43,10 @@ class Migration
     raise 'Unknown migration type'
   end
 
+  def sre_should_be_informed?
+    walltime > SRE_NOTIFICATION_GUIDANCE
+  end
+
   def exceeds_time_guidance?
     walltime > time_guidance
   end
@@ -60,17 +67,39 @@ class Migration
     "<b>#{version} - #{name}</b>"
   end
 
+  def walltime_minutes
+    "#{walltime.in_minutes.round(2)}min"
+  end
+
+  def time_guidance_minutes
+    "#{time_guidance.in_minutes.round(2)}min"
+  end
+
   def warnings
     warnings = queries_with_warnings.map { |q| q.warning(name_formatted) }
 
     warnings << "#{name_formatted} did not complete successfully, check the job log for details" unless success?
 
-    if exceeds_time_guidance?
-      warnings << "#{name_formatted} [exceeded timing guidelines](#{TIMING_GUIDELINES})."\
-                  "This migration should not exceed #{time_guidance}s, but was #{walltime}s"
+    if sre_should_be_informed?
+      warnings << "#{name_formatted} took #{walltime_minutes}. Please add a comment that mentions Release "\
+                  "Managers (`@gitlab-org/release/managers`) so they are informed."
     end
 
+    warnings << time_remedy if exceeds_time_guidance?
+
     warnings
+  end
+
+  def time_remedy
+    if type == TYPE_REGULAR && walltime < POST_DEPLOY_MIGRATION_GUIDANCE_SECONDS
+      "#{name_formatted} may need a [post-deploy migration](#{POST_DEPLOY_MIGRATION_GUIDE}) "\
+      "to comply with [timing guidelines](#{TIMING_GUIDELINES}). It took #{walltime_minutes}, "\
+      "but should not exceed #{time_guidance_minutes}"
+    else
+      "#{name_formatted} may need a [background migration](#{BACKGROUND_MIGRATION_GUIDE}) to "\
+      "comply with [timing guidelines](#{TIMING_GUIDELINES}). It took #{walltime_minutes}, "\
+      "but should not exceed #{time_guidance_minutes}"
+    end
   end
 
   def warning?
@@ -85,7 +114,7 @@ class Migration
 
     @was_run = true
     @total_database_size_change = stats['total_database_size_change']
-    @walltime = stats['walltime']
+    @walltime = stats['walltime'].seconds
     @success = stats['success']
     @statistics = stats
     init_queries(stats)
