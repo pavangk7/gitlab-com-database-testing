@@ -16,4 +16,37 @@ RSpec.describe Result do
   it 'loads migrations' do
     expect(result.migrations).not_to be_empty
   end
+
+  describe 'sorting and filtering' do
+    let(:migrations) do
+      # rubocop:disable Metrics/LineLength
+      {
+        4 => Migration.new({ 'version' => 4, 'type' => Migration::TYPE_POST_DEPLOY, 'intro_on_current_branch' => true }, nil),
+        3 => Migration.new({ 'version' => 3, 'type' => Migration::TYPE_REGULAR, 'intro_on_current_branch' => true }, nil),
+        1 => Migration.new({ 'version' => 1, 'type' => Migration::TYPE_REGULAR, 'intro_on_current_branch' => true }, nil),
+        2 => Migration.new({ 'version' => 2, 'type' => Migration::TYPE_POST_DEPLOY, 'intro_on_current_branch' => true }, nil),
+        8 => Migration.new({ 'version' => 8, 'type' => Migration::TYPE_REGULAR, 'intro_on_current_branch' => false }, nil),
+        7 => Migration.new({ 'version' => 7, 'type' => Migration::TYPE_POST_DEPLOY, 'intro_on_current_branch' => false }, nil),
+        5 => Migration.new({ 'version' => 5, 'type' => Migration::TYPE_POST_DEPLOY, 'intro_on_current_branch' => false }, nil),
+        6 => Migration.new({ 'version' => 6, 'type' => Migration::TYPE_REGULAR, 'intro_on_current_branch' => false }, nil)
+      }
+      # rubocop:enable Metrics/LineLength
+    end
+
+    describe '#migrations_from_branch' do
+      subject(:result) { described_class.new(migrations, clone_details) }
+
+      it 'returns migrations from the branch ordered by type and version' do
+        expect(result.migrations_from_branch.map(&:version)).to eq([1, 3, 2, 4])
+      end
+    end
+
+    describe '#other_migrations' do
+      subject(:result) { described_class.new(migrations, clone_details) }
+
+      it 'returns other migrations ordered by type and version' do
+        expect(result.other_migrations.map(&:version)).to eq([6, 8, 5, 7])
+      end
+    end
+  end
 end

@@ -155,4 +155,16 @@ RSpec.describe Migration do
       expect(subject.important_queries.size).to eq(2)
     end
   end
+
+  describe '#sort_key' do
+    it 'returns a representation of type and version' do
+      post_migration = described_class.new(
+        { 'version' => 42, 'type' => Migration::TYPE_POST_DEPLOY, 'intro_on_current_branch' => true },
+        nil
+      )
+
+      expect(subject.sort_key).to eq([0, 20210602144718])
+      expect(post_migration.sort_key).to eq([1, 42])
+    end
+  end
 end

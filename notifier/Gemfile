@@ -8,6 +8,7 @@ gem 'niceql'
 gem 'pg_query'
 gem 'pry'
 gem 'thor'
+gem 'activesupport'
 
 group :test do
   gem 'rspec'

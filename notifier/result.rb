@@ -35,4 +35,18 @@ class Result
     @migrations = migrations
     @clone_details = clone_details
   end
+
+  def migrations_from_branch
+    sorted_migrations.select(&:intro_on_current_branch?)
+  end
+
+  def other_migrations
+    sorted_migrations.reject(&:intro_on_current_branch)
+  end
+
+  private
+
+  def sorted_migrations
+    migrations.values.sort_by(&:sort_key)
+  end
 end
