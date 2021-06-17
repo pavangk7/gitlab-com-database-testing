@@ -4,8 +4,7 @@ require 'erb'
 require 'active_support/core_ext/module/delegation'
 require_relative 'niceql'
 require 'pg_query'
-require 'json'
-require "base64"
+require_relative 'json_payload'
 
 class Feedback
   UNKNOWN = ':grey_question:'
@@ -48,20 +47,12 @@ class Feedback
     erb('summary_table').result(b)
   end
 
-  def render_json_data
-    data = migrations_from_branch.map do |migration|
-      # We only expose a subset of the statistics available here
-      migration.statistics.to_h.slice(:migration, :walltime, :total_database_size_change, :success)
-    end
+  def render_json_payload
+    payload = JsonPayload.new.encode(result)
 
-    json = {
-      # The version should change when the JSON schema significantly changes.
-      # This will allow readers to know how to read data later
-      version: 1,
-      data: data
-    }.to_json
-
-    Base64.encode64(json)
+    b = binding
+    b.local_variable_set(:payload, payload)
+    erb('json_payload').result(b)
   end
 
   def erb(template)

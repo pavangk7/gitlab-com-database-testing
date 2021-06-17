@@ -50,6 +50,5 @@ Migrations included in this change have been executed on gitlab.com data for tes
 
 ---
 Brought to you by [gitlab-org/database-team/gitlab-com-database-testing](https://gitlab.com/gitlab-org/database-team/gitlab-com-database-testing). [Epic](https://gitlab.com/groups/gitlab-org/database-team/-/epics/9)
-
 <!-- JSON: eyJ2ZXJzaW9uIjoxLCJkYXRhIjpbe30se31dfQ==
  -->
