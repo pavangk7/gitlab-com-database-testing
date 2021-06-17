@@ -9,11 +9,10 @@ module Charts
       5.minutes
     ].freeze
 
-    attr_accessor :query_executions, :buckets, :title
+    attr_reader :query_executions, :buckets, :title
 
     def self.for_result(result)
-      executions = result.migrations.values
-                         .select(&:intro_on_current_branch?)
+      executions = result.migrations_from_branch
                          .flat_map(&:query_executions)
       new(executions, title: 'Runtime Histogram for all migrations')
     end
