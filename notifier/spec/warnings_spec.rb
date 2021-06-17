@@ -10,7 +10,6 @@ RSpec.describe Warnings do
   let(:migrations) { file_fixture('migration-testing/migrations.json') }
   let(:query_details_dir) { file_fixture('migration-testing/') }
 
-
   subject(:warnings) { described_class.new(result) }
 
   describe '#render' do
