@@ -5,16 +5,18 @@ require 'active_support/core_ext/module/delegation'
 require_relative 'niceql'
 require 'pg_query'
 require_relative 'json_payload'
+require_relative 'environment'
 
 class Feedback
   UNKNOWN = ':grey_question:'
 
-  attr_reader :result
+  attr_reader :result, :env
 
   delegate :migrations_from_branch, :other_migrations, to: :result
 
-  def initialize(result)
+  def initialize(result, env = Environment.instance)
     @result = result
+    @env = env
   end
 
   def render

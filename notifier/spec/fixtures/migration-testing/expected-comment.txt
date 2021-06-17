@@ -5,7 +5,7 @@
 | --------- | -------------------- |
 | :warning: | <b>20210602144718 - CreateTestTable</b> had a query that [exceeded timing guidelines](https://docs.gitlab.com/ee/development/query_performance.html#timing-guidelines-for-queries). Run time should not exceed 100ms, but it was 269.888734 <pre>CREATE&nbsp;TABLE&nbsp;"test_tables"&nbsp;("id"&nbsp;bigserial&nbsp;primary&nbsp;key,&nbsp;"stars"&nbsp;bigint&nbsp;DEFAULT&nbsp;0&nbsp;NOT&nbsp;NULL,&nbsp;"created_at"&nbsp;timestamp(6)&nbsp;NOT&nbsp;NULL,&nbsp;"updated_at"&nbsp;timestamp(6)&nbsp;NOT&nbsp;NULL,&nbsp;"title"&nbsp;text,&nbsp;"notes"&nbsp;text)&nbsp;&#x2F;&#x2A;application:test&#x2A;&#x2F;</pre> |
 
-Migrations included in this change have been executed on gitlab.com data for testing purposes. For details, please see the [migration testing pipeline](/-/pipelines/) (limited access).
+Migrations included in this change have been executed on gitlab.com data for testing purposes. For details, please see the [migration testing pipeline](https://gitlab.com/gitlab-org/database-team/gitlab-com-database-testing/-/pipelines/4711) (limited access).
 
 | Migration | Type | Total runtime | Result | DB size change |
 | --------- | ---- | ------------- | ------ | -------------- |
@@ -46,7 +46,7 @@ Migrations included in this change have been executed on gitlab.com data for tes
 | -------- | ---------------- | -------------------- | --------------------- |
 | [`database-testing-639298`](https://console.postgres.ai/gitlab/gitlab-production-tunnel/instances/59/clones/database-testing-639298) | 2021-06-07 14:42:21 UTC | 2021-06-07 12:00:26 UTC | 2021-06-08 02:43:37 +0000 |
 
-#### [Artifacts](/-/jobs//artifacts/browse/migration-testing/)
+#### [Artifacts](https://gitlab.com/gitlab-org/database-team/gitlab-com-database-testing/-/jobs/1354666720/artifacts/browse/migration-testing/)
 
 ---
 Brought to you by [gitlab-org/database-team/gitlab-com-database-testing](https://gitlab.com/gitlab-org/database-team/gitlab-com-database-testing). [Epic](https://gitlab.com/groups/gitlab-org/database-team/-/epics/9)

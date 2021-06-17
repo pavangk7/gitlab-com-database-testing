@@ -3,7 +3,7 @@
 
 <%= warnings.render %>
 
-Migrations included in this change have been executed on gitlab.com data for testing purposes. For details, please see the [migration testing pipeline](<%= ENV['CI_PROJECT_URL'] %>/-/pipelines/<%= ENV['CI_PIPELINE_ID'] %>) (limited access).
+Migrations included in this change have been executed on gitlab.com data for testing purposes. For details, please see the [migration testing pipeline](<%= env.ci_project_url %>/-/pipelines/<%= env.ci_pipeline_id %>) (limited access).
 
 <%= render_migrations_from_branch_summary %>
 
@@ -20,7 +20,7 @@ Migrations included in this change have been executed on gitlab.com data for tes
 #### Clone Details
 <%= render_clone_details(result.clone_details) %>
 
-#### [Artifacts](<%= ENV['CI_PROJECT_URL'] %>/-/jobs/<%= ENV['CI_JOB_ID'] %>/artifacts/browse/migration-testing/)
+#### [Artifacts](<%= env.ci_project_url %>/-/jobs/<%= env.ci_job_id %>/artifacts/browse/migration-testing/)
 
 ---
 Brought to you by [gitlab-org/database-team/gitlab-com-database-testing](https://gitlab.com/gitlab-org/database-team/gitlab-com-database-testing). [Epic](https://gitlab.com/groups/gitlab-org/database-team/-/epics/9)

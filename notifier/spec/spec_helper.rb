@@ -2,6 +2,7 @@
 
 require 'pry'
 require_relative '../notifier'
+require 'json'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
@@ -26,6 +27,12 @@ end
 
 def file_fixture(path)
   File.join(Dir.pwd, 'spec', 'fixtures', path)
+end
+
+def override_env_from_fixture(path)
+  JSON.parse(File.read(file_fixture(path))).each do |key, val|
+    allow(Environment.instance).to receive(key.downcase).and_return(val)
+  end
 end
 
 RSpec::Matchers.define :be_boolean do

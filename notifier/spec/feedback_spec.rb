@@ -16,6 +16,10 @@ RSpec.describe Feedback do
 
     subject { described_class.new(result).render }
 
+    before do
+      override_env_from_fixture('migration-testing/environment.json')
+    end
+
     # The expectation for this spec lives in `expected_comment_file`
     # It can be re-recorded with: `RECAPTURE_END_TO_END_RESULTS=1 bundle exec rspec spec`
     it 'renders the comment for fixtures' do
