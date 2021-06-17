@@ -22,7 +22,7 @@ module Charts
     end
 
     def initialize(query_executions, title:, bucket_cutoffs: DEFAULT_CUTOFFS)
-      @query_executions = query_executions.sort_by(&:duration)
+      @query_executions = query_executions
       @title = title
       @buckets = ([0.seconds] + bucket_cutoffs)
                    .zip(bucket_cutoffs + [nil])
