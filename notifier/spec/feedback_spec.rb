@@ -12,10 +12,20 @@ RSpec.describe Feedback do
 
     let(:result) { Result.from_files(migration_stats, migrations, clone_details) }
 
+    let(:expected_comment_file) { file_fixture('migration-testing/expected-comment.txt') }
+
     subject { described_class.new(result).render }
 
+    # The expectation for this spec lives in `expected_comment_file`
+    # It can be re-recorded with: `RECAPTURE_END_TO_END_RESULTS=1 bundle exec rspec spec`
     it 'renders the comment for fixtures' do
-      expect(subject).to eq(File.read(file_fixture('migration-testing/expected-comment.txt')))
+      if ENV['RECAPTURE_END_TO_END_RESULTS']
+        File.open(expected_comment_file, 'wb+') do |io|
+          io << subject
+        end
+      end
+
+      expect(subject).to eq(File.read(expected_comment_file))
     end
   end
 end

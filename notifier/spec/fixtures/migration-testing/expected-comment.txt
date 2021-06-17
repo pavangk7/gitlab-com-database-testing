@@ -9,18 +9,9 @@ Migrations included in this change have been executed on gitlab.com data for tes
 
 | Migration | Type | Total runtime | Result | DB size change |
 | --------- | ---- | ------------- | ------ | -------------- |
-| 20210604232017 - DropTestTable | Post deploy | 1.2 s | :white_check_mark: | -24.00 KiB |
 | 20210602144718 - CreateTestTable | Regular | 2.0 s | :warning: | +32.00 KiB |
+| 20210604232017 - DropTestTable | Post deploy | 1.2 s | :white_check_mark: | -24.00 KiB |
 
-####  Migration: <b>20210604232017 - DropTestTable</b>
-
-* Type: Post deploy
-* Duration: 1.2 s
-* Database size change: -24.00 KiB
-
-| Query | Calls | Total Time | Max Time | Mean Time | Rows |
-| ----- | ----- | ---------- | -------- | --------- | ---- |
-| <pre>DROP&nbsp;TABLE&nbsp;"test_tables"&nbsp;&#x2F;&#x2A;application:test&#x2A;&#x2F;</pre> | 1 | 5.7 ms | 5.7 ms | 5.7 ms | 0 |
 #### :warning: Migration: <b>20210602144718 - CreateTestTable</b>
 
 * Type: Regular
@@ -32,6 +23,15 @@ Migrations included in this change have been executed on gitlab.com data for tes
 | <pre>CREATE&nbsp;TABLE&nbsp;"test_tables"&nbsp;("id"&nbsp;bigserial&nbsp;primary&nbsp;key,&nbsp;"stars"&nbsp;bigint&nbsp;DEFAULT&nbsp;0&nbsp;NOT&nbsp;NULL,&nbsp;"created_at"&nbsp;timestamp(6)&nbsp;NOT&nbsp;NULL,&nbsp;"updated_at"&nbsp;timestamp(6)&nbsp;NOT&nbsp;NULL,&nbsp;"title"&nbsp;text,&nbsp;"notes"&nbsp;text)&nbsp;&#x2F;&#x2A;application:test&#x2A;&#x2F;</pre> | 1 | 269.9 ms | 269.9 ms | 269.9 ms | 0 |
 | <pre>ALTER&nbsp;TABLE&nbsp;"test_tables"&nbsp;ADD&nbsp;CONSTRAINT&nbsp;"check_0770ba173a"&nbsp;CHECK&nbsp;(char_length("title")&nbsp;<=&nbsp;128),&nbsp;ADD&nbsp;CONSTRAINT&nbsp;"check_9cfc473dbc"&nbsp;CHECK&nbsp;(char_length("notes")&nbsp;<=&nbsp;1024)<br />&#x2F;&#x2A;application:test&#x2A;&#x2F;</pre> | 1 | 24.7 ms | 24.7 ms | 24.7 ms | 0 |
 | <pre>SELECT&nbsp;$1::regtype::oid</pre> | 1 | 0.0 ms | 0.0 ms | 0.0 ms | 1 |
+####  Migration: <b>20210604232017 - DropTestTable</b>
+
+* Type: Post deploy
+* Duration: 1.2 s
+* Database size change: -24.00 KiB
+
+| Query | Calls | Total Time | Max Time | Mean Time | Rows |
+| ----- | ----- | ---------- | -------- | --------- | ---- |
+| <pre>DROP&nbsp;TABLE&nbsp;"test_tables"&nbsp;&#x2F;&#x2A;application:test&#x2A;&#x2F;</pre> | 1 | 5.7 ms | 5.7 ms | 5.7 ms | 0 |
 
 <details>
   <summary>Other migrations pending on GitLab.com</summary>
@@ -50,10 +50,10 @@ Migrations included in this change have been executed on gitlab.com data for tes
 
 ---
 Brought to you by [gitlab-org/database-team/gitlab-com-database-testing](https://gitlab.com/gitlab-org/database-team/gitlab-com-database-testing). [Epic](https://gitlab.com/groups/gitlab-org/database-team/-/epics/9)
-<!-- JSON: eyJ2ZXJzaW9uIjoxLCJkYXRhIjpbeyJtaWdyYXRpb24iOjIwMjEwNjA0MjMy
-MDE3LCJ3YWxsdGltZSI6MS4xNjMzNTY4NTU1MTE2NjUzLCJ0b3RhbF9kYXRh
-YmFzZV9zaXplX2NoYW5nZSI6LTI0NTc2LCJzdWNjZXNzIjp0cnVlfSx7Im1p
-Z3JhdGlvbiI6MjAyMTA2MDIxNDQ3MTgsIndhbGx0aW1lIjoxLjk1MDk4MjIy
-NjA1ODg0MDgsInRvdGFsX2RhdGFiYXNlX3NpemVfY2hhbmdlIjozMjc2OCwi
+<!-- JSON: eyJ2ZXJzaW9uIjoxLCJkYXRhIjpbeyJtaWdyYXRpb24iOjIwMjEwNjAyMTQ0
+NzE4LCJ3YWxsdGltZSI6MS45NTA5ODIyMjYwNTg4NDA4LCJ0b3RhbF9kYXRh
+YmFzZV9zaXplX2NoYW5nZSI6MzI3NjgsInN1Y2Nlc3MiOnRydWV9LHsibWln
+cmF0aW9uIjoyMDIxMDYwNDIzMjAxNywid2FsbHRpbWUiOjEuMTYzMzU2ODU1
+NTExNjY1MywidG90YWxfZGF0YWJhc2Vfc2l6ZV9jaGFuZ2UiOi0yNDU3Niwi
 c3VjY2VzcyI6dHJ1ZX1dfQ==
  -->
