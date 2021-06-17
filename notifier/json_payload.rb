@@ -5,10 +5,12 @@ require "base64"
 class JsonPayload
   VERSION = 1
 
+  ATTRIBUTES = %w[migration walltime total_database_size_change success].freeze
+
   def encode(result)
     data = result.migrations_from_branch.map do |migration|
       # We only expose a subset of the statistics available here
-      migration.statistics.to_h.slice(:migration, :walltime, :total_database_size_change, :success)
+      migration.statistics.to_h.slice(*ATTRIBUTES)
     end
 
     json = {
