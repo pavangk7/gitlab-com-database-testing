@@ -19,7 +19,7 @@ RSpec.describe Result do
 
   describe 'sorting and filtering' do
     let(:migrations) do
-      # rubocop:disable Metrics/LineLength
+      # rubocop:disable Layout/LineLength
       {
         4 => Migration.new({ 'version' => 4, 'type' => Migration::TYPE_POST_DEPLOY, 'intro_on_current_branch' => true }, nil),
         3 => Migration.new({ 'version' => 3, 'type' => Migration::TYPE_REGULAR, 'intro_on_current_branch' => true }, nil),
@@ -30,7 +30,7 @@ RSpec.describe Result do
         5 => Migration.new({ 'version' => 5, 'type' => Migration::TYPE_POST_DEPLOY, 'intro_on_current_branch' => false }, nil),
         6 => Migration.new({ 'version' => 6, 'type' => Migration::TYPE_REGULAR, 'intro_on_current_branch' => false }, nil)
       }
-      # rubocop:enable Metrics/LineLength
+      # rubocop:enable Layout/LineLength
     end
 
     describe '#migrations_from_branch' do

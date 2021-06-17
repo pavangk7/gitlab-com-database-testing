@@ -3,16 +3,20 @@ require 'filesize'
 require 'erb'
 require 'active_support/core_ext/module/delegation'
 require_relative 'niceql'
+require 'pg_query'
+require_relative 'json_payload'
+require_relative 'environment'
 
 class Feedback
   UNKNOWN = ':grey_question:'
 
-  attr_reader :result
+  attr_reader :result, :env
 
   delegate :migrations_from_branch, :other_migrations, to: :result
 
-  def initialize(result)
+  def initialize(result, env = Environment.instance)
     @result = result
+    @env = env
   end
 
   def render
@@ -43,6 +47,14 @@ class Feedback
     b = binding
     b.local_variable_set(:migrations, other_migrations)
     erb('summary_table').result(b)
+  end
+
+  def render_json_payload
+    payload = JsonPayload.new.encode(result)
+
+    b = binding
+    b.local_variable_set(:payload, payload)
+    erb('json_payload').result(b)
   end
 
   def erb(template)

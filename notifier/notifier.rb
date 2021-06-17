@@ -56,7 +56,7 @@ class Notifier < Thor
   end
 
   desc "print STATS MIGRATIONS", "only print feedback"
-  def print(statistics_file, migrations_file)
+  def print(statistics_file, migrations_file, clone_details_file)
     puts feedback_for(statistics_file, migrations_file, clone_details_file).render
   end
 
