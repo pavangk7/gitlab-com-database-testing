@@ -33,7 +33,9 @@ RSpec.describe Warnings do
     end
 
     it 'excludes migrations not introduced on current branch' do
-      expect(subject.render).not_to include('UnrelatedMigration')
+      excluded_name = 'UnrelatedMigration'
+      expect(result.other_migrations.map(&:name)).to include(excluded_name)
+      expect(subject.render).not_to include(excluded_name)
     end
   end
 end
