@@ -1,6 +1,9 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require 'active_support'
+require 'active_support/core_ext/time'
+require 'active_support/core_ext/numeric/time'
 require 'gitlab'
 require 'thor'
 
@@ -9,19 +12,20 @@ require_relative 'migration'
 require_relative 'query'
 require_relative 'result'
 require_relative 'warnings'
+require_relative 'charts/execution_histogram'
 
 IDENTIFIABLE_NOTE_TAG = 'gitlab-org/database-team/gitlab-com-database-testing:identifiable-note'
 
 class Notifier < Thor
   desc "send STATS MIGRATIONS CLONE_DETAILS", "send feedback back to merge request"
-  def send(statistics_file, migrations_file, clone_details_file)
+  def send(statistics_file, migrations_file, clone_details_file, query_details_dir)
     project_path = ENV['TOP_UPSTREAM_SOURCE_PROJECT']
     merge_request_id = ENV['TOP_UPSTREAM_MERGE_REQUEST_IID']
 
     raise "Project path missing: Specify TOP_UPSTREAM_SOURCE_PROJECT" unless project_path
     raise "Upstream merge request id missing: Specify TOP_UPSTREAM_MERGE_REQUEST_IID" unless merge_request_id
 
-    comment = feedback_for(statistics_file, migrations_file, clone_details_file).render
+    comment = feedback_for(statistics_file, migrations_file, clone_details_file, query_details_dir).render
 
     gitlab = Gitlab.client(
       endpoint: 'https://gitlab.com/api/v4',
@@ -56,14 +60,14 @@ class Notifier < Thor
   end
 
   desc "print STATS MIGRATIONS", "only print feedback"
-  def print(statistics_file, migrations_file, clone_details_file)
-    puts feedback_for(statistics_file, migrations_file, clone_details_file).render
+  def print(statistics_file, migrations_file, clone_details_file, query_details_dir)
+    puts feedback_for(statistics_file, migrations_file, clone_details_file, query_details_dir).render
   end
 
   private
 
-  def feedback_for(statistics_file, migrations_file, clone_details_file)
-    result = Result.from_files(statistics_file, migrations_file, clone_details_file)
+  def feedback_for(statistics_file, migrations_file, clone_details_file, query_details_dir)
+    result = Result.from_files(statistics_file, migrations_file, clone_details_file, query_details_dir)
 
     Feedback.new(result)
   end

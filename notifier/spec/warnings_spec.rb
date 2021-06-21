@@ -4,10 +4,11 @@ require 'spec_helper'
 
 RSpec.describe Warnings do
   let(:clone_details) { file_fixture('migration-testing/clone-details.json') }
+  let(:result) { Result.from_files(migration_stats, migrations, clone_details, query_details_dir) }
+  let(:migration) { result.migrations[20210604232017] }
   let(:migration_stats) { file_fixture('migration-testing/migration-stats.json') }
   let(:migrations) { file_fixture('migration-testing/migrations.json') }
-  let(:result) { Result.from_files(migration_stats, migrations, clone_details) }
-  let(:migration) { result.migrations[20210604232017] }
+  let(:query_details_dir) { file_fixture('migration-testing/') }
 
   subject(:warnings) { described_class.new(result) }
 

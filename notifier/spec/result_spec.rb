@@ -6,11 +6,12 @@ RSpec.describe Result do
   let(:clone_details) { file_fixture('migration-testing/clone-details.json') }
   let(:migration_stats) { file_fixture('migration-testing/migration-stats.json') }
   let(:migrations) { file_fixture('migration-testing/migrations.json') }
+  let(:query_details_dir) { file_fixture('migration-testing/') }
 
-  subject(:result) { described_class.from_files(migration_stats, migrations, clone_details) }
+  subject(:result) { described_class.from_files(migration_stats, migrations, clone_details, query_details_dir) }
 
   it 'loads clone details' do
-    expect(result.clone_details.cloneId).to eq('database-testing-639298')
+    expect(result.clone_details.cloneId).to eq('database-testing-651277')
   end
 
   it 'loads migrations' do
@@ -21,14 +22,14 @@ RSpec.describe Result do
     let(:migrations) do
       # rubocop:disable Layout/LineLength
       {
-        4 => Migration.new({ 'version' => 4, 'type' => Migration::TYPE_POST_DEPLOY, 'intro_on_current_branch' => true }, nil),
-        3 => Migration.new({ 'version' => 3, 'type' => Migration::TYPE_REGULAR, 'intro_on_current_branch' => true }, nil),
-        1 => Migration.new({ 'version' => 1, 'type' => Migration::TYPE_REGULAR, 'intro_on_current_branch' => true }, nil),
-        2 => Migration.new({ 'version' => 2, 'type' => Migration::TYPE_POST_DEPLOY, 'intro_on_current_branch' => true }, nil),
-        8 => Migration.new({ 'version' => 8, 'type' => Migration::TYPE_REGULAR, 'intro_on_current_branch' => false }, nil),
-        7 => Migration.new({ 'version' => 7, 'type' => Migration::TYPE_POST_DEPLOY, 'intro_on_current_branch' => false }, nil),
-        5 => Migration.new({ 'version' => 5, 'type' => Migration::TYPE_POST_DEPLOY, 'intro_on_current_branch' => false }, nil),
-        6 => Migration.new({ 'version' => 6, 'type' => Migration::TYPE_REGULAR, 'intro_on_current_branch' => false }, nil)
+        4 => Migration.new({ 'version' => 4, 'type' => Migration::TYPE_POST_DEPLOY, 'intro_on_current_branch' => true }, nil, []),
+        3 => Migration.new({ 'version' => 3, 'type' => Migration::TYPE_REGULAR, 'intro_on_current_branch' => true }, nil, []),
+        1 => Migration.new({ 'version' => 1, 'type' => Migration::TYPE_REGULAR, 'intro_on_current_branch' => true }, nil, []),
+        2 => Migration.new({ 'version' => 2, 'type' => Migration::TYPE_POST_DEPLOY, 'intro_on_current_branch' => true }, nil, []),
+        8 => Migration.new({ 'version' => 8, 'type' => Migration::TYPE_REGULAR, 'intro_on_current_branch' => false }, nil, []),
+        7 => Migration.new({ 'version' => 7, 'type' => Migration::TYPE_POST_DEPLOY, 'intro_on_current_branch' => false }, nil, []),
+        5 => Migration.new({ 'version' => 5, 'type' => Migration::TYPE_POST_DEPLOY, 'intro_on_current_branch' => false }, nil, []),
+        6 => Migration.new({ 'version' => 6, 'type' => Migration::TYPE_REGULAR, 'intro_on_current_branch' => false }, nil, [])
       }
       # rubocop:enable Layout/LineLength
     end

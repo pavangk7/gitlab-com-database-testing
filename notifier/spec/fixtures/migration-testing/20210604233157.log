@@ -1,0 +1,10 @@
+# Logfile created on 2021-06-15 16:07:36 +0000 by logger.rb/v1.4.2
+D, [2021-06-15T16:07:37.029419 #161] DEBUG -- :   [1m[35m (37.5ms)[0m  [1m[34mSELECT pg_try_advisory_lock(3005434223539248480)[0m
+D, [2021-06-15T16:07:37.029872 #161] DEBUG -- :   ↳ lib/tasks/gitlab/db.rake:259:in `block (5 levels) in <main>'
+D, [2021-06-15T16:07:37.104856 #161] DEBUG -- :   [1m[35m (74.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application:test*/[0m
+D, [2021-06-15T16:07:37.105491 #161] DEBUG -- :   ↳ lib/tasks/gitlab/db.rake:259:in `block (5 levels) in <main>'
+I, [2021-06-15T16:07:37.112541 #161]  INFO -- : Migrating to MigrationThrowsException (20210604233157)
+D, [2021-06-15T16:07:37.158392 #161] DEBUG -- :   [1m[35m (37.6ms)[0m  [1m[34mSELECT pg_advisory_unlock(3005434223539248480)[0m
+D, [2021-06-15T16:07:37.158863 #161] DEBUG -- :   ↳ lib/tasks/gitlab/db.rake:259:in `block (5 levels) in <main>'
+D, [2021-06-15T16:07:37.318701 #161] DEBUG -- :   [1m[35m (122.1ms)[0m  [1m[34mselect pg_database_size(current_database()) /*application:test*/[0m
+D, [2021-06-15T16:07:37.319145 #161] DEBUG -- :   ↳ lib/gitlab/database/migrations/observers/total_database_size_change.rb:25:in `get_total_database_size'

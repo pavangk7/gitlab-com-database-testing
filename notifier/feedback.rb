@@ -57,6 +57,14 @@ class Feedback
     erb('json_payload').result(b)
   end
 
+  def render_all_migrations_histogram
+    Charts::ExecutionHistogram.for_result(result).render
+  end
+
+  def render_migration_histogram(migration)
+    Charts::ExecutionHistogram.for_migration(migration).render
+  end
+
   def erb(template)
     ERB.new(File.read("templates/#{template}.erb"), trim_mode: '<>%')
   end

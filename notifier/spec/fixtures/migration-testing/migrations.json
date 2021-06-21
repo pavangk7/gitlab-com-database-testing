@@ -1,18 +1,4 @@
 {
-  "20200323011225": {
-    "version": 20200323011225,
-    "path": "db/post_migrate/20200323011225_complete_migrate_security_scans.rb",
-    "name": "CompleteMigrateSecurityScans",
-    "type": "post_deploy",
-    "intro_on_current_branch": false
-  },
-  "20201015154527": {
-    "version": 20201015154527,
-    "path": "db/post_migrate/20201015154527_add_index_on_services_for_usage_data.rb",
-    "name": "AddIndexOnServicesForUsageData",
-    "type": "post_deploy",
-    "intro_on_current_branch": false
-  },
   "20210604232017": {
     "version": 20210604232017,
     "path": "db/post_migrate/20210604232017_drop_test_table.rb",
@@ -27,39 +13,11 @@
     "type": "post_deploy",
     "intro_on_current_branch": true
   },
-  "20200325104755": {
-    "version": 20200325104755,
-    "path": "db/migrate/20200325104755_add_push_rules_id_to_project_settings.rb",
-    "name": "AddPushRulesIdToProjectSettings",
-    "type": "regular",
-    "intro_on_current_branch": false
-  },
-  "20200911120132": {
-    "version": 20200911120132,
-    "path": "db/migrate/20200911120132_create_pages_deployments.rb",
-    "name": "CreatePagesDeployments",
-    "type": "regular",
-    "intro_on_current_branch": false
-  },
-  "20200415161206": {
-    "version": 20200415161206,
-    "path": "db/migrate/20200415161206_remove_not_null_uploads_constraint.rb",
-    "name": "RemoveNotNullUploadsConstraint",
-    "type": "regular",
-    "intro_on_current_branch": false
-  },
   "20210602144718": {
     "version": 20210602144718,
     "path": "db/migrate/20210602144718_create_test_table.rb",
     "name": "CreateTestTable",
     "type": "regular",
     "intro_on_current_branch": true
-  },
-  "20210603222333": {
-    "version": 20210603222333,
-    "path": "db/migrate/20210603222333_remove_builds_email_service_from_services.rb",
-    "name": "RemoveBuildsEmailServiceFromServices",
-    "type": "regular",
-    "intro_on_current_branch": false
   }
 }

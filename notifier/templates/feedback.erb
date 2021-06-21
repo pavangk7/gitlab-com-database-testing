@@ -7,9 +7,13 @@ Migrations included in this change have been executed on gitlab.com data for tes
 
 <%= render_migrations_from_branch_summary %>
 
+<%= render_all_migrations_histogram %>
+
 % migrations_from_branch.each do |migration|
 <%= render_details(migration) %>
 % end
+
+---
 
 <details>
   <summary>Other migrations pending on GitLab.com</summary>

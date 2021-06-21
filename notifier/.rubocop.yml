@@ -10,3 +10,6 @@ CodeReuse/ActiveRecord:
 
 Performance/OpenStruct:
   Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 10
