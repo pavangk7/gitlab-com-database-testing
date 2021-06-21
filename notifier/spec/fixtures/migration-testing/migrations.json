@@ -19,5 +19,12 @@
     "name": "CreateTestTable",
     "type": "regular",
     "intro_on_current_branch": true
+  },
+  "20210601233122": {
+    "version": 20210601233122,
+    "path": "db/migrate/20210601233122_unrelated_migration.rb",
+    "name": "UnrelatedMigration",
+    "type": "regular",
+    "intro_on_current_branch": false
   }
 }
