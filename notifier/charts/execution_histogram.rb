@@ -18,7 +18,7 @@ module Charts
     end
 
     def self.for_migration(migration)
-      new(migration.query_executions.dup, title: "Histogram for #{migration.name}")
+      new(migration.query_executions, title: "Histogram for #{migration.name}")
     end
 
     def initialize(query_executions, title:, bucket_cutoffs: DEFAULT_CUTOFFS)
