@@ -31,5 +31,11 @@ RSpec.describe Warnings do
       expect(subject.render).to include('should not exceed 100ms')
       expect(subject.render).to include('222.49203')
     end
+
+    it 'excludes migrations not introduced on current branch' do
+      excluded_name = 'UnrelatedMigration'
+      expect(result.other_migrations.map(&:name)).to include(excluded_name)
+      expect(subject.render).not_to include(excluded_name)
+    end
   end
 end

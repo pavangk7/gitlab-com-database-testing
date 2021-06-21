@@ -103,6 +103,7 @@ Migrations included in this change have been executed on gitlab.com data for tes
 
   | Migration | Type | Total runtime | Result | DB size change |
 | --------- | ---- | ------------- | ------ | -------------- |
+| 20210601233122 - UnrelatedMigration | Regular | 10000.0 s | :warning: | +0.00 B |
 
 </details>
 

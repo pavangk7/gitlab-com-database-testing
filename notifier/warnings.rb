@@ -4,7 +4,7 @@ class Warnings
   attr_reader :all
 
   def initialize(result)
-    @all = result.migrations.values.select(&:warning?).map(&:warnings).flatten
+    @all = result.migrations_from_branch.select(&:warning?).map(&:warnings).flatten
   end
 
   def count
