@@ -15,6 +15,18 @@ class Warnings
     @all.any?
   end
 
+  def with_line_breaks
+    all.map do |warning|
+      warning.split(' ').reduce('') do |final, word|
+        if word.sub(/]\(.*\)/, '').length + (final.split('<br />').last&.sub(/]\(.*\)/, '')&.length || 0) > 100
+          final = "#{final}<br />"
+        end
+
+        "#{final} #{word}"
+      end
+    end
+  end
+
   def render
     return '' unless any?
 
