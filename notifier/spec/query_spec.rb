@@ -2,7 +2,7 @@
 require 'spec_helper'
 
 RSpec.describe Query do
-  let(:pg_pass) do
+  let(:pgss) do
     {
       "query" => "select pg_database_size(current_database()) /*application:test*/",
       "calls" => 1,
@@ -13,7 +13,7 @@ RSpec.describe Query do
     }
   end
 
-  subject(:query) { described_class.new(pg_pass) }
+  subject(:query) { described_class.new(pgss) }
 
   it 'inits from a pgpass row' do
     expect { subject }.not_to raise_error
@@ -59,7 +59,7 @@ RSpec.describe Query do
     end
 
     it 'returns false if concurrent operations are below 5 minutes' do
-      pg_pass['query'] = 'CREATE INDEX CONCURRENTLY index_ci_runners_on_token_lower '\
+      pgss['query'] = 'CREATE INDEX CONCURRENTLY index_ci_runners_on_token_lower '\
                          'ON ci_runners (LOWER(token)) /*application:test*/'
 
       expect(subject.exceeds_time_guidance?).to be false
@@ -69,6 +69,26 @@ RSpec.describe Query do
       subject.max_time = described_class::QUERY_GUIDANCE_MILLISECONDS / 2
 
       expect(subject.exceeds_time_guidance?).to be false
+    end
+  end
+
+  context 'when query has special characters' do
+    let(:pgss) do
+      {
+        "query" => "CREATE INDEX CONCURRENTLY \"tmp_index_merge_requests_draft_and_status\""\
+                   " ON \"merge_requests\" (\"id\") WHERE draft = false AND state_id = 1 AND "\
+                   "((title)::text ~* '^\\[draft\\]|\\(draft\\)|draft:|draft|\\[WIP\\]|WIP:|WIP'::text) "\
+                   "/*application:test*/",
+        "calls" => 1,
+        "total_time" => 1824825.496259,
+        "max_time" => 1824825.496259,
+        "mean_time" => 1824825.496259,
+        "rows" => 0
+      }
+    end
+
+    it 'replaces the pipe character with &#124;' do
+      expect(subject.formatted_query).not_to include('|')
     end
   end
 end
