@@ -40,6 +40,7 @@ class Query
       .gsub('/*', '&#x2F;&#x2A;')
       .gsub('*/', '&#x2A;&#x2F;')
       .gsub("\n", '<br />')
+      .gsub('|', '&#124;')
   rescue StandardError => e
     warn "Query formatting error:\n#{e}\nFor query: #{query}"
     query
