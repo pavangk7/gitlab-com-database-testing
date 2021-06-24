@@ -1,0 +1,39 @@
+From 676a7f23e5259ea5ed2d8bb0fbf4e4cf64d0fca0 Mon Sep 17 00:00:00 2001
+From: Andreas Brandl <abrandl@gitlab.com>
+Date: Thu, 24 Jun 2021 11:02:59 +0200
+Subject: [PATCH] Migration to test query normalization
+
+---
+ db/migrate/20210624084836_query_normalization_test.rb | 10 ++++++++++
+ db/schema_migrations/20210624084836                   |  1 +
+ 2 files changed, 11 insertions(+)
+ create mode 100644 db/migrate/20210624084836_query_normalization_test.rb
+ create mode 100644 db/schema_migrations/20210624084836
+
+diff --git a/db/migrate/20210624084836_query_normalization_test.rb b/db/migrate/20210624084836_query_normalization_test.rb
+new file mode 100644
+index 00000000000..7f729803311
+--- /dev/null
++++ b/db/migrate/20210624084836_query_normalization_test.rb
+@@ -0,0 +1,10 @@
++# frozen_string_literal: true
++
++class QueryNormalizationTest < ActiveRecord::Migration[6.1]
++  def up
++    execute "SELECT 'random-literal-value-4711'"
++  end
++
++  def down
++  end
++end
+diff --git a/db/schema_migrations/20210624084836 b/db/schema_migrations/20210624084836
+new file mode 100644
+index 00000000000..93ad43c90ce
+--- /dev/null
++++ b/db/schema_migrations/20210624084836
+@@ -0,0 +1 @@
++a82193ac2bf8da7ba3a25b0ce74ee309d82c08d486383b51fbbb0d19374e4072
+\ No newline at end of file
+-- 
+2.31.1
+
