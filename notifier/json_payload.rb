@@ -3,9 +3,9 @@ require 'json'
 require "base64"
 
 class JsonPayload
-  VERSION = 2
+  VERSION = 1
 
-  ATTRIBUTES = %w[version walltime total_database_size_change success].freeze
+  ATTRIBUTES = %w[migration walltime total_database_size_change success].freeze
 
   def encode(result)
     data = result.migrations_from_branch.map do |migration|

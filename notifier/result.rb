@@ -6,16 +6,15 @@ require 'json'
 class Result
   def self.from_files(statistics_file, migrations_file, clone_details_file, query_details_path)
     stats = read_to_json(statistics_file).each_with_object({}) do |stat, h|
-      version = stat['version']
+      version = stat['migration']
       h[version] = stat
     end
 
     # Attach statistics to each migration
     migrations = read_to_json(migrations_file).each_with_object({}) do |(version, migration), h|
       version = version.to_i
-      name = migration['name']
 
-      details_path = File.join(query_details_path, "#{version}_#{name}-query-details.json")
+      details_path = File.join(query_details_path, "#{version}-query-details.json")
       query_details = if File.exist?(details_path)
                         read_to_json(details_path)
                       else
