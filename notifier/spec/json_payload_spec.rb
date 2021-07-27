@@ -22,7 +22,7 @@ RSpec.describe JsonPayload do
 
   it 'has data for migrations on the branch' do
     result.migrations_from_branch.map(&:version).each do |version|
-      records = subject['data'].select { |record| record['migration'] == version }
+      records = subject['data'].select { |record| record['version'] == version }
 
       expect(records.size).to eq(1)
     end
