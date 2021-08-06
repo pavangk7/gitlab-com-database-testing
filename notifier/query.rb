@@ -27,7 +27,7 @@ class Query
   attr_accessor :query, :calls, :total_time, :max_time, :mean_time, :rows, :executions
 
   def initialize(pgss_row)
-    @query = pgss_row['query']
+    @query = PgQuery.normalize(pgss_row['query'])
     @calls = pgss_row['calls']
     @total_time = pgss_row['total_time']
     @max_time = pgss_row['max_time']

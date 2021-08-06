@@ -51,6 +51,44 @@ RSpec.describe Query do
     end
   end
 
+  describe '#formatted_query' do
+    let(:normalized_query) { 'Select $1 from users where email=$2 limit $3' }
+
+    context 'when the query is not normalized' do
+      let(:pgss) do
+        {
+          "query" => "Select 'somevalue' from users where email='user@gitlab.com' limit 1",
+          "calls" => 1,
+          "total_time" => 1824825.496259,
+          "max_time" => 1824825.496259,
+          "mean_time" => 1824825.496259,
+          "rows" => 0
+        }
+      end
+
+      it 'returns a normalized query' do
+        expect(subject.formatted_query).to eql(normalized_query)
+      end
+    end
+
+    context 'when the query is already normalized' do
+      let(:pgss) do
+        {
+          "query" => "Select $1 from users where email=$2 limit $3",
+          "calls" => 1,
+          "total_time" => 1824825.496259,
+          "max_time" => 1824825.496259,
+          "mean_time" => 1824825.496259,
+          "rows" => 0
+        }
+      end
+
+      it 'returns a normalized query' do
+        expect(subject.formatted_query).to eql(normalized_query)
+      end
+    end
+  end
+
   describe '#exceeds_time_guidance?' do
     it 'returns true if max time greater than QUERY_GUIDANCE_MILLISECONDS' do
       subject.max_time = described_class::QUERY_GUIDANCE_MILLISECONDS * 2
