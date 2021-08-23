@@ -1,0 +1,27 @@
+From 7ef5e0c88cd485a6cf1167222be2c6eeaca454bf Mon Sep 17 00:00:00 2001
+From: Andreas Brandl <abrandl@gitlab.com>
+Date: Fri, 20 Aug 2021 17:53:02 +0200
+Subject: [PATCH] Pretend we are GitLab.com for testing only
+
+---
+ lib/gitlab.rb | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/lib/gitlab.rb b/lib/gitlab.rb
+index d93d7acbaad..f31640f1402 100644
+--- a/lib/gitlab.rb
++++ b/lib/gitlab.rb
+@@ -45,8 +45,8 @@ def self.revision
+   HTTP_PROXY_ENV_VARS = %w(http_proxy https_proxy HTTP_PROXY HTTPS_PROXY).freeze
+ 
+   def self.com?
+-    # Check `gl_subdomain?` as well to keep parity with gitlab.com
+-    Gitlab.config.gitlab.url == Gitlab::Saas.com_url || gl_subdomain?
++    # For testing purposes, pretend we are GitLab.com
++    true
+   end
+ 
+   def self.com
+-- 
+2.32.0
+

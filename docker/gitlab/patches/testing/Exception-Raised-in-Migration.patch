@@ -4,17 +4,17 @@ Date: Fri, 4 Jun 2021 18:35:36 -0500
 Subject: [PATCH] Migration throws exception
 
 ---
- .../20210604233157_migration_throws_exception.rb           | 7 +++++++
- db/schema_migrations/20210604233157                        | 1 +
+ .../20990604233157_migration_throws_exception.rb           | 7 +++++++
+ db/schema_migrations/20990604233157                        | 1 +
  2 files changed, 8 insertions(+)
- create mode 100644 db/post_migrate/20210604233157_migration_throws_exception.rb
- create mode 100644 db/schema_migrations/20210604233157
+ create mode 100644 db/post_migrate/20990604233157_migration_throws_exception.rb
+ create mode 100644 db/schema_migrations/20990604233157
 
-diff --git a/db/post_migrate/20210604233157_migration_throws_exception.rb b/db/post_migrate/20210604233157_migration_throws_exception.rb
+diff --git a/db/post_migrate/20990604233157_migration_throws_exception.rb b/db/post_migrate/20990604233157_migration_throws_exception.rb
 new file mode 100644
 index 00000000000..017327f225e
 --- /dev/null
-+++ b/db/post_migrate/20210604233157_migration_throws_exception.rb
++++ b/db/post_migrate/20990604233157_migration_throws_exception.rb
 @@ -0,0 +1,7 @@
 +# frozen_string_literal: true
 +
@@ -23,14 +23,14 @@ index 00000000000..017327f225e
 +    raise RuntimeError('This throws an exception')
 +  end
 +end
-diff --git a/db/schema_migrations/20210604233157 b/db/schema_migrations/20210604233157
+diff --git a/db/schema_migrations/20990604233157 b/db/schema_migrations/20990604233157
 new file mode 100644
 index 00000000000..99aebe28c69
 --- /dev/null
-+++ b/db/schema_migrations/20210604233157
++++ b/db/schema_migrations/20990604233157
 @@ -0,0 +1 @@
 +a5f75519e7bea9cd1fb19eac80e21d80320dd9096f56cbb22e4931940300df67
 \ No newline at end of file
--- 
+--
 2.31.1
 
