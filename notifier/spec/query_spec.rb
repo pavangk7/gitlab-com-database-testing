@@ -87,6 +87,25 @@ RSpec.describe Query do
         expect(subject.formatted_query).to eql(normalized_query)
       end
     end
+
+    context 'when query is of type "CREATE TRIGGER ... EXECUTE FUNCTION ..."' do
+      let(:pgss) do
+        # rubocop:disable Layout/LineLength
+        {
+          "query" => "CREATE TRIGGER trigger_has_external_wiki_on_delete_new AFTER DELETE ON integrations FOR EACH ROW WHEN (((old.type_new)::text = 'Integrations::ExternalWiki'::text) AND (old.project_id IS NOT NULL)) EXECUTE FUNCTION set_has_external_wiki(); /*application:test*/",
+          "calls" => 1,
+          "total_time" => 1824825.496259,
+          "max_time" => 1824825.496259,
+          "mean_time" => 1824825.496259,
+          "rows" => 0
+        }
+        # rubocop:enable Layout/LineLength
+      end
+
+      it 'parse it successfully' do
+        expect { query.formatted_query }.not_to raise_error PgQuery::ParseError
+      end
+    end
   end
 
   describe '#exceeds_time_guidance?' do
