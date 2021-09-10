@@ -6,7 +6,8 @@ require 'json'
 
 def extract_migration_details(file)
   version = file.match(/^db\/(post_)?migrate\/(\d+)/) { |m| m.captures[1]&.to_i }
-  name = File.read(file).match(/class (\w+) \< ActiveRecord::Migration/) { |m| m.captures[0] }
+  name = File.read(file)
+             .match(/class (\w+) \< (?:ActiveRecord::Migration|Gitlab::Database::Migration)/) { |m| m.captures[0] }
   type = (file.start_with?('db/post_migrate')) ? :post_deploy : :regular
 
   {
