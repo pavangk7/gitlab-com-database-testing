@@ -79,7 +79,7 @@ RSpec.describe Query do
       end
 
       it 'parse it successfully' do
-        expect { query.formatted_query }.not_to raise_error PgQuery::ParseError
+        expect { query.formatted_query }.not_to raise_error
       end
     end
   end
