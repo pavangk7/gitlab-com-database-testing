@@ -13,12 +13,12 @@ module Charts
 
     def self.for_result(result)
       executions = result.migrations_from_branch
-                         .flat_map(&:query_executions)
+                         .flat_map(&:important_query_executions)
       new(executions, title: 'Runtime Histogram for all migrations')
     end
 
     def self.for_migration(migration)
-      new(migration.query_executions, title: "Histogram for #{migration.name}")
+      new(migration.important_query_executions, title: "Histogram for #{migration.name}")
     end
 
     def initialize(query_executions, title:, bucket_cutoffs: DEFAULT_CUTOFFS)

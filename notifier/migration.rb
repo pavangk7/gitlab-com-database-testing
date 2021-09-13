@@ -55,6 +55,10 @@ class Migration
     queries.reject(&:excluded?)
   end
 
+  def important_query_executions
+    query_executions.reject(&:excluded?)
+  end
+
   def queries_with_warnings
     @queries_with_warnings ||= important_queries.select(&:exceeds_time_guidance?)
   end

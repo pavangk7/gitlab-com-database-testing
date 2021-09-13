@@ -20,34 +20,10 @@ RSpec.describe Query do
   end
 
   describe 'excluded?' do
-    it 'is true if query is on the excluded list' do
-      subject.query = described_class::EXCLUSIONS.first
-
-      expect(subject.excluded?).to be true
-    end
-
-    it 'is true if query includes /* pgssignore /*' do
-      subject.query = "#{subject.query} /* pgssignore */"
-
-      expect(subject.excluded?).to be true
-    end
-
-    it 'is true if query table is ar_internal_metadata' do
-      subject.query = "SELECT * from ar_internal_metadata;"
-
-      expect(subject.excluded?).to be true
-    end
-
-    it 'is true if query table starts with pg_' do
-      subject.query = "SELECT * from pg_internal_nonsense;"
-
-      expect(subject.excluded?).to be true
-    end
-
-    it 'is false for other queries' do
-      subject.query = "SELECT * from user;"
-
-      expect(subject.excluded?).to be false
+    it 'delegates to QueryExclusion' do
+      result = double
+      expect(QueryExclusion).to receive(:exclude?).with(subject.query).and_return(result)
+      expect(subject.excluded?).to eq(result)
     end
   end
 
