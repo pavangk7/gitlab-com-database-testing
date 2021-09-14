@@ -12,6 +12,17 @@ curl "https://gitlab.com/api/v4/projects/278964/repository/commits/$(encode "$GI
 SHA=$(jq .id < latest_commit.json)
 
 echo "Triggering build on https://ops.gitlab.net/gitlab-com/database-team/gitlab-com-database-testing/-/pipelines from gitlab sha $SHA"
+
+echo "Using variables:"
+echo "ref=$CI_COMMIT_REF_NAME"
+echo "variables[TOP_UPSTREAM_MERGE_REQUEST_IID]=$CI_MERGE_REQUEST_IID"
+echo "variables[TOP_UPSTREAM_MERGE_REQUEST_PROJECT_ID]=$CI_MERGE_REQUEST_PROJECT_ID"
+echo "variables[TOP_UPSTREAM_SOURCE_JOB]=$CI_JOB_URL"
+echo "variables[TOP_UPSTREAM_SOURCE_PROJECT]=$CI_PROJECT_ID"
+echo "variables[VALIDATION_PIPELINE]=true"
+echo "variables[GITLAB_COMMIT_SHA]=$SHA"
+echo "variables[TRIGGER_SOURCE]=$CI_JOB_URL"
+
 curl --request POST \
      --form "token=$TESTING_TRIGGER_TOKEN" \
      --form "ref=$CI_COMMIT_REF_NAME" \
