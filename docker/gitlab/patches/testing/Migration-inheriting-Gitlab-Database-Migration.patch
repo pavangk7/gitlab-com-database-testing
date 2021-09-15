@@ -1,0 +1,30 @@
+From 14d0aa32c487d74c75e59922537eb9dc87bac5d2 Mon Sep 17 00:00:00 2001
+From: Simon Tomlinson <stomlinson@gitlab.com>
+Date: Wed, 15 Sep 2021 10:30:33 -0500
+Subject: [PATCH] Migration inheriting Gitlab::Database::Migration
+
+---
+ ...43_migration_inherits_gitlab_database_migration.rb | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+ create mode 100644 db/migrate/20210915152743_migration_inherits_gitlab_database_migration.rb
+
+diff --git a/db/migrate/20210915152743_migration_inherits_gitlab_database_migration.rb b/db/migrate/20210915152743_migration_inherits_gitlab_database_migration.rb
+new file mode 100644
+index 00000000000..d8273be7e4d
+--- /dev/null
++++ b/db/migrate/20210915152743_migration_inherits_gitlab_database_migration.rb
+@@ -0,0 +1,11 @@
++# frozen_string_literal: true
++
++class MigrationInheritsGitlabDatabaseMigration < Gitlab::Database::Migration[1.0]
++  def up
++    execute("SELECT 'up'")
++  end
++
++  def down
++    execute("SELECT 'down'")
++  end
++end
+-- 
+2.32.0
+

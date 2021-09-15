@@ -22,6 +22,7 @@ if test "$VALIDATION_PIPELINE"; then
   git am < /gitlab/patches/testing/Drop-table-in-post-migration.patch
   git am < /gitlab/patches/testing/Exception-Raised-in-Migration.patch
   git am < /gitlab/patches/testing/Add-a-migration-that-takes-five-seconds.patch
+  git am < /gitlab/patches/testing/Migration-inheriting-Gitlab-Database-Migration.patch
 fi
 
 cp config/cable.yml.example config/cable.yml
