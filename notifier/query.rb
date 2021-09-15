@@ -60,9 +60,9 @@ class Query
     max_time > time_guidance
   end
 
-  def timing
+  def timing_phrase
     if calls == 1
-      "it was #{max_time.truncate(2)}"
+      "it was #{max_time.truncate(2)}ms"
     else
       "the longest was #{max_time.truncate(2)}ms, and the average was #{mean_time.truncate(2)}ms"
     end
@@ -70,7 +70,7 @@ class Query
 
   def warning(migration_name)
     "#{migration_name} had a query that [exceeded timing guidelines](#{TIMING_GUIDELINES}). Run time "\
-    "should not exceed #{time_guidance}ms, but was #{timing}ms. Please consider possible options to "\
+    "should not exceed #{time_guidance}ms, but #{timing_phrase}. Please consider possible options to "\
     "improve the query performance. <br/><pre>#{formatted_query}</pre>"
   end
 
