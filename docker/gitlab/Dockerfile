@@ -34,6 +34,7 @@ COPY patches patches
 RUN git am < patches/0001-Disable-AssetProxyFilter-initializer.patch
 RUN git am < patches/0002-Disable-automatic-schema-dumping-after-migration.patch
 RUN git am < patches/0003-Pretend-we-are-GitLab.com-for-testing-only.patch
+RUN git am < patches/0004-Conditional-for-load-balancer.patch
 
 COPY list_migrations.rb list_migrations.rb
 COPY clone_details.rb clone_details.rb

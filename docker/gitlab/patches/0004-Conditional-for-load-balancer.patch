@@ -1,0 +1,122 @@
+From 7cbf5627c353fa7608ca0f80b5c2df99a08c1763 Mon Sep 17 00:00:00 2001
+From: Andreas Brandl <abrandl@gitlab.com>
+Date: Thu, 23 Sep 2021 11:27:55 +0200
+Subject: [PATCH 1/2] Conditional for load balancer
+
+This is temporary only to unblock the testing pipeline.
+
+See
+https://gitlab.com/gitlab-org/database-team/gitlab-com-database-testing/-/issues/34
+---
+ config/initializers/load_balancing.rb | 96 ++++++++++++++-------------
+ 1 file changed, 49 insertions(+), 47 deletions(-)
+
+diff --git a/config/initializers/load_balancing.rb b/config/initializers/load_balancing.rb
+index 29700b37c7d..99b1fb259d3 100644
+--- a/config/initializers/load_balancing.rb
++++ b/config/initializers/load_balancing.rb
+@@ -1,52 +1,54 @@
+ # frozen_string_literal: true
+ 
+-ActiveRecord::Base.singleton_class.attr_accessor :load_balancing_proxy
++if ENV['ENABLE_LOAD_BALANCING']
++  ActiveRecord::Base.singleton_class.attr_accessor :load_balancing_proxy
++
++  Gitlab::Database.main.disable_prepared_statements
++
++  Gitlab::Application.configure do |config|
++    config.middleware.use(Gitlab::Database::LoadBalancing::RackMiddleware)
++  end
++
++  # This hijacks the "connection" method to ensure both
++  # `ActiveRecord::Base.connection` and all models use the same load
++  # balancing proxy.
++  ActiveRecord::Base.singleton_class.prepend(Gitlab::Database::LoadBalancing::ActiveRecordProxy)
++
++  # The load balancer needs to be configured immediately, and re-configured after
++  # forking. This ensures queries that run before forking use the load balancer,
++  # and queries running after a fork don't run into any errors when using dead
++  # database connections.
++  #
++  # See https://gitlab.com/gitlab-org/gitlab/-/merge_requests/63485 for more
++  # information.
++  setup = proc do
++    lb = Gitlab::Database::LoadBalancing::LoadBalancer.new(
++      Gitlab::Database::LoadBalancing.configuration,
++      primary_only: !Gitlab::Database::LoadBalancing.enable_replicas?
++    )
++
++    ActiveRecord::Base.load_balancing_proxy =
++      Gitlab::Database::LoadBalancing::ConnectionProxy.new(lb)
++
++    # Populate service discovery immediately if it is configured
++    Gitlab::Database::LoadBalancing.perform_service_discovery
++  end
+ 
+-Gitlab::Database.main.disable_prepared_statements
+-
+-Gitlab::Application.configure do |config|
+-  config.middleware.use(Gitlab::Database::LoadBalancing::RackMiddleware)
+-end
+-
+-# This hijacks the "connection" method to ensure both
+-# `ActiveRecord::Base.connection` and all models use the same load
+-# balancing proxy.
+-ActiveRecord::Base.singleton_class.prepend(Gitlab::Database::LoadBalancing::ActiveRecordProxy)
+-
+-# The load balancer needs to be configured immediately, and re-configured after
+-# forking. This ensures queries that run before forking use the load balancer,
+-# and queries running after a fork don't run into any errors when using dead
+-# database connections.
+-#
+-# See https://gitlab.com/gitlab-org/gitlab/-/merge_requests/63485 for more
+-# information.
+-setup = proc do
+-  lb = Gitlab::Database::LoadBalancing::LoadBalancer.new(
+-    Gitlab::Database::LoadBalancing.configuration,
+-    primary_only: !Gitlab::Database::LoadBalancing.enable_replicas?
+-  )
+-
+-  ActiveRecord::Base.load_balancing_proxy =
+-    Gitlab::Database::LoadBalancing::ConnectionProxy.new(lb)
+-
+-  # Populate service discovery immediately if it is configured
+-  Gitlab::Database::LoadBalancing.perform_service_discovery
+-end
+-
+-setup.call
+-
+-# Database queries may be run before we fork, so we must set up the load
+-# balancer as early as possible. When we do fork, we need to make sure all the
+-# hosts are disconnected.
+-Gitlab::Cluster::LifecycleEvents.on_before_fork do
+-  # When forking, we don't want to wait until the connections aren't in use any
+-  # more, as this could delay the boot cycle.
+-  Gitlab::Database::LoadBalancing.proxy.load_balancer.disconnect!(timeout: 0)
+-end
+-
+-# Service discovery only needs to run in the worker processes, as the main one
+-# won't be running many (if any) database queries.
+-Gitlab::Cluster::LifecycleEvents.on_worker_start do
+   setup.call
+-  Gitlab::Database::LoadBalancing.start_service_discovery
++
++  # Database queries may be run before we fork, so we must set up the load
++  # balancer as early as possible. When we do fork, we need to make sure all the
++  # hosts are disconnected.
++  Gitlab::Cluster::LifecycleEvents.on_before_fork do
++    # When forking, we don't want to wait until the connections aren't in use any
++    # more, as this could delay the boot cycle.
++    Gitlab::Database::LoadBalancing.proxy.load_balancer.disconnect!(timeout: 0)
++  end
++
++  # Service discovery only needs to run in the worker processes, as the main one
++  # won't be running many (if any) database queries.
++  Gitlab::Cluster::LifecycleEvents.on_worker_start do
++    setup.call
++    Gitlab::Database::LoadBalancing.start_service_discovery
++  end
+ end
+-- 
+2.32.0
+
