@@ -1,24 +1,17 @@
-From c54e103fdb274aa505de9a6b7c50c7768938895d Mon Sep 17 00:00:00 2001
+From 015e98b85be4ffbf800f407f8db81edf0419970d Mon Sep 17 00:00:00 2001
 From: Andreas Brandl <abrandl@gitlab.com>
-Date: Thu, 23 Sep 2021 12:38:26 +0200
-Subject: [PATCH] Load application settings upfront
+Date: Tue, 29 Dec 2020 20:05:30 +0100
+Subject: [PATCH] Disable AssetProxyFilter initializer
 
 ---
- config/initializers/asset_proxy_settings.rb | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ config/initializers/asset_proxy_settings.rb | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/config/initializers/asset_proxy_settings.rb b/config/initializers/asset_proxy_settings.rb
-index 48eedcee681..05ded8c16af 100644
+index 92247aba1b8..8bcfd615155 100644
 --- a/config/initializers/asset_proxy_settings.rb
 +++ b/config/initializers/asset_proxy_settings.rb
-@@ -1,8 +1,11 @@
- # frozen_string_literal: true
- 
--#
-+# As a workaround for https://gitlab.com/gitlab-org/gitlab/-/issues/341584,
-+# we load ApplicationSetting here
-+ApplicationSetting.first
-+
+@@ -2,5 +2,5 @@
  # Asset proxy settings
  #
  ActiveSupport.on_load(:active_record) do
@@ -26,5 +19,5 @@ index 48eedcee681..05ded8c16af 100644
 +  #Banzai::Filter::AssetProxyFilter.initialize_settings
  end
 -- 
-2.32.0
+2.29.0
 
