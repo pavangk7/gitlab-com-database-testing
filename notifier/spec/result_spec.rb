@@ -4,11 +4,8 @@ require 'spec_helper'
 
 RSpec.describe Result do
   let(:clone_details) { file_fixture('migration-testing/clone-details.json') }
-  let(:migration_stats) { file_fixture('migration-testing/up/migration-stats.json') }
-  let(:migrations) { file_fixture('migration-testing/migrations.json') }
-  let(:query_details_dir) { file_fixture('migration-testing/up/') }
 
-  subject(:result) { described_class.from_files(migration_stats, migrations, clone_details, query_details_dir) }
+  subject(:result) { described_class.from_directory(file_fixture('migration-testing/')) }
 
   it 'loads clone details' do
     expect(result.clone_details.cloneId).to eq('database-testing-651277')

@@ -4,7 +4,12 @@ require 'ostruct'
 require 'json'
 
 class Result
-  def self.from_files(statistics_file, migrations_file, clone_details_file, query_details_path)
+  def self.from_directory(database_testing_path)
+    statistics_file = File.join(database_testing_path, 'up', 'migration-stats.json')
+    migrations_file = File.join(database_testing_path, 'migrations.json')
+    clone_details_file = File.join(database_testing_path, 'clone-details.json')
+    query_details_path = File.join(database_testing_path, 'up')
+
     stats = read_to_json(statistics_file).each_with_object({}) do |stat, h|
       version = stat['version']
       h[version] = stat

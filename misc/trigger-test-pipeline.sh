@@ -12,7 +12,8 @@ curl "https://gitlab.com/api/v4/projects/278964/repository/commits/$(encode "$GI
 SHA=$(jq .id < latest_commit.json)
 
 echo "Triggering build on https://ops.gitlab.net/gitlab-com/database-team/gitlab-com-database-testing/-/pipelines from gitlab sha $SHA"
-curl --request POST \
+curl --fail-with-body \
+     --request POST \
      --form "token=$TESTING_TRIGGER_TOKEN" \
      --form "ref=$CI_COMMIT_REF_NAME" \
      --form "variables[TOP_UPSTREAM_MERGE_REQUEST_IID]=$CI_MERGE_REQUEST_IID" \

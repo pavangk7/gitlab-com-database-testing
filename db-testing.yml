@@ -92,4 +92,4 @@ notify-upstream:
   script:
     - cd notifier
     - bundle install
-    - bundle exec ruby notifier.rb send ../migration-testing/up/migration-stats.json ../migration-testing/migrations.json ../migration-testing/clone-details.json ../migration-testing/up/
+    - bundle exec ruby notifier.rb send ../migration-testing/
