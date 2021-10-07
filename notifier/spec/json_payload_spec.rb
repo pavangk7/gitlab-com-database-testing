@@ -4,9 +4,9 @@ require "base64"
 
 RSpec.describe JsonPayload do
   let(:clone_details) { file_fixture('migration-testing/clone-details.json') }
-  let(:migration_stats) { file_fixture('migration-testing/migration-stats.json') }
+  let(:migration_stats) { file_fixture('migration-testing/up/migration-stats.json') }
   let(:migrations) { file_fixture('migration-testing/migrations.json') }
-  let(:query_details_dir) { file_fixture('migration-testing/') }
+  let(:query_details_dir) { file_fixture('migration-testing/up/') }
 
   let(:result) { Result.from_files(migration_stats, migrations, clone_details, query_details_dir) }
 
