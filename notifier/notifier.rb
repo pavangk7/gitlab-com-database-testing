@@ -18,14 +18,14 @@ IDENTIFIABLE_NOTE_TAG = 'gitlab-org/database-team/gitlab-com-database-testing:id
 
 class Notifier < Thor
   desc "send STATS MIGRATIONS CLONE_DETAILS", "send feedback back to merge request"
-  def send(statistics_file, migrations_file, clone_details_file, query_details_dir)
+  def send(database_testing_path)
     project_path = ENV['TOP_UPSTREAM_SOURCE_PROJECT']
     merge_request_id = ENV['TOP_UPSTREAM_MERGE_REQUEST_IID']
 
     raise "Project path missing: Specify TOP_UPSTREAM_SOURCE_PROJECT" unless project_path
     raise "Upstream merge request id missing: Specify TOP_UPSTREAM_MERGE_REQUEST_IID" unless merge_request_id
 
-    comment = feedback_for(statistics_file, migrations_file, clone_details_file, query_details_dir).render
+    comment = feedback_for(database_testing_path).render
 
     gitlab = Gitlab.client(
       endpoint: 'https://gitlab.com/api/v4',
@@ -60,14 +60,14 @@ class Notifier < Thor
   end
 
   desc "print STATS MIGRATIONS", "only print feedback"
-  def print(statistics_file, migrations_file, clone_details_file, query_details_dir)
-    puts feedback_for(statistics_file, migrations_file, clone_details_file, query_details_dir).render
+  def print(database_testing_path)
+    puts feedback_for(database_testing_path).render
   end
 
   private
 
-  def feedback_for(statistics_file, migrations_file, clone_details_file, query_details_dir)
-    result = Result.from_files(statistics_file, migrations_file, clone_details_file, query_details_dir)
+  def feedback_for(database_testing_path)
+    result = Result.from_directory(database_testing_path)
 
     Feedback.new(result)
   end
