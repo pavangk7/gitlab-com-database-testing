@@ -8,6 +8,14 @@ RSpec.describe QueryExclusion do
     expect(described_class.exclude?(query)).to be true
   end
 
+  it 'is true if the query differs from the excluded list only by a comment' do
+    query = described_class::EXCLUSIONS.first
+
+    query_with_comment = "#{query} /* some comment */"
+
+    expect(described_class.exclude?(query_with_comment)).to be true
+  end
+
   it 'is true if query includes /* pgssignore /*' do
     query = "SELECT 1 /* pgssignore */"
 
