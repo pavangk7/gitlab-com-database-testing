@@ -7,6 +7,7 @@ class QueryExecution
 
   def initialize(data)
     @sql, @binds, start_time, end_time = data.values_at("sql", "binds", "start_time", "end_time")
+    @sql = Normalizers::ParameterList.normalize(PgQuery.parse(@sql)).deparse
     @start_time = Time.rfc3339(start_time)
     @end_time = Time.rfc3339(end_time)
   end
