@@ -54,5 +54,13 @@ run pipeline:
   image: python:alpine
   before_script:
     - apk add --update curl jq
+  variables:
+    RUN_DECOMPOSED: 'false'
   script:
     - ./misc/trigger-test-pipeline.sh
+
+run pipeline decomposed:
+  extends:
+    - run pipeline
+  variables:
+    RUN_DECOMPOSED: 'true'
