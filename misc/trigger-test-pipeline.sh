@@ -23,5 +23,4 @@ curl --fail-with-body \
      --form "variables[VALIDATION_PIPELINE]=true" \
      --form "variables[GITLAB_COMMIT_SHA]=$SHA" \
      --form "variables[TRIGGER_SOURCE]=$CI_JOB_URL" \
-     --form "variables[RUN_DECOMPOSED]=$RUN_DECOMPOSED" \
      "https://ops.gitlab.net/api/v4/projects/429/trigger/pipeline"
