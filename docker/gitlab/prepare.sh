@@ -3,36 +3,7 @@
 cp config/gitlab.yml.example config/gitlab.yml
 sed -i 's/bin_path: \/usr\/bin\/git/bin_path: \/usr\/local\/bin\/git/' config/gitlab.yml
 
-if test "$RUN_DECOMPOSED"; then
-  echo 'using decomposed database.yml'
-
-  cat > config/database.yml <<-EOF
-test: &test
-  main:
-    adapter: postgresql
-    encoding: unicode
-    database: gitlabhq_dblab
-    username: ${DBLAB_USER}
-    password: ${DBLAB_PASSWORD}
-    host: postgres-main
-    prepared_statements: false
-    variables:
-      statement_timeout: 120s
-  ci:
-    adapter: postgresql
-    encoding: unicode
-    database: gitlabhq_dblab
-    username: ${DBLAB_USER}
-    password: ${DBLAB_PASSWORD}
-    host: postgres-ci
-    prepared_statements: false
-    variables:
-      statement_timeout: 120s
-EOF
-else
-  echo 'using single database database.yml'
-
-  cat > config/database.yml <<-EOF
+cat > config/database.yml <<-EOF
 test: &test
   adapter: postgresql
   encoding: unicode
@@ -44,8 +15,6 @@ test: &test
   variables:
     statement_timeout: 120s
 EOF
-
-fi
 
 if test "$VALIDATION_PIPELINE"; then
   echo "Applying test patch"
