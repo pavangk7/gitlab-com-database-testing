@@ -38,6 +38,7 @@ RUN git am < patches/0003-Pretend-we-are-GitLab.com-for-testing-only.patch
 COPY list_migrations.rb list_migrations.rb
 COPY clone_details.rb clone_details.rb
 COPY prepare.sh prepare.sh
+COPY prepare_postgres.sql prepare_postgres.sql
 
 USER root
 COPY entrypoint.sh /entrypoint.sh
