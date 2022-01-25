@@ -23,8 +23,7 @@ variables:
 
 .rules:if-not-decomposed:
   rules:
-    - if: '$RUN_DECOMPOSED == "true"'
-      when: never
+    - if: '$RUN_DECOMPOSED == null || $RUN_DECOMPOSED != "true"'
 
 image:gitlab:
   extends: .image:base

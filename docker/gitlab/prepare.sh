@@ -3,7 +3,7 @@
 cp config/gitlab.yml.example config/gitlab.yml
 sed -i 's/bin_path: \/usr\/bin\/git/bin_path: \/usr\/local\/bin\/git/' config/gitlab.yml
 
-if test "$RUN_DECOMPOSED"; then
+if [ "$RUN_DECOMPOSED" = "true" ]; then
   echo 'using decomposed database.yml'
 
   cat > config/database.yml <<-EOF
