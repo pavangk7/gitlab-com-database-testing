@@ -84,6 +84,8 @@ db:migrations:
   extends:
     - .db:migrations:base
     - .rules:if-not-decomposed
+  variables:
+    ALL_DB_HOSTS: "postgres"
   services:
     - name: ${DOCKER_REGISTRY}/gitlab-com-database-testing-dblab-ssh:latest
       alias: postgres
@@ -95,6 +97,7 @@ db:migrations decomposed:
     - .db:migrations:base
     - .rules:if-decomposed
   variables:
+    ALL_DB_HOSTS: "postgres-main,postgres-ci"
     CLONE_DETAILS_DB_NAME: "postgres-main" # Temporary to make clone_details script work
   services:
     - name: ${DOCKER_REGISTRY}/gitlab-com-database-testing-dblab-ssh:latest
