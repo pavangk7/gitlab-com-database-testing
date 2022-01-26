@@ -3,7 +3,36 @@
 cp config/gitlab.yml.example config/gitlab.yml
 sed -i 's/bin_path: \/usr\/bin\/git/bin_path: \/usr\/local\/bin\/git/' config/gitlab.yml
 
-cat > config/database.yml <<-EOF
+if [ "$RUN_DECOMPOSED" = "true" ]; then
+  echo 'using decomposed database.yml'
+
+  cat > config/database.yml <<-EOF
+test: &test
+  main:
+    adapter: postgresql
+    encoding: unicode
+    database: gitlabhq_dblab
+    username: ${DBLAB_USER}
+    password: ${DBLAB_PASSWORD}
+    host: postgres-main
+    prepared_statements: false
+    variables:
+      statement_timeout: 120s
+  ci:
+    adapter: postgresql
+    encoding: unicode
+    database: gitlabhq_dblab
+    username: ${DBLAB_USER}
+    password: ${DBLAB_PASSWORD}
+    host: postgres-ci
+    prepared_statements: false
+    variables:
+      statement_timeout: 120s
+EOF
+else
+  echo 'using single database database.yml'
+
+  cat > config/database.yml <<-EOF
 test: &test
   adapter: postgresql
   encoding: unicode
@@ -15,6 +44,8 @@ test: &test
   variables:
     statement_timeout: 120s
 EOF
+
+fi
 
 if test "$VALIDATION_PIPELINE"; then
   echo "Applying test patch"
@@ -44,9 +75,12 @@ sed -i 's|url:.*$|url: redis://redis:6379/12|g' config/redis.shared_state.yml
 
 ### Preparing PG cluster
 
-if timeout 60s bash -c "until pg_isready --quiet -h postgres -U ${DBLAB_USER} --dbname=gitlabhq_dblab; do sleep 1; done"; then
-  PGPASSWORD="${DBLAB_PASSWORD}" psql -h postgres -U "${DBLAB_USER}" gitlabhq_dblab < /gitlab/prepare_postgres.sql
-else
-  echo 'Unable to connect to database lab psql for optional configuration'
-fi
+# These will never have spaces, so it's safe to split this way
+for db_host in $(echo "$ALL_DB_HOSTS" | tr ',' '\n'); do
+  if timeout 60s bash -c "until pg_isready --quiet -h ${db_host} -U ${DBLAB_USER} --dbname=gitlabhq_dblab; do sleep 1; done"; then
+    PGPASSWORD="${DBLAB_PASSWORD}" psql -h "${db_host}" -U "${DBLAB_USER}" gitlabhq_dblab < /gitlab/prepare_postgres.sql
+  else
+    echo "Unable to connect to database lab psql for optional configuration of ${db_host}"
+  fi
+done
 
