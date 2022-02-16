@@ -74,7 +74,7 @@ image:redis:
   script:
     - cd ${GITLAB_PATH}
     - ./prepare.sh
-    - mkdir -p tmp/migration-testing
+    - mkdir -p tmp/migration-testing/up
     - bundle exec rake gitlab:db:migration_testing:up | tee tmp/migration-testing/up/full-migration-output.log || true
     - mv tmp/migration-testing/ ${CI_PROJECT_DIR}
     - bundle exec ruby list_migrations.rb > ${CI_PROJECT_DIR}/migration-testing/migrations.json
