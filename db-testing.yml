@@ -56,6 +56,7 @@ image:redis:
   tags:
     - worker
   variables:
+    GITLAB_SIMULATE_SAAS: "true" # Pretend we are gitlab.com during testing
     DBLAB_HOST_KEYS: $DBLAB_HOST_KEYS
     DBLAB_SSH_KEY: $DBLAB_SSH_KEY
     DBLAB_TOKEN: $DBLAB_TOKEN
