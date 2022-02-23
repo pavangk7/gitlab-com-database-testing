@@ -1,0 +1,26 @@
+From 386fcf19d93f76fd96d9f1d05026d7ca7d2394b3 Mon Sep 17 00:00:00 2001
+From: Simon Tomlinson <stomlinson@gitlab.com>
+Date: Wed, 23 Feb 2022 10:37:56 -0600
+Subject: [PATCH] Migration that requires Gitlab.com? == true
+
+---
+ .../20220223163519_ensure_gitlab_com_in_migrations.rb      | 7 +++++++
+ 1 file changed, 7 insertions(+)
+ create mode 100644 db/migrate/20220223163519_ensure_gitlab_com_in_migrations.rb
+
+diff --git a/db/migrate/20220223163519_ensure_gitlab_com_in_migrations.rb b/db/migrate/20220223163519_ensure_gitlab_com_in_migrations.rb
+new file mode 100644
+index 00000000000..460f9a5a0f0
+--- /dev/null
++++ b/db/migrate/20220223163519_ensure_gitlab_com_in_migrations.rb
+@@ -0,0 +1,7 @@
++# frozen_string_literal: true
++
++class EnsureGitlabComInMigrations < Gitlab::Database::Migration[1.0]
++  def change
++    raise 'Gitlab.com? must be truthy during migration testing' unless Gitlab.com?
++  end
++end
+-- 
+2.35.1
+
