@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe Warnings do
-  let(:result) { Result.from_directory(file_fixture('migration-testing/')) }
+  let(:result) { Result.from_directory(file_fixture('migration-testing/v2')) }
   let(:migration) { result.migrations[20210604232017] }
 
   subject(:warnings) { described_class.new(result) }

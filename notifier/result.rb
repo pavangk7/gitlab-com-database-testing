@@ -20,7 +20,12 @@ class Result
       version = version.to_i
       name = migration['name']
 
-      details_path = File.join(query_details_path, "#{version}_#{name}-query-details.json")
+      details_path = if schema_version(database_testing_path) > 1
+                       File.join(query_details_path, name, 'query-details.json')
+                     else
+                       File.join(query_details_path, "#{version}_#{name}-query-details.json")
+                     end
+
       query_details = if File.exist?(details_path)
                         read_to_json(details_path)
                       else
@@ -65,5 +70,15 @@ class Result
 
   def self.read_to_json(path)
     JSON.parse(File.read(path))
+  end
+
+  def self.schema_version(path)
+    metadata_file = File.join(path, 'up', 'metadata.json')
+
+   if File.exist?(metadata_file)
+                        read_to_json(metadata_file)['version']
+                      else
+                        1
+                      end
   end
 end

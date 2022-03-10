@@ -1,0 +1,92 @@
+[
+  {
+    "start_time": "2021-06-15T16:07:36.265391+00:00",
+    "end_time": "2021-06-15T16:07:36.303460+00:00",
+    "sql": "SELECT c.relname FROM pg_class c LEFT JOIN pg_namespace n ON n.oid = c.relnamespace WHERE n.nspname = ANY (current_schemas(false)) AND c.relname = 'schema_migrations' AND c.relkind IN ('r','p')",
+    "binds": []
+  },
+  {
+    "start_time": "2021-06-15T16:07:36.303776+00:00",
+    "end_time": "2021-06-15T16:07:36.341478+00:00",
+    "sql": "SELECT c.relname FROM pg_class c LEFT JOIN pg_namespace n ON n.oid = c.relnamespace WHERE n.nspname = ANY (current_schemas(false)) AND c.relname = 'ar_internal_metadata' AND c.relkind IN ('r','p')",
+    "binds": []
+  },
+  {
+    "start_time": "2021-06-15T16:07:36.341724+00:00",
+    "end_time": "2021-06-15T16:07:36.380196+00:00",
+    "sql": "SELECT current_database()",
+    "binds": []
+  },
+  {
+    "start_time": "2021-06-15T16:07:36.606706+00:00",
+    "end_time": "2021-06-15T16:07:36.644041+00:00",
+    "sql": "SET client_min_messages TO 'warning' /*application:test*/",
+    "binds": []
+  },
+  {
+    "start_time": "2021-06-15T16:07:36.644282+00:00",
+    "end_time": "2021-06-15T16:07:36.681720+00:00",
+    "sql": "SET standard_conforming_strings = on /*application:test*/",
+    "binds": []
+  },
+  {
+    "start_time": "2021-06-15T16:07:36.681974+00:00",
+    "end_time": "2021-06-15T16:07:36.719460+00:00",
+    "sql": "SET intervalstyle = iso_8601 /*application:test*/",
+    "binds": []
+  },
+  {
+    "start_time": "2021-06-15T16:07:36.719746+00:00",
+    "end_time": "2021-06-15T16:07:36.757233+00:00",
+    "sql": "SET SESSION statement_timeout TO '120s' /*application:test*/",
+    "binds": []
+  },
+  {
+    "start_time": "2021-06-15T16:07:36.757539+00:00",
+    "end_time": "2021-06-15T16:07:36.795237+00:00",
+    "sql": "SET SESSION timezone TO 'UTC' /*application:test*/",
+    "binds": []
+  },
+  {
+    "start_time": "2021-06-15T16:07:36.795679+00:00",
+    "end_time": "2021-06-15T16:07:36.835158+00:00",
+    "sql": "SELECT t.oid, t.typname\nFROM pg_type as t\nWHERE t.typname IN ('int2', 'int4', 'int8', 'oid', 'float4', 'float8', 'numeric', 'bool', 'timestamp', 'timestamptz')\n /*application:test*/",
+    "binds": []
+  },
+  {
+    "start_time": "2021-06-15T16:07:36.835849+00:00",
+    "end_time": "2021-06-15T16:07:36.913205+00:00",
+    "sql": "SELECT t.oid, t.typname, t.typelem, t.typdelim, t.typinput, r.rngsubtype, t.typtype, t.typbasetype\nFROM pg_type as t\nLEFT JOIN pg_range as r ON oid = rngtypid\nWHERE\n  t.typname IN ('int2', 'int4', 'int8', 'oid', 'float4', 'float8', 'text', 'varchar', 'char', 'name', 'bpchar', 'bool', 'bit', 'varbit', 'timestamptz', 'date', 'money', 'bytea', 'point', 'hstore', 'json', 'jsonb', 'cidr', 'inet', 'uuid', 'xml', 'tsvector', 'macaddr', 'citext', 'ltree', 'line', 'lseg', 'box', 'path', 'polygon', 'circle', 'time', 'timestamp', 'numeric', 'interval')\n  OR t.typtype IN ('r', 'e', 'd')\n  OR t.typinput = 'array_in(cstring,oid,integer)'::regprocedure\n  OR t.typelem != 0\n /*application:test*/",
+    "binds": []
+  },
+  {
+    "start_time": "2021-06-15T16:07:36.916754+00:00",
+    "end_time": "2021-06-15T16:07:36.954224+00:00",
+    "sql": "SHOW TIME ZONE /*application:test*/",
+    "binds": []
+  },
+  {
+    "start_time": "2021-06-15T16:07:36.991877+00:00",
+    "end_time": "2021-06-15T16:07:37.029981+00:00",
+    "sql": "SELECT pg_try_advisory_lock(3005434223539248480)",
+    "binds": []
+  },
+  {
+    "start_time": "2021-06-15T16:07:37.030582+00:00",
+    "end_time": "2021-06-15T16:07:37.105608+00:00",
+    "sql": "SELECT \"schema_migrations\".\"version\" FROM \"schema_migrations\" ORDER BY \"schema_migrations\".\"version\" ASC /*application:test*/",
+    "binds": []
+  },
+  {
+    "start_time": "2021-06-15T16:07:37.120755+00:00",
+    "end_time": "2021-06-15T16:07:37.158988+00:00",
+    "sql": "SELECT pg_advisory_unlock(3005434223539248480)",
+    "binds": []
+  },
+  {
+    "start_time": "2021-06-15T16:07:37.196564+00:00",
+    "end_time": "2021-06-15T16:07:37.319264+00:00",
+    "sql": "select pg_database_size(current_database()) /*application:test*/",
+    "binds": []
+  }
+]
