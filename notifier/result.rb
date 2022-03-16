@@ -75,10 +75,10 @@ class Result
   def self.schema_version(path)
     metadata_file = File.join(path, 'up', 'metadata.json')
 
-   if File.exist?(metadata_file)
-                        read_to_json(metadata_file)['version']
-                      else
-                        1
-                      end
+    if File.exist?(metadata_file)
+      read_to_json(metadata_file)['version']
+    else
+      1
+    end
   end
 end
