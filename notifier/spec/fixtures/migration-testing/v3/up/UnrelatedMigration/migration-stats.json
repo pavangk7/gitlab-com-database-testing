@@ -1,0 +1,16 @@
+{
+  "version": 20210601233122,
+  "walltime": 10000,
+  "success": true,
+  "total_database_size_change": 0,
+  "query_statistics": [
+    {
+      "query": "select pg_database_size(current_database()) /*application:test*/",
+      "calls": 1,
+      "total_time": 84.903616,
+      "max_time": 84.903616,
+      "mean_time": 84.903616,
+      "rows": 1
+    }
+  ]
+}

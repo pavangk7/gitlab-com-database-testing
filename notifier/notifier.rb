@@ -4,6 +4,7 @@
 require 'active_support'
 require 'active_support/core_ext/time'
 require 'active_support/core_ext/numeric/time'
+require 'active_support/core_ext/enumerable'
 require 'gitlab'
 require 'thor'
 
