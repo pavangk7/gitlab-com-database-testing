@@ -5,15 +5,16 @@ require 'json'
 
 class Result
   def self.from_directory(database_testing_path)
-    statistics_file = File.join(database_testing_path, 'up', 'migration-stats.json')
+    legacy_statistics_file = File.join(database_testing_path, 'up', 'migration-stats.json')
     migrations_file = File.join(database_testing_path, 'migrations.json')
     clone_details_file = File.join(database_testing_path, 'clone-details.json')
     query_details_path = File.join(database_testing_path, 'up')
 
-    stats = read_to_json(statistics_file).each_with_object({}) do |stat, h|
-      version = stat['version']
-      h[version] = stat
-    end
+    stats = if schema_version(database_testing_path) >= 3
+              read_stats_v3(query_details_path)
+            else
+              read_stats_legacy(legacy_statistics_file)
+            end
 
     # Attach statistics to each migration
     migrations = read_to_json(migrations_file).each_with_object({}) do |(version, migration), h|
@@ -63,6 +64,17 @@ class Result
   end
 
   private
+
+  def self.read_stats_legacy(stats_file)
+    read_to_json(stats_file).index_by { |s| s['version'] }
+  end
+
+  def self.read_stats_v3(migration_dir_path)
+    Pathname(migration_dir_path).children
+                                .select(&:directory?)
+                                .map { |dir| read_to_json(dir.join('migration-stats.json')) }
+                                .index_by { |s| s['version'] }
+  end
 
   def sorted_migrations
     migrations.values.sort_by(&:sort_key)

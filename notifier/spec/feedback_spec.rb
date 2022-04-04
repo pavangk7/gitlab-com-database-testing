@@ -6,7 +6,7 @@ RSpec.describe Feedback do
   # This is a temporary measure to increase our confidence in a change - we can remove
   # it if it gets tedious and we have smaller unit tests in place
   describe 'end to end test for rendering feedback comment' do
-    where(fixture_root: %w[v1 v2])
+    where(fixture_root: %w[v1 v2 v3])
 
     with_them do
       let(:result) { Result.from_directory(file_fixture("migration-testing/#{fixture_root}")) }
