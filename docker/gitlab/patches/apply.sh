@@ -7,3 +7,4 @@ BASE_PATH=$(dirname "$0")
 
 git am < "$BASE_PATH"/0001-Disable-AssetProxyFilter-initializer.patch
 git am < "$BASE_PATH"/0002-Disable-automatic-schema-dumping-after-migration.patch
+git am < "$BASE_PATH"/0003-Force-Gitlab-com-true.patch

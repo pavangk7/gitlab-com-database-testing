@@ -1,0 +1,26 @@
+From 11f5d32a22471af67347061198156c030b71cc8a Mon Sep 17 00:00:00 2001
+From: Simon Tomlinson <stomlinson@gitlab.com>
+Date: Mon, 4 Apr 2022 14:38:35 -0500
+Subject: [PATCH] Patch to force Gitlab.com? == true
+
+---
+ lib/gitlab.rb | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/lib/gitlab.rb b/lib/gitlab.rb
+index d33120575a2..4f6d37a625d 100644
+--- a/lib/gitlab.rb
++++ b/lib/gitlab.rb
+@@ -56,8 +56,7 @@ def self.simulate_com?
+   end
+ 
+   def self.com?
+-    # Check `gl_subdomain?` as well to keep parity with gitlab.com
+-    simulate_com? || Gitlab.config.gitlab.url == Gitlab::Saas.com_url || gl_subdomain?
++    true
+   end
+ 
+   def self.com
+-- 
+2.35.1
+
