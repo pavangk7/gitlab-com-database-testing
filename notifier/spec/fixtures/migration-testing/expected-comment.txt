@@ -153,6 +153,47 @@ Migrations included in this change have been executed on gitlab.com data for tes
 
 ---
 
+### Background migrations
+
+#### Background Migration: TestBackgroundMigration
+
+Sampled 5 batches
+
+| Query | Calls | Total Time | Max Time | Mean Time | Rows |
+| ----- | ----- | ---------- | -------- | --------- | ---- |
+| <pre>select pg_sleep($1) &#x2F;&#x2A;application:test,db_config_name:main&#x2A;&#x2F;</pre> | 5 | 15013.9 ms | 5005.1 ms | 3002.8 ms | 5 |
+
+<details>
+<summary>Histogram of batch runtimes for TestBackgroundMigration</summary>
+
+| Batch Runtime | Count |
+|---------------|-------|
+|0 seconds - 10 seconds | 5 |
+|10 seconds - 1 minute | 0 |
+|1 minute - 2 minutes | 0 |
+|2 minutes - 3 minutes | 0 |
+|3 minutes - 5 minutes | 0 |
+|5 minutes + | 0 |
+
+</details>
+
+<details>
+<summary>Histogram across all sampled batches of TestBackgroundMigration</summary>
+
+| Query Runtime | Count |
+|---------------|-------|
+|0 seconds - 0.1 seconds | 0 |
+|0.1 seconds - 0.5 seconds | 0 |
+|0.5 seconds - 1 second | 0 |
+|1 second - 2 seconds | 1 |
+|2 seconds - 5 seconds | 3 |
+|5 seconds + | 1 |
+
+</details>
+
+
+---
+
 <details>
   <summary>Other migrations pending on GitLab.com</summary>
 

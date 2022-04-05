@@ -44,7 +44,7 @@ RSpec.describe Result do
       end
 
       describe '#migrations_from_branch' do
-        subject(:result) { described_class.new(migrations, clone_details) }
+        subject(:result) { described_class.new(migrations, [], clone_details) }
 
         it 'returns migrations from the branch ordered by type and version' do
           expect(result.migrations_from_branch.map(&:version)).to eq([1, 3, 2, 4])
@@ -52,7 +52,7 @@ RSpec.describe Result do
       end
 
       describe '#other_migrations' do
-        subject(:result) { described_class.new(migrations, clone_details) }
+        subject(:result) { described_class.new(migrations, [], clone_details) }
 
         it 'returns other migrations ordered by type and version' do
           expect(result.other_migrations.map(&:version)).to eq([6, 8, 5, 7])

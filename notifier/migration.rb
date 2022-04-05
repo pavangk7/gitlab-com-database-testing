@@ -6,9 +6,31 @@ class Migration
   SRE_NOTIFICATION_GUIDANCE = 20.minutes.freeze
   TYPE_REGULAR = 'regular'
   TYPE_POST_DEPLOY = 'post_deploy'
+  TYPE_BACKGROUND = 'background'
   TIMING_GUIDELINES = 'https://docs.gitlab.com/ee/development/database_review.html#timing-guidelines-for-migrations'
   POST_DEPLOY_MIGRATION_GUIDE = 'https://docs.gitlab.com/ee/development/post_deployment_migrations.html'
   BACKGROUND_MIGRATION_GUIDE = 'https://docs.gitlab.com/ee/development/background_migrations.html'
+
+  def self.background_migration_batch_from_directory(directory)
+    query_details_path = directory.join('query-details.json')
+    query_details = if File.exist?(query_details_path)
+                      JSON.parse(File.read(query_details_path))
+                    else
+                      []
+                    end
+
+    stats = JSON.parse(File.read(directory.join('migration-stats.json')))
+
+    migration_data = {
+      version: nil,
+      name: directory.basename.to_s,
+      type: TYPE_BACKGROUND,
+      path: nil,
+      intro_on_current_branch: true
+    }
+
+    new(migration_data, stats, query_details)
+  end
 
   def self.from_directory(directory, global_migration_data:)
     query_details_path = directory.join('query-details.json')
@@ -35,6 +57,9 @@ class Migration
   attr_accessor :version, :name, :statistics, :total_database_size_change,
                 :queries, :type, :walltime, :intro_on_current_branch, :success,
                 :query_executions
+
+  # So that migration durations can be plotted directly in execution histogram charts
+  alias_method :duration, :walltime
 
   def initialize(migration, stats, query_details)
     @version = migration['version']

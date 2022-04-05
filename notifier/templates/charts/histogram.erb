@@ -1,7 +1,7 @@
 <details>
 <summary><%= title %></summary>
 
-| Query Runtime | Count |
+| <%= column_label %> | Count |
 |---------------|-------|
 <% data.each do |bucket, executions| -%>
 |<%= bucket_label(bucket) %> | <%= executions.count %> |

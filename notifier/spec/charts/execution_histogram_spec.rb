@@ -13,7 +13,7 @@ RSpec.describe Charts::ExecutionHistogram do
     end
   end
 
-  subject { described_class.new(executions, title: 'Some Histogram') }
+  subject { described_class.new(executions, title: 'Some Histogram', column_label: 'Query Runtime') }
 
   describe '#buckets' do
     it 'has buckets for every execution' do
