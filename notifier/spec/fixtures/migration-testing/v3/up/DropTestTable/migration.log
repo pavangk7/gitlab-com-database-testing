@@ -1,20 +1,20 @@
-# Logfile created on 2021-06-15 16:07:34 +0000 by logger.rb/v1.4.2
-D, [2021-06-15T16:07:35.382242 #161] DEBUG -- :   [1m[35m (39.5ms)[0m  [1m[34mSELECT pg_try_advisory_lock(3005434223539248480)[0m
-D, [2021-06-15T16:07:35.382699 #161] DEBUG -- :   ↳ lib/tasks/gitlab/db.rake:259:in `block (5 levels) in <main>'
-D, [2021-06-15T16:07:35.460061 #161] DEBUG -- :   [1m[35m (76.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application:test*/[0m
-D, [2021-06-15T16:07:35.460657 #161] DEBUG -- :   ↳ lib/tasks/gitlab/db.rake:259:in `block (5 levels) in <main>'
-I, [2021-06-15T16:07:35.467314 #161]  INFO -- : Migrating to DropTestTable (20210604232017)
-D, [2021-06-15T16:07:35.509178 #161] DEBUG -- :   [1m[36mTRANSACTION (39.6ms)[0m  [1m[35mBEGIN /*application:test*/[0m
-D, [2021-06-15T16:07:35.510038 #161] DEBUG -- :   ↳ lib/gitlab/database.rb:376:in `block in transaction'
-D, [2021-06-15T16:07:35.553688 #161] DEBUG -- :   [1m[35m (43.3ms)[0m  [1m[35mDROP TABLE "test_tables" /*application:test*/[0m
-D, [2021-06-15T16:07:35.554405 #161] DEBUG -- :   ↳ lib/gitlab/database.rb:376:in `block in transaction'
-D, [2021-06-15T16:07:35.595358 #161] DEBUG -- :   [1m[36mActiveRecord::SchemaMigration Create (39.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20210604232017') RETURNING "version" /*application:test*/[0m
-D, [2021-06-15T16:07:35.596224 #161] DEBUG -- :   ↳ lib/gitlab/database.rb:376:in `block in transaction'
-D, [2021-06-15T16:07:35.640851 #161] DEBUG -- :   [1m[36mTRANSACTION (44.0ms)[0m  [1m[35mCOMMIT /*application:test*/[0m
-D, [2021-06-15T16:07:35.641471 #161] DEBUG -- :   ↳ lib/gitlab/database.rb:376:in `block in transaction'
-D, [2021-06-15T16:07:35.682102 #161] DEBUG -- :   [1m[36mActiveRecord::InternalMetadata Load (39.4ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' LIMIT 1 /*application:test*/[0m
-D, [2021-06-15T16:07:35.682808 #161] DEBUG -- :   ↳ lib/tasks/gitlab/db.rake:259:in `block (5 levels) in <main>'
-D, [2021-06-15T16:07:35.721814 #161] DEBUG -- :   [1m[35m (37.9ms)[0m  [1m[34mSELECT pg_advisory_unlock(3005434223539248480)[0m
-D, [2021-06-15T16:07:35.722300 #161] DEBUG -- :   ↳ lib/tasks/gitlab/db.rake:259:in `block (5 levels) in <main>'
-D, [2021-06-15T16:07:35.896189 #161] DEBUG -- :   [1m[35m (135.0ms)[0m  [1m[34mselect pg_database_size(current_database()) /*application:test*/[0m
-D, [2021-06-15T16:07:35.896609 #161] DEBUG -- :   ↳ lib/gitlab/database/migrations/observers/total_database_size_change.rb:25:in `get_total_database_size'
+# Logfile created on 2022-04-05 16:03:31 +0000 by logger.rb/v1.4.2
+D, [2022-04-05T16:03:31.991167 #349] DEBUG -- :   [1m[35m (39.8ms)[0m  [1m[34mSELECT pg_try_advisory_lock(3005434223539248480)[0m
+D, [2022-04-05T16:03:31.991831 #349] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:79:in `block (2 levels) in run'
+D, [2022-04-05T16:03:32.159909 #349] DEBUG -- :   [1m[35m (165.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:32.160756 #349] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:79:in `block (2 levels) in run'
+I, [2022-04-05T16:03:32.197714 #349]  INFO -- : Migrating to DropTestTable (20210604232017)
+D, [2022-04-05T16:03:32.237638 #349] DEBUG -- :   [1m[36mTRANSACTION (37.4ms)[0m  [1m[35mBEGIN /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:32.240164 #349] DEBUG -- :   ↳ lib/gitlab/database.rb:320:in `block in transaction'
+D, [2022-04-05T16:03:32.284915 #349] DEBUG -- :   [1m[35m (44.0ms)[0m  [1m[35mDROP TABLE "test_tables" /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:32.287038 #349] DEBUG -- :   ↳ lib/gitlab/database.rb:320:in `block in transaction'
+D, [2022-04-05T16:03:32.327840 #349] DEBUG -- :   [1m[36mActiveRecord::SchemaMigration Create (37.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20210604232017') RETURNING "version" /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:32.330269 #349] DEBUG -- :   ↳ lib/gitlab/database.rb:320:in `block in transaction'
+D, [2022-04-05T16:03:32.375305 #349] DEBUG -- :   [1m[36mTRANSACTION (43.8ms)[0m  [1m[35mCOMMIT /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:32.377452 #349] DEBUG -- :   ↳ lib/gitlab/database.rb:353:in `commit'
+D, [2022-04-05T16:03:32.417542 #349] DEBUG -- :   [1m[36mActiveRecord::InternalMetadata Load (37.9ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' LIMIT 1 /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:32.419906 #349] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:79:in `block (2 levels) in run'
+D, [2022-04-05T16:03:32.460719 #349] DEBUG -- :   [1m[35m (38.9ms)[0m  [1m[34mSELECT pg_advisory_unlock(3005434223539248480)[0m
+D, [2022-04-05T16:03:32.463081 #349] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:79:in `block (2 levels) in run'
+D, [2022-04-05T16:03:32.672055 #349] DEBUG -- :   [1m[35m (170.3ms)[0m  [1m[34mselect pg_database_size(current_database()) /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:32.672692 #349] DEBUG -- :   ↳ lib/gitlab/database/migrations/observers/total_database_size_change.rb:25:in `get_total_database_size'

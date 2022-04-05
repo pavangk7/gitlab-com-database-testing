@@ -1,0 +1,1 @@
+[{"start_time":"2022-04-05T19:55:14.838090+00:00","end_time":"2022-04-05T19:55:16.881362+00:00","sql":"select pg_sleep($1) /*application:test,db_config_name:main*/","binds":[2]},{"start_time":"2022-04-05T19:55:16.881710+00:00","end_time":"2022-04-05T19:55:17.048852+00:00","sql":"select pg_database_size(current_database()) /*application:test,db_config_name:main*/","binds":[]}]

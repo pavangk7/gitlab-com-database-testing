@@ -1,0 +1,18 @@
+# Logfile created on 2022-04-05 16:03:36 +0000 by logger.rb/v1.4.2
+D, [2022-04-05T16:03:37.195082 #349] DEBUG -- :   [1m[35m (38.3ms)[0m  [1m[34mSELECT pg_try_advisory_lock(3005434223539248480)[0m
+D, [2022-04-05T16:03:37.195747 #349] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:79:in `block (2 levels) in run'
+D, [2022-04-05T16:03:37.273983 #349] DEBUG -- :   [1m[35m (76.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:37.275568 #349] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:79:in `block (2 levels) in run'
+I, [2022-04-05T16:03:37.303264 #349]  INFO -- : Migrating to QueueTestBackgroundMigration (20220318174439)
+D, [2022-04-05T16:03:37.396014 #349] DEBUG -- :   [1m[36mTRANSACTION (37.6ms)[0m  [1m[35mBEGIN /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:37.399015 #349] DEBUG -- :   ↳ lib/gitlab/database/migrations/lock_retry_mixin.rb:36:in `ddl_transaction'
+D, [2022-04-05T16:03:37.439339 #349] DEBUG -- :   [1m[36mActiveRecord::SchemaMigration Create (37.9ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20220318174439') RETURNING "version" /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:37.440562 #349] DEBUG -- :   ↳ lib/gitlab/database/migrations/lock_retry_mixin.rb:36:in `ddl_transaction'
+D, [2022-04-05T16:03:37.482523 #349] DEBUG -- :   [1m[36mTRANSACTION (40.9ms)[0m  [1m[35mCOMMIT /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:37.483446 #349] DEBUG -- :   ↳ lib/gitlab/database.rb:353:in `commit'
+D, [2022-04-05T16:03:37.523777 #349] DEBUG -- :   [1m[36mActiveRecord::InternalMetadata Load (38.2ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' LIMIT 1 /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:37.526245 #349] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:79:in `block (2 levels) in run'
+D, [2022-04-05T16:03:37.567003 #349] DEBUG -- :   [1m[35m (38.6ms)[0m  [1m[34mSELECT pg_advisory_unlock(3005434223539248480)[0m
+D, [2022-04-05T16:03:37.569769 #349] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:79:in `block (2 levels) in run'
+D, [2022-04-05T16:03:37.777530 #349] DEBUG -- :   [1m[35m (167.1ms)[0m  [1m[34mselect pg_database_size(current_database()) /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:37.778185 #349] DEBUG -- :   ↳ lib/gitlab/database/migrations/observers/total_database_size_change.rb:25:in `get_total_database_size'

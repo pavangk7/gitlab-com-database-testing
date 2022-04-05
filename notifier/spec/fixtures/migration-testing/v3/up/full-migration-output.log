@@ -1,0 +1,72 @@
+== 20210602144718 CreateTestTable: migrating ==================================
+-- create_table(:test_tables, {})
+-- quote_column_name(:title)
+   -> 0.0001s
+-- quote_column_name(:notes)
+   -> 0.0001s
+   -> 0.1390s
+-- quote_table_name("check_0770ba173a")
+   -> 0.0001s
+-- quote_table_name("check_9cfc473dbc")
+   -> 0.0000s
+-- quote_table_name(:test_tables)
+   -> 0.0000s
+-- execute("ALTER TABLE \"test_tables\"\nADD CONSTRAINT \"check_0770ba173a\" CHECK (char_length(\"title\") <= 128),\nADD CONSTRAINT \"check_9cfc473dbc\" CHECK (char_length(\"notes\") <= 1024)\n")
+   -> 0.0444s
+== 20210602144718 CreateTestTable: migrated (0.3977s) =========================
+
+== 20210603233011 RegularMigrationWithFiveSecondQuery: migrating ==============
+-- execute("SELECT pg_sleep(5);")
+   -> 5.0861s
+== 20210603233011 RegularMigrationWithFiveSecondQuery: migrated (5.0863s) =====
+
+== 20210604232017 DropTestTable: migrating ====================================
+-- drop_table(:test_tables)
+   -> 0.0878s
+== 20210604232017 DropTestTable: migrated (0.0880s) ===========================
+
+== 20210915152743 MigrationInheritsGitlabDatabaseMigration: migrating =========
+-- execute("SELECT 'up'")
+   -> 0.0795s
+== 20210915152743 MigrationInheritsGitlabDatabaseMigration: migrated (0.0798s) 
+
+== 20220223163519 EnsureGitlabComInMigrations: migrating ======================
+== 20220223163519 EnsureGitlabComInMigrations: migrated (0.0000s) =============
+
+== 20220318174439 QueueTestBackgroundMigration: migrating =====================
+== 20220318174439 QueueTestBackgroundMigration: migrated (0.0515s) ============
+
+== 20220323152202 AddIndexOnVisibleDeployments: migrating =====================
+-- transaction_open?()
+   -> 0.0000s
+-- index_exists?(:deployments, [:environment_id, :finished_at], {:order=>{:finished_at=>:desc}, :where=>"status IN (1, 2, 3, 4, 6)", :name=>"index_deployments_for_visible_scope", :algorithm=>:concurrently})
+   -> 0.9956s
+-- execute("SET statement_timeout TO 0")
+   -> 0.0390s
+-- add_index(:deployments, [:environment_id, :finished_at], {:order=>{:finished_at=>:desc}, :where=>"status IN (1, 2, 3, 4, 6)", :name=>"index_deployments_for_visible_scope", :algorithm=>:concurrently})
+   -> 2436.9290s
+-- execute("RESET statement_timeout")
+   -> 0.0440s
+== 20220323152202 AddIndexOnVisibleDeployments: migrated (2438.2976s) =========
+
+== 20220324110247 UntrackDeletionsOnCiJobArtifacts: migrating =================
+-- execute("DROP TRIGGER IF EXISTS ci_job_artifacts_loose_fk_trigger ON ci_job_artifacts")
+   -> 0.0498s
+== 20220324110247 UntrackDeletionsOnCiJobArtifacts: migrated (0.0500s) ========
+
+== 20220324180717 RemoveProjectPagesMetadataArtifactsArchiveIdColumn: migrating 
+-- remove_column(:project_pages_metadata, :artifacts_archive_id)
+   -> 0.0703s
+== 20220324180717 RemoveProjectPagesMetadataArtifactsArchiveIdColumn: migrated (0.0704s) 
+
+== 20220329175119 RemoveLeftoverCiJobArtifactDeletions: migrating =============
+-- execute("DELETE FROM \"loose_foreign_keys_deleted_records\"\nWHERE\n(\"loose_foreign_keys_deleted_records\".\"partition\", \"loose_foreign_keys_deleted_records\".\"id\") IN (\n  SELECT \"loose_foreign_keys_deleted_records\".\"partition\", \"loose_foreign_keys_deleted_records\".\"id\"\n  FROM \"loose_foreign_keys_deleted_records\"\n  WHERE\n  \"loose_foreign_keys_deleted_records\".\"fully_qualified_table_name\" = 'public.ci_job_artifacts' AND\n  \"loose_foreign_keys_deleted_records\".\"status\" = 1\n  LIMIT 100\n)\n")
+   -> 0.4465s
+-- execute("DELETE FROM \"loose_foreign_keys_deleted_records\"\nWHERE\n(\"loose_foreign_keys_deleted_records\".\"partition\", \"loose_foreign_keys_deleted_records\".\"id\") IN (\n  SELECT \"loose_foreign_keys_deleted_records\".\"partition\", \"loose_foreign_keys_deleted_records\".\"id\"\n  FROM \"loose_foreign_keys_deleted_records\"\n  WHERE\n  \"loose_foreign_keys_deleted_records\".\"fully_qualified_table_name\" = 'public.ci_job_artifacts' AND\n  \"loose_foreign_keys_deleted_records\".\"status\" = 1\n  LIMIT 100\n)\n")
+   -> 0.0461s
+-- execute("DELETE FROM \"loose_foreign_keys_deleted_records\"\nWHERE\n(\"loose_foreign_keys_deleted_records\".\"partition\", \"loose_foreign_keys_deleted_records\".\"id\") IN (\n  SELECT \"loose_foreign_keys_deleted_records\".\"partition\", \"loose_foreign_keys_deleted_records\".\"id\"\n  FROM \"loose_foreign_keys_deleted_records\"\n  WHERE\n  \"loose_foreign_keys_deleted_records\".\"fully_qualified_table_name\" = 'public.ci_job_artifacts' AND\n  \"loose_foreign_keys_deleted_records\".\"status\" = 1\n  LIMIT 100\n)\n")
+   -> 0.0530s
+== 20220329175119 RemoveLeftoverCiJobArtifactDeletions: migrated (0.5463s) ====
+
+== 20990604233157 MigrationThrowsException: migrating =========================
+-- RuntimeError("This throws an exception")
