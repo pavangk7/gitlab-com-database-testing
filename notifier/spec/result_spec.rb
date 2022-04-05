@@ -5,8 +5,7 @@ require 'spec_helper'
 RSpec.describe Result do
   where(:fixture_root, :schema_version) do
     [
-      ['v1', 1],
-      ['v2', 2]
+      ['v3', 3]
     ]
   end
 
