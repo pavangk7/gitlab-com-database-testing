@@ -9,23 +9,13 @@ class Result
     clone_details_file = File.join(database_testing_path, 'clone-details.json')
     query_details_path = File.join(database_testing_path, 'up')
 
-    stats = read_stats(query_details_path)
+    global_migration_data = read_to_json(migrations_file)
 
-    # Attach statistics to each migration
-    migrations = read_to_json(migrations_file).each_with_object({}) do |(version, migration), h|
-      version = version.to_i
-      name = migration['name']
-
-      details_path = File.join(query_details_path, name, 'query-details.json')
-
-      query_details = if File.exist?(details_path)
-                        read_to_json(details_path)
-                      else
-                        []
-                      end
-
-      h[version] = Migration.new(migration, stats[version], query_details)
-    end
+    migrations = Pathname(query_details_path)
+                   .children
+                   .select(&:directory?)
+                   .map { |d| Migration.from_directory(d, global_migration_data: global_migration_data) }
+                   .index_by(&:version)
 
     # Attach clone details
     clone_details = OpenStruct.new(JSON.parse(File.read(clone_details_file)))
