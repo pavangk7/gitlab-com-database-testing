@@ -1,0 +1,47 @@
+From 9429b842791ce0d15657bb7c5ef609fc96918567 Mon Sep 17 00:00:00 2001
+From: Simon Tomlinson <stomlinson@gitlab.com>
+Date: Fri, 18 Mar 2022 12:56:33 -0500
+Subject: [PATCH] Patch for testing background migrations
+
+---
+ .../20220318174439_queue_test_background_migration.rb | 11 +++++++++++
+ .../background_migration/test_background_migration.rb |  9 +++++++++
+ 2 files changed, 20 insertions(+)
+ create mode 100644 db/migrate/20220318174439_queue_test_background_migration.rb
+ create mode 100644 lib/gitlab/background_migration/test_background_migration.rb
+
+diff --git a/db/migrate/20220318174439_queue_test_background_migration.rb b/db/migrate/20220318174439_queue_test_background_migration.rb
+new file mode 100644
+index 00000000000..3d8e9349296
+--- /dev/null
++++ b/db/migrate/20220318174439_queue_test_background_migration.rb
+@@ -0,0 +1,11 @@
++# frozen_string_literal: true
++
++class QueueTestBackgroundMigration < Gitlab::Database::Migration[1.0]
++  disable_ddl_transaction!
++
++  def up
++    (1..5).each do |i|
++      migrate_in(i.minutes, 'TestBackgroundMigration', [i])
++    end
++  end
++end
+diff --git a/lib/gitlab/background_migration/test_background_migration.rb b/lib/gitlab/background_migration/test_background_migration.rb
+new file mode 100644
+index 00000000000..bc891329d9c
+--- /dev/null
++++ b/lib/gitlab/background_migration/test_background_migration.rb
+@@ -0,0 +1,9 @@
++module Gitlab
++  module BackgroundMigration
++    class TestBackgroundMigration
++      def perform(i)
++        ApplicationRecord.connection.exec_query("select pg_sleep($1)", nil, [i])
++      end
++    end
++  end
++end
+-- 
+2.35.1
+
