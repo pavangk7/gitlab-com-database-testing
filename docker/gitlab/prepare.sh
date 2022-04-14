@@ -12,7 +12,7 @@ test: &test
     adapter: postgresql
     encoding: unicode
     database: gitlabhq_dblab
-    username: ${DBLAB_USER}
+    username: gitlab
     password: ${DBLAB_PASSWORD}
     host: postgres-main
     prepared_statements: false
@@ -22,7 +22,7 @@ test: &test
     adapter: postgresql
     encoding: unicode
     database: gitlabhq_dblab
-    username: ${DBLAB_USER}
+    username: gitlab
     password: ${DBLAB_PASSWORD}
     host: postgres-ci
     prepared_statements: false
@@ -38,7 +38,7 @@ test: &test
     adapter: postgresql
     encoding: unicode
     database: gitlabhq_dblab
-    username: ${DBLAB_USER}
+    username: gitlab
     password: ${DBLAB_PASSWORD}
     host: postgres
     prepared_statements: false
@@ -84,6 +84,15 @@ for db_host in $(echo "$ALL_DB_HOSTS" | tr ',' '\n'); do
     PGPASSWORD="${DBLAB_PASSWORD}" psql -h "${db_host}" -U "${DBLAB_USER}" gitlabhq_dblab < /gitlab/prepare_postgres.sql
   else
     echo "Unable to connect to database lab psql for optional configuration of ${db_host}"
+  fi
+
+  # Reset `gitlab` user password - this is the PG user we're going to use later to execute migrations
+  # We re-use $DBLAB_PASSWORD variable here
+  if timeout 60s bash -c "until pg_isready --quiet -h ${db_host} -U ${DBLAB_USER} --dbname=gitlabhq_dblab; do sleep 1; done"; then
+    echo "ALTER USER gitlab PASSWORD '${DBLAB_PASSWORD}'" | PGPASSWORD="${DBLAB_PASSWORD}" psql -h "${db_host}" -U "${DBLAB_USER}" gitlabhq_dblab
+  else
+    echo "Unable to connect to database lab psql for mandatory user configuration on ${db_host}"
+    exit 1
   fi
 done
 
