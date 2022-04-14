@@ -5,27 +5,18 @@ require 'json'
 
 class Result
   def self.from_directory(database_testing_path)
-    legacy_statistics_file = File.join(database_testing_path, 'up', 'migration-stats.json')
     migrations_file = File.join(database_testing_path, 'migrations.json')
     clone_details_file = File.join(database_testing_path, 'clone-details.json')
     query_details_path = File.join(database_testing_path, 'up')
 
-    stats = if schema_version(database_testing_path) >= 3
-              read_stats_v3(query_details_path)
-            else
-              read_stats_legacy(legacy_statistics_file)
-            end
+    stats = read_stats(query_details_path)
 
     # Attach statistics to each migration
     migrations = read_to_json(migrations_file).each_with_object({}) do |(version, migration), h|
       version = version.to_i
       name = migration['name']
 
-      details_path = if schema_version(database_testing_path) > 1
-                       File.join(query_details_path, name, 'query-details.json')
-                     else
-                       File.join(query_details_path, "#{version}_#{name}-query-details.json")
-                     end
+      details_path = File.join(query_details_path, name, 'query-details.json')
 
       query_details = if File.exist?(details_path)
                         read_to_json(details_path)
@@ -69,7 +60,7 @@ class Result
     read_to_json(stats_file).index_by { |s| s['version'] }
   end
 
-  def self.read_stats_v3(migration_dir_path)
+  def self.read_stats(migration_dir_path)
     Pathname(migration_dir_path).children
                                 .select(&:directory?)
                                 .map { |dir| read_to_json(dir.join('migration-stats.json')) }
@@ -87,10 +78,6 @@ class Result
   def self.schema_version(path)
     metadata_file = File.join(path, 'up', 'metadata.json')
 
-    if File.exist?(metadata_file)
-      read_to_json(metadata_file)['version']
-    else
-      1
-    end
+    read_to_json(metadata_file)['version']
   end
 end
