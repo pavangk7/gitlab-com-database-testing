@@ -9,23 +9,19 @@ class Result
     clone_details_file = File.join(database_testing_path, 'clone-details.json')
     query_details_path = File.join(database_testing_path, 'up')
 
-    stats = read_stats(query_details_path)
+    background_migrations_path = File.join(database_testing_path, 'background_migrations')
 
-    # Attach statistics to each migration
-    migrations = read_to_json(migrations_file).each_with_object({}) do |(version, migration), h|
-      version = version.to_i
-      name = migration['name']
+    global_migration_data = read_to_json(migrations_file)
 
-      details_path = File.join(query_details_path, name, 'query-details.json')
+    migrations = Pathname(query_details_path)
+                   .children
+                   .select(&:directory?)
+                   .map { |d| Migration.from_directory(d, global_migration_data: global_migration_data) }
+                   .index_by(&:version)
 
-      query_details = if File.exist?(details_path)
-                        read_to_json(details_path)
-                      else
-                        []
-                      end
-
-      h[version] = Migration.new(migration, stats[version], query_details)
-    end
+    background_migrations = Pathname(background_migrations_path)
+                              .children.select(&:directory?)
+                              .map { |d| BackgroundMigration.from_directory(d) }
 
     # Attach clone details
     clone_details = OpenStruct.new(JSON.parse(File.read(clone_details_file)))
@@ -36,13 +32,14 @@ class Result
       migration.was_run?
     end
 
-    Result.new(migrations, clone_details)
+    Result.new(migrations, background_migrations, clone_details)
   end
 
-  attr_reader :migrations, :clone_details
+  attr_reader :migrations, :background_migrations, :clone_details
 
-  def initialize(migrations, clone_details)
+  def initialize(migrations, background_migrations, clone_details)
     @migrations = migrations
+    @background_migrations = background_migrations
     @clone_details = clone_details
   end
 

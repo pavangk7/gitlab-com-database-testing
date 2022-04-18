@@ -1,39 +1,39 @@
-# Logfile created on 2021-06-15 16:07:32 +0000 by logger.rb/v1.4.2
-D, [2021-06-15T16:07:33.037625 #161] DEBUG -- :   [1m[35m (37.6ms)[0m  [1m[34mSELECT pg_try_advisory_lock(3005434223539248480)[0m
-D, [2021-06-15T16:07:33.038252 #161] DEBUG -- :   ↳ lib/tasks/gitlab/db.rake:259:in `block (5 levels) in <main>'
-D, [2021-06-15T16:07:33.113024 #161] DEBUG -- :   [1m[35m (74.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application:test*/[0m
-D, [2021-06-15T16:07:33.113560 #161] DEBUG -- :   ↳ lib/tasks/gitlab/db.rake:259:in `block (5 levels) in <main>'
-I, [2021-06-15T16:07:33.121161 #161]  INFO -- : Migrating to CreateTestTable (20210602144718)
-D, [2021-06-15T16:07:33.182239 #161] DEBUG -- :   [1m[36mTRANSACTION (37.3ms)[0m  [1m[35mBEGIN /*application:test*/[0m
-D, [2021-06-15T16:07:33.182896 #161] DEBUG -- :   ↳ lib/gitlab/database/with_lock_retries.rb:168:in `execute'
-D, [2021-06-15T16:07:33.220456 #161] DEBUG -- :   [1m[36mTRANSACTION (37.1ms)[0m  [1m[35mSAVEPOINT active_record_1 /*application:test*/[0m
-D, [2021-06-15T16:07:33.221192 #161] DEBUG -- :   ↳ lib/gitlab/database/with_lock_retries.rb:168:in `execute'
-D, [2021-06-15T16:07:33.258763 #161] DEBUG -- :   [1m[35m (37.2ms)[0m  [1m[35mSET LOCAL lock_timeout TO '100ms' /*application:test*/[0m
-D, [2021-06-15T16:07:33.259290 #161] DEBUG -- :   ↳ lib/gitlab/database/with_lock_retries.rb:168:in `execute'
-D, [2021-06-15T16:07:33.408911 #161] DEBUG -- :   [1m[35m (108.5ms)[0m  [1m[35mCREATE TABLE "test_tables" ("id" bigserial primary key, "stars" bigint DEFAULT 0 NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, "title" text, "notes" text) /*application:test*/[0m
-D, [2021-06-15T16:07:33.409530 #161] DEBUG -- :   ↳ lib/gitlab/database/migration_helpers.rb:96:in `block in create_table_with_constraints'
-D, [2021-06-15T16:07:33.454246 #161] DEBUG -- :   [1m[35m (43.9ms)[0m  [1m[35mALTER TABLE "test_tables"
+# Logfile created on 2022-04-05 16:03:22 +0000 by logger.rb/v1.4.2
+D, [2022-04-05T16:03:23.115399 #349] DEBUG -- :   [1m[35m (37.3ms)[0m  [1m[34mSELECT pg_try_advisory_lock(3005434223539248480)[0m
+D, [2022-04-05T16:03:23.116017 #349] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:79:in `block (2 levels) in run'
+D, [2022-04-05T16:03:23.194252 #349] DEBUG -- :   [1m[35m (77.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:23.195007 #349] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:79:in `block (2 levels) in run'
+I, [2022-04-05T16:03:23.207342 #349]  INFO -- : Migrating to CreateTestTable (20210602144718)
+D, [2022-04-05T16:03:23.279646 #349] DEBUG -- :   [1m[36mTRANSACTION (37.3ms)[0m  [1m[35mBEGIN /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:23.280525 #349] DEBUG -- :   ↳ lib/gitlab/database/with_lock_retries.rb:172:in `execute'
+D, [2022-04-05T16:03:23.325767 #349] DEBUG -- :   [1m[36mTRANSACTION (37.5ms)[0m  [1m[35mSAVEPOINT active_record_1 /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:23.326671 #349] DEBUG -- :   ↳ lib/gitlab/database/with_lock_retries.rb:172:in `execute'
+D, [2022-04-05T16:03:23.366832 #349] DEBUG -- :   [1m[35m (37.2ms)[0m  [1m[35mSET LOCAL lock_timeout TO '100ms' /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:23.367687 #349] DEBUG -- :   ↳ lib/gitlab/database/with_lock_retries.rb:172:in `execute'
+D, [2022-04-05T16:03:23.506773 #349] DEBUG -- :   [1m[35m (97.5ms)[0m  [1m[35mCREATE TABLE "test_tables" ("id" bigserial primary key, "stars" bigint DEFAULT 0 NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, "title" text, "notes" text) /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:23.507550 #349] DEBUG -- :   ↳ lib/gitlab/database/migration_helpers.rb:99:in `block in create_table_with_constraints'
+D, [2022-04-05T16:03:23.551687 #349] DEBUG -- :   [1m[35m (43.1ms)[0m  [1m[35mALTER TABLE "test_tables"
 ADD CONSTRAINT "check_0770ba173a" CHECK (char_length("title") <= 128),
 ADD CONSTRAINT "check_9cfc473dbc" CHECK (char_length("notes") <= 1024)
- /*application:test*/[0m
-D, [2021-06-15T16:07:33.454829 #161] DEBUG -- :   ↳ lib/gitlab/database/migration_helpers.rb:124:in `block in create_table_with_constraints'
-D, [2021-06-15T16:07:33.492936 #161] DEBUG -- :   [1m[36mTRANSACTION (37.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1 /*application:test*/[0m
-D, [2021-06-15T16:07:33.493603 #161] DEBUG -- :   ↳ lib/gitlab/database.rb:376:in `block in transaction'
-D, [2021-06-15T16:07:33.531332 #161] DEBUG -- :   [1m[35m (37.2ms)[0m  [1m[35mRESET idle_in_transaction_session_timeout; RESET lock_timeout /*application:test*/[0m
-D, [2021-06-15T16:07:33.531811 #161] DEBUG -- :   ↳ lib/gitlab/database/with_lock_retries.rb:168:in `execute'
-D, [2021-06-15T16:07:33.573490 #161] DEBUG -- :   [1m[36mActiveRecord::SchemaMigration Create (38.9ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20210602144718') RETURNING "version" /*application:test*/[0m
-D, [2021-06-15T16:07:33.574365 #161] DEBUG -- :   ↳ lib/gitlab/database.rb:376:in `block in transaction'
-D, [2021-06-15T16:07:33.612742 #161] DEBUG -- :   [1m[36mTRANSACTION (37.8ms)[0m  [1m[35mCOMMIT /*application:test*/[0m
-D, [2021-06-15T16:07:33.613318 #161] DEBUG -- :   ↳ lib/gitlab/database.rb:376:in `block in transaction'
-D, [2021-06-15T16:07:33.846888 #161] DEBUG -- :   [1m[36mActiveRecord::InternalMetadata Load (83.7ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' LIMIT 1 /*application:test*/[0m
-D, [2021-06-15T16:07:33.847565 #161] DEBUG -- :   ↳ lib/tasks/gitlab/db.rake:259:in `block (5 levels) in <main>'
-D, [2021-06-15T16:07:33.893395 #161] DEBUG -- :   [1m[36mTRANSACTION (41.0ms)[0m  [1m[35mBEGIN /*application:test*/[0m
-D, [2021-06-15T16:07:33.894439 #161] DEBUG -- :   ↳ lib/tasks/gitlab/db.rake:259:in `block (5 levels) in <main>'
-D, [2021-06-15T16:07:33.933663 #161] DEBUG -- :   [1m[36mActiveRecord::InternalMetadata Update (38.9ms)[0m  [1m[33mUPDATE "ar_internal_metadata" SET "value" = 'test', "updated_at" = '2021-06-15 16:07:33.851432' WHERE "ar_internal_metadata"."key" = 'environment' /*application:test*/[0m
-D, [2021-06-15T16:07:33.934588 #161] DEBUG -- :   ↳ lib/tasks/gitlab/db.rake:259:in `block (5 levels) in <main>'
-D, [2021-06-15T16:07:33.973935 #161] DEBUG -- :   [1m[36mTRANSACTION (38.6ms)[0m  [1m[35mCOMMIT /*application:test*/[0m
-D, [2021-06-15T16:07:33.974621 #161] DEBUG -- :   ↳ lib/tasks/gitlab/db.rake:259:in `block (5 levels) in <main>'
-D, [2021-06-15T16:07:34.012933 #161] DEBUG -- :   [1m[35m (37.9ms)[0m  [1m[34mSELECT pg_advisory_unlock(3005434223539248480)[0m
-D, [2021-06-15T16:07:34.013599 #161] DEBUG -- :   ↳ lib/tasks/gitlab/db.rake:259:in `block (5 levels) in <main>'
-D, [2021-06-15T16:07:34.216554 #161] DEBUG -- :   [1m[35m (164.7ms)[0m  [1m[34mselect pg_database_size(current_database()) /*application:test*/[0m
-D, [2021-06-15T16:07:34.216982 #161] DEBUG -- :   ↳ lib/gitlab/database/migrations/observers/total_database_size_change.rb:25:in `get_total_database_size'
+ /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:23.552463 #349] DEBUG -- :   ↳ lib/gitlab/database/migration_helpers.rb:127:in `block in create_table_with_constraints'
+D, [2022-04-05T16:03:23.591442 #349] DEBUG -- :   [1m[36mTRANSACTION (37.5ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1 /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:23.592350 #349] DEBUG -- :   ↳ lib/gitlab/database/with_lock_retries.rb:129:in `run_block_with_lock_timeout'
+D, [2022-04-05T16:03:23.629924 #349] DEBUG -- :   [1m[35m (37.0ms)[0m  [1m[35mRESET idle_in_transaction_session_timeout; RESET lock_timeout /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:23.630764 #349] DEBUG -- :   ↳ lib/gitlab/database/with_lock_retries.rb:172:in `execute'
+D, [2022-04-05T16:03:23.679003 #349] DEBUG -- :   [1m[36mActiveRecord::SchemaMigration Create (40.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20210602144718') RETURNING "version" /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:23.681127 #349] DEBUG -- :   ↳ lib/gitlab/database.rb:320:in `block in transaction'
+D, [2022-04-05T16:03:23.721618 #349] DEBUG -- :   [1m[36mTRANSACTION (38.1ms)[0m  [1m[35mCOMMIT /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:23.722240 #349] DEBUG -- :   ↳ lib/gitlab/database.rb:353:in `commit'
+D, [2022-04-05T16:03:23.807440 #349] DEBUG -- :   [1m[36mActiveRecord::InternalMetadata Load (41.4ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' LIMIT 1 /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:23.809080 #349] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:79:in `block (2 levels) in run'
+D, [2022-04-05T16:03:23.855875 #349] DEBUG -- :   [1m[36mTRANSACTION (37.3ms)[0m  [1m[35mBEGIN /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:23.857795 #349] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:79:in `block (2 levels) in run'
+D, [2022-04-05T16:03:23.896100 #349] DEBUG -- :   [1m[36mActiveRecord::InternalMetadata Update (37.8ms)[0m  [1m[33mUPDATE "ar_internal_metadata" SET "value" = 'test', "updated_at" = '2022-04-05 16:03:23.816591' WHERE "ar_internal_metadata"."key" = 'environment' /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:23.897746 #349] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:79:in `block (2 levels) in run'
+D, [2022-04-05T16:03:23.936371 #349] DEBUG -- :   [1m[36mTRANSACTION (37.2ms)[0m  [1m[35mCOMMIT /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:23.936965 #349] DEBUG -- :   ↳ lib/gitlab/database.rb:353:in `commit'
+D, [2022-04-05T16:03:23.974958 #349] DEBUG -- :   [1m[35m (37.5ms)[0m  [1m[34mSELECT pg_advisory_unlock(3005434223539248480)[0m
+D, [2022-04-05T16:03:23.975906 #349] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:79:in `block (2 levels) in run'
+D, [2022-04-05T16:03:24.175820 #349] DEBUG -- :   [1m[35m (161.5ms)[0m  [1m[34mselect pg_database_size(current_database()) /*application:test,db_config_name:main*/[0m
+D, [2022-04-05T16:03:24.176964 #349] DEBUG -- :   ↳ lib/gitlab/database/migrations/observers/total_database_size_change.rb:25:in `get_total_database_size'

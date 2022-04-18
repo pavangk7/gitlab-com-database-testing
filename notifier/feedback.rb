@@ -12,7 +12,7 @@ class Feedback
 
   attr_reader :result, :env
 
-  delegate :migrations_from_branch, :other_migrations, to: :result
+  delegate :migrations_from_branch, :other_migrations, :background_migrations, to: :result
 
   def initialize(result, env = Environment.instance)
     @result = result
@@ -27,6 +27,10 @@ class Feedback
 
   def render_details(migration)
     erb('detail').result(binding)
+  end
+
+  def render_background_migration_detail(background_migration)
+    erb('background_migration_detail').result(binding)
   end
 
   def render_clone_details(clone_details)
@@ -63,6 +67,14 @@ class Feedback
 
   def render_migration_histogram(migration)
     Charts::ExecutionHistogram.for_migration(migration).render
+  end
+
+  def render_background_migration_batch_histogram(background_migration)
+    Charts::ExecutionHistogram.for_background_migration_batches(background_migration).render
+  end
+
+  def render_background_migration_query_histogram(background_migration)
+    Charts::ExecutionHistogram.for_background_migration_queries(background_migration).render
   end
 
   def erb(template)

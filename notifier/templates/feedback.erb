@@ -15,6 +15,14 @@ Migrations included in this change have been executed on gitlab.com data for tes
 
 ---
 
+### Background migrations
+
+% background_migrations.each do |background_migration|
+<%= render_background_migration_detail(background_migration) %>
+% end
+
+---
+
 <details>
   <summary>Other migrations pending on GitLab.com</summary>
 
