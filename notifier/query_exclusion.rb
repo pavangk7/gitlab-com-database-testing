@@ -15,7 +15,8 @@ class QueryExclusion
     "SELECT pg_advisory_unlock($1)",
     "SELECT current_database()",
     "SELECT $1",
-    "SELECT current_schema"
+    "SELECT current_schema",
+    "SELECT \"postgres_async_indexes\".* FROM \"postgres_async_indexes\" WHERE \"postgres_async_indexes\".\"name\" = $1 LIMIT $2"
   ].map { |q| PgQuery.parse(q).deparse.downcase }.freeze
   # rubocop:enable Layout/LineLength
 

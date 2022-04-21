@@ -3,9 +3,9 @@ require 'spec_helper'
 
 RSpec.describe QueryExclusion do
   it 'is true if query is on the excluded list' do
-    query = described_class::EXCLUSIONS.first
-
-    expect(described_class.exclude?(query)).to be true
+    described_class::EXCLUSIONS.each do |query|
+      expect(described_class).to be_exclude(query)
+    end
   end
 
   it 'is true if the query differs from the excluded list only by a comment' do
