@@ -34,15 +34,16 @@ else
 
   cat > config/database.yml <<-EOF
 test: &test
-  adapter: postgresql
-  encoding: unicode
-  database: gitlabhq_dblab
-  username: ${DBLAB_USER}
-  password: ${DBLAB_PASSWORD}
-  host: postgres
-  prepared_statements: false
-  variables:
-    statement_timeout: 120s
+  main:
+    adapter: postgresql
+    encoding: unicode
+    database: gitlabhq_dblab
+    username: ${DBLAB_USER}
+    password: ${DBLAB_PASSWORD}
+    host: postgres
+    prepared_statements: false
+    variables:
+      statement_timeout: 120s
 EOF
 
 fi
