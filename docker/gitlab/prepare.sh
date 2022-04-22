@@ -89,7 +89,7 @@ for db_host in $(echo "$ALL_DB_HOSTS" | tr ',' '\n'); do
   # Reset `gitlab` user password - this is the PG user we're going to use later to execute migrations
   # We re-use $DBLAB_PASSWORD variable here
   if timeout 60s bash -c "until pg_isready --quiet -h ${db_host} -U ${DBLAB_USER} --dbname=gitlabhq_dblab; do sleep 1; done"; then
-    echo "ALTER USER gitlab PASSWORD '${DBLAB_PASSWORD}'" | PGPASSWORD="${DBLAB_PASSWORD}" psql -h "${db_host}" -U "${DBLAB_USER}" gitlabhq_dblab
+    echo "ALTER USER gitlab PASSWORD '${DBLAB_PASSWORD}'; GRANT EXECUTE ON FUNCTION pg_stat_statements_reset() to gitlab;" | PGPASSWORD="${DBLAB_PASSWORD}" psql -h "${db_host}" -U "${DBLAB_USER}" gitlabhq_dblab
   else
     echo "Unable to connect to database lab psql for mandatory user configuration on ${db_host}"
     exit 1
