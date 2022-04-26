@@ -29,6 +29,7 @@ class Notifier < Thor
     raise "Upstream merge request id missing: Specify TOP_UPSTREAM_MERGE_REQUEST_IID" unless merge_request_id
 
     comment = feedback_for(database_testing_path).render
+    File.write(Path.join(database_testing_path, 'comment.md'), comment)
 
     gitlab = Gitlab.client(
       endpoint: 'https://gitlab.com/api/v4',
