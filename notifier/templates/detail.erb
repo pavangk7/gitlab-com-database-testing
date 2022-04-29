@@ -5,7 +5,7 @@
 * Database size change: <%= total_size_change(migration) %>
 
 % if migration.queries.any?
-<%= render_pgss_table(migration.queries) %>
+<%= render_pgss_table(migration) %>
 % end
 
 <%= render_migration_histogram(migration) %>

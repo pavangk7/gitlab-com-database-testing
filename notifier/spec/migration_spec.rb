@@ -3,26 +3,28 @@
 require 'spec_helper'
 
 RSpec.describe Migration do
-  let(:good_queries) do
-    [
-      {
-        "query" => "select pg_database_size(current_database()) /*application:test*/",
-        "calls" => 1,
-        "total_time" => 87.621755,
-        "max_time" => 87.621755,
-        "mean_time" => 87.621755,
-        "rows" => 1
-      },
-      {
-        "query" => "select * from users limit 1 /*application:test*/",
-        "calls" => 1,
-        "total_time" => 80.51234,
-        "max_time" => 80.51234,
-        "mean_time" => 80.51234,
-        "rows" => 1
-      }
-    ]
+  let(:excluded_query) do
+    {
+      "query" => "select pg_database_size(current_database()) /*application:test*/",
+      "calls" => 1,
+      "total_time" => 87.621755,
+      "max_time" => 87.621755,
+      "mean_time" => 87.621755,
+      "rows" => 1
+    }
   end
+
+  let(:included_good_query) do
+    {
+      "query" => "select * from users limit 1 /*application:test*/",
+      "calls" => 1,
+      "total_time" => 80.51234,
+      "max_time" => 80.51234,
+      "mean_time" => 80.51234,
+      "rows" => 1
+    }
+  end
+  let(:good_queries) { [excluded_query, included_good_query]}
 
   let(:bad_query) do
     {
@@ -166,6 +168,12 @@ RSpec.describe Migration do
 
       expect(subject.sort_key).to eq([0, 20210602144718])
       expect(post_migration.sort_key).to eq([1, 42])
+    end
+  end
+
+  describe '#excluded_query_duration' do
+    it 'is the sum of the duration of all excluded queries' do
+      expect(subject.excluded_query_duration).to eq(excluded_query['total_time'])
     end
   end
 end

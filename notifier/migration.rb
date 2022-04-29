@@ -180,4 +180,8 @@ class Migration
   def sort_key
     [type == TYPE_REGULAR ? 0 : 1, version]
   end
+
+  def excluded_query_duration
+    queries.select(&:excluded?).sum(&:total_time)
+  end
 end

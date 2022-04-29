@@ -55,5 +55,12 @@ RSpec.describe BackgroundMigration do
       expect(aggregate_query_1.max_time).to eq(100)
       expect(aggregate_query_2.max_time).to eq(200)
     end
+
+    describe '#excluded_query_duration' do
+      it 'is the sum of the duration of all excluded queries' do
+        # SELECT $1 is an excluded query
+        expect(background_migration.excluded_query_duration).to eq(aggregate_query_1.total_time)
+      end
+    end
   end
 end

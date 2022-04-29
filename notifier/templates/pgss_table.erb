@@ -1,4 +1,5 @@
-% pgss_rows = pgss.reject(&:excluded?)
+% pgss_rows = pgss.queries.reject(&:excluded?)
+Executed <%= format_time(pgss.excluded_query_duration) %> of common ignored queries.
 % unless pgss_rows.empty?
 | Query | Calls | Total Time | Max Time | Mean Time | Rows |
 | ----- | ----- | ---------- | -------- | --------- | ---- |

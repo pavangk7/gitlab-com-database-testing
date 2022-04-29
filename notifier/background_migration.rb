@@ -40,4 +40,8 @@ class BackgroundMigration
       Query.new(query_data)
     end
   end
+
+  def excluded_query_duration
+    queries.select(&:excluded?).sum(&:total_time)
+  end
 end

@@ -3,7 +3,7 @@
 Sampled <%= background_migration.batches.count %> batches
 
 % if background_migration.queries.any?
-<%= render_pgss_table(background_migration.queries) %>
+<%= render_pgss_table(background_migration) %>
 % end
 
 <%= render_background_migration_batch_histogram(background_migration) %>
