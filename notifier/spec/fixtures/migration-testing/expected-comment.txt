@@ -50,6 +50,7 @@ Migrations included in this change have been executed on gitlab.com data for tes
 * Duration: 1.6 s
 * Database size change: +24.00 KiB
 
+Executed 131.7 ms of common ignored queries.
 | Query | Calls | Total Time | Max Time | Mean Time | Rows |
 | ----- | ----- | ---------- | -------- | --------- | ---- |
 | <pre>CREATE TABLE "test_tables" ("id" bigserial primary key, "stars" bigint DEFAULT 0 NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, "title" text, "notes" text) &#x2F;&#x2A;application:test,db_config_name:main&#x2A;&#x2F;</pre> | 1 | 60.2 ms | 60.2 ms | 60.2 ms | 0 |
@@ -75,6 +76,7 @@ Migrations included in this change have been executed on gitlab.com data for tes
 * Duration: 6.1 s
 * Database size change: +0.00 B
 
+Executed 120.5 ms of common ignored queries.
 | Query | Calls | Total Time | Max Time | Mean Time | Rows |
 | ----- | ----- | ---------- | -------- | --------- | ---- |
 | <pre>SELECT pg_sleep($1)</pre> | 1 | 5003.7 ms | 5003.7 ms | 5003.7 ms | 1 |
@@ -98,6 +100,7 @@ Migrations included in this change have been executed on gitlab.com data for tes
 * Duration: 1.1 s
 * Database size change: +0.00 B
 
+Executed 140.1 ms of common ignored queries.
 
 ####  Migration: <b>20220223163519 - EnsureGitlabComInMigrations</b>
 
@@ -105,6 +108,7 @@ Migrations included in this change have been executed on gitlab.com data for tes
 * Duration: 1.1 s
 * Database size change: +0.00 B
 
+Executed 133.3 ms of common ignored queries.
 
 ####  Migration: <b>20220318174439 - QueueTestBackgroundMigration</b>
 
@@ -112,6 +116,7 @@ Migrations included in this change have been executed on gitlab.com data for tes
 * Duration: 1.2 s
 * Database size change: +0.00 B
 
+Executed 135.4 ms of common ignored queries.
 
 #### :warning: Migration: <b>20201015154529 - AddMigrationThatRequiresBackground</b>
 
@@ -126,6 +131,7 @@ Migrations included in this change have been executed on gitlab.com data for tes
 * Duration: 1.2 s
 * Database size change: -24.00 KiB
 
+Executed 135.8 ms of common ignored queries.
 | Query | Calls | Total Time | Max Time | Mean Time | Rows |
 | ----- | ----- | ---------- | -------- | --------- | ---- |
 | <pre>DROP TABLE "test_tables" &#x2F;&#x2A;application:test,db_config_name:main&#x2A;&#x2F;</pre> | 1 | 6.7 ms | 6.7 ms | 6.7 ms | 0 |
@@ -149,6 +155,7 @@ Migrations included in this change have been executed on gitlab.com data for tes
 * Duration: 0.9 s
 * Database size change: +0.00 B
 
+Executed 133.5 ms of common ignored queries.
 
 
 ---
@@ -159,6 +166,7 @@ Migrations included in this change have been executed on gitlab.com data for tes
 
 Sampled 5 batches
 
+Executed 714.4 ms of common ignored queries.
 | Query | Calls | Total Time | Max Time | Mean Time | Rows |
 | ----- | ----- | ---------- | -------- | --------- | ---- |
 | <pre>select pg_sleep($1) &#x2F;&#x2A;application:test,db_config_name:main&#x2A;&#x2F;</pre> | 5 | 15013.9 ms | 5005.1 ms | 3002.8 ms | 5 |
