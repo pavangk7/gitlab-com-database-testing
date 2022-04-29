@@ -19,7 +19,7 @@ RUN bundle config set deployment 'true'
 RUN bundle config set clean 'true'
 RUN bundle config set jobs $(nproc)
 RUN bundle config set path vendor
-RUN bundle config set retry 3
+RUN bundle config set retry 5
 RUN bundle install
 
 ARG GITLAB_COMMIT_SHA
