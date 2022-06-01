@@ -39,4 +39,10 @@ RSpec.describe QueryExclusion do
 
     expect(described_class.exclude?(query)).to be false
   end
+
+  it 'is false for a query with a syntax error' do
+    query = 'select << syntax error >>'
+
+    expect(described_class.exclude?(query)).to be false
+  end
 end

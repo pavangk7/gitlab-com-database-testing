@@ -37,7 +37,7 @@ class QueryExclusion
 
     false
   rescue PgQuery::ParseError => e
-    warn "Query parse error:\n#{e}\nFor query: #{query}"
+    warn "Query parse error:\n#{e}\nFor query: #{sql}"
     false
   end
 end
