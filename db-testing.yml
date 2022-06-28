@@ -11,6 +11,7 @@ variables:
   GITLAB_PATH: "/gitlab"
   GITLAB_COMMIT_SHA: "master"
   IMAGE_NAME: "gitlab-com-database-testing:${GITLAB_COMMIT_SHA}"
+  UPSTREAM_GIT_URL: https://gitlab.com/gitlab-org/gitlab.git
 
 .image:base:
   stage: prepare
@@ -28,7 +29,7 @@ variables:
 image:gitlab:
   extends: .image:base
   script:
-    - docker build --build-arg GITLAB_COMMIT_SHA=${GITLAB_COMMIT_SHA} -t ${IMAGE_NAME} docker/gitlab
+    - docker build --build-arg GITLAB_COMMIT_SHA=${GITLAB_COMMIT_SHA} --build-arg UPSTREAM_GIT_URL=${UPSTREAM_GIT_URL} -t ${IMAGE_NAME} docker/gitlab
     - docker tag ${IMAGE_NAME} ${DOCKER_REGISTRY}/${IMAGE_NAME}
     - docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}
 
