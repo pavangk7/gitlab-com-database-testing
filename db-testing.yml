@@ -18,14 +18,6 @@ variables:
   tags:
     - builder
 
-.rules:if-decomposed:
-  rules:
-    - if: '$RUN_DECOMPOSED == "true"'
-
-.rules:if-not-decomposed:
-  rules:
-    - if: '$RUN_DECOMPOSED == null || $RUN_DECOMPOSED != "true"'
-
 image:gitlab:
   extends: .image:base
   script:
@@ -63,7 +55,10 @@ image:redis:
     DBLAB_USER: $DBLAB_USER
     DBLAB_PASSWORD: $DBLAB_PASSWORD
     DBLAB_API_PORT: $DBLAB_API_PORT
+    DBLAB_API_PORT_CI: $DBLAB_API_PORT_CI
     DBLAB_ENVIRONMENT: $DBLAB_ENVIRONMENT
+    DBLAB_ENVIRONMENT_CI: $DBLAB_ENVIRONMENT_CI
+
     DBLAB_CLONE_ID: "database-testing-${CI_PIPELINE_ID}"
     CLONE_DETAILS_DB_NAME: "postgres" # temporary to make clone_details work with multiple databases
   artifacts:
@@ -84,22 +79,9 @@ image:redis:
     - bundle exec ruby list_migrations.rb > ${CI_PROJECT_DIR}/migration-testing/migrations.json
     - bundle exec ruby clone_details.rb ${CLONE_DETAILS_DB_NAME} > ${CI_PROJECT_DIR}/migration-testing/clone-details.json
 
-db:migrations:
-  extends:
-    - .db:migrations:base
-    - .rules:if-not-decomposed
-  variables:
-    ALL_DB_HOSTS: "postgres"
-  services:
-    - name: ${DOCKER_REGISTRY}/gitlab-com-database-testing-dblab-ssh:latest
-      alias: postgres
-    - name: ${DOCKER_REGISTRY}/redis:4.0-alpine
-      alias: redis
-
 db:migrations decomposed:
   extends:
     - .db:migrations:base
-    - .rules:if-decomposed
   variables:
     ALL_DB_HOSTS: "postgres-main,postgres-ci"
     CLONE_DETAILS_DB_NAME: "postgres-main" # Temporary to make clone_details script work
@@ -112,6 +94,8 @@ db:migrations decomposed:
       alias: postgres-ci
       variables:
         DBLAB_CLONE_ID: "database-testing-${CI_PIPELINE_ID}-ci"
+        DBLAB_ENVIRONMENT: $DBLAB_ENVIRONMENT_CI
+        DBLAB_API_PORT: $DBLAB_API_PORT_CI
     - name: ${DOCKER_REGISTRY}/redis:4.0-alpine
       alias: redis
 
