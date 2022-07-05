@@ -15,6 +15,7 @@ WORKDIR $GITLAB_PATH
 ARG UPSTREAM_GIT_URL=http://gitlab.com/gitlab-org/gitlab.git
 RUN git config --global user.email "gitlab-org/database-team@gitlab.com"
 RUN git config --global user.name "GitLab Database Team"
+RUN git config --global remote.origin.fetch '+refs/merge-requests/*:refs/remotes/origin/merge-requests/*'
 RUN git clone --progress "$UPSTREAM_GIT_URL" "$GITLAB_PATH"
 RUN bundle config set deployment 'true'
 RUN bundle config set clean 'true'
