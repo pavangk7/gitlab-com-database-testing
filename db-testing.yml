@@ -59,7 +59,7 @@ image:redis:
     DBLAB_ENVIRONMENT: $DBLAB_ENVIRONMENT
     DBLAB_ENVIRONMENT_CI: $DBLAB_ENVIRONMENT_CI
 
-    DBLAB_CLONE_ID: "database-testing-${CI_PIPELINE_ID}"
+    DBLAB_CLONE_ID: "database-testing-${CI_PIPELINE_ID}-${CI_JOB_ID}"
     CLONE_DETAILS_DB_NAME: "postgres" # temporary to make clone_details work with multiple databases
   artifacts:
     paths:
@@ -89,11 +89,11 @@ db:migrations decomposed:
     - name: ${DOCKER_REGISTRY}/gitlab-com-database-testing-dblab-ssh:latest
       alias: postgres-main
       variables:
-        DBLAB_CLONE_ID: "database-testing-${CI_PIPELINE_ID}-main"
+        DBLAB_CLONE_ID: "database-testing-${CI_PIPELINE_ID}-${CI_JOB_ID}-main"
     - name: ${DOCKER_REGISTRY}/gitlab-com-database-testing-dblab-ssh:latest
       alias: postgres-ci
       variables:
-        DBLAB_CLONE_ID: "database-testing-${CI_PIPELINE_ID}-ci"
+        DBLAB_CLONE_ID: "database-testing-${CI_PIPELINE_ID}-${CI_JOB_ID}-ci"
         DBLAB_ENVIRONMENT: $DBLAB_ENVIRONMENT_CI
         DBLAB_API_PORT: $DBLAB_API_PORT_CI
     - name: ${DOCKER_REGISTRY}/redis:4.0-alpine
