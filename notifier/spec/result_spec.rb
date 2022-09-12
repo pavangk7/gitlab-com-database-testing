@@ -20,7 +20,7 @@ RSpec.describe Result do
     end
 
     it 'loads clone details' do
-      expect(result.clone_details.cloneId).to eq('database-testing-1131483')
+      expect(result.clone_details.first.cloneId).to eq('database-testing-1131483')
     end
 
     it 'loads migrations' do

@@ -1,0 +1,8 @@
+clones:
+  - host: postgres-main
+    project-name: gitlab-production-tunnel
+    instance-id: 59
+
+  - host: postgres-ci
+    project-name: gitlab-production-ci
+    instance-id: 165

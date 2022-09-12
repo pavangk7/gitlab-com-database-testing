@@ -24,7 +24,7 @@ class Result
                               .map { |d| BackgroundMigration.from_directory(d) }
 
     # Attach clone details
-    clone_details = OpenStruct.new(JSON.parse(File.read(clone_details_file)))
+    clone_details = read_clone_details(clone_details_file)
 
     # Migrations with statistics have been executed in this run, others not
     # Limit to executed migrations
@@ -52,6 +52,12 @@ class Result
   end
 
   private
+
+  def self.read_clone_details(details_filename)
+    JSON.parse(File.read(details_filename)).map do |detail|
+      OpenStruct.new(detail)
+    end
+  end
 
   def self.read_stats_legacy(stats_file)
     read_to_json(stats_file).index_by { |s| s['version'] }
