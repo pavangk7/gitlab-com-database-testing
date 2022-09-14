@@ -49,9 +49,9 @@ diff --git a/db/structure.sql b/db/structure.sql
 index d8add15b68d..c6524149b4a 100644
 --- a/db/structure.sql
 +++ b/db/structure.sql
-@@ -18324,6 +18324,26 @@ CREATE SEQUENCE terraform_states_id_seq
+@@ -21720,6 +21720,26 @@ CREATE SEQUENCE timelog_categories_id_seq
  
- ALTER SEQUENCE terraform_states_id_seq OWNED BY terraform_states.id;
+ ALTER SEQUENCE timelog_categories_id_seq OWNED BY timelog_categories.id;
  
 +CREATE TABLE test_tables (
 +    id bigint NOT NULL,
@@ -76,25 +76,25 @@ index d8add15b68d..c6524149b4a 100644
  CREATE TABLE timelogs (
      id integer NOT NULL,
      time_spent integer NOT NULL,
-@@ -20280,6 +20300,8 @@ ALTER TABLE ONLY terraform_state_versions ALTER COLUMN id SET DEFAULT nextval('t
+@@ -24052,6 +24072,8 @@ ALTER TABLE ONLY terraform_states ALTER COLUMN id SET DEFAULT nextval('terraform
  
- ALTER TABLE ONLY terraform_states ALTER COLUMN id SET DEFAULT nextval('terraform_states_id_seq'::regclass);
+ ALTER TABLE ONLY timelog_categories ALTER COLUMN id SET DEFAULT nextval('timelog_categories_id_seq'::regclass);
  
 +ALTER TABLE ONLY test_tables ALTER COLUMN id SET DEFAULT nextval('test_tables_id_seq'::regclass);
 +
  ALTER TABLE ONLY timelogs ALTER COLUMN id SET DEFAULT nextval('timelogs_id_seq'::regclass);
  
  ALTER TABLE ONLY todos ALTER COLUMN id SET DEFAULT nextval('todos_id_seq'::regclass);
-@@ -21923,6 +21945,9 @@ ALTER TABLE ONLY terraform_state_versions
- ALTER TABLE ONLY terraform_states
-     ADD CONSTRAINT terraform_states_pkey PRIMARY KEY (id);
+@@ -26341,6 +26363,9 @@ ALTER TABLE ONLY terraform_states
+ ALTER TABLE ONLY timelog_categories
+     ADD CONSTRAINT timelog_categories_pkey PRIMARY KEY (id);
  
 +ALTER TABLE ONLY test_tables
 +    ADD CONSTRAINT test_tables_pkey PRIMARY KEY (id);
 +
  ALTER TABLE ONLY timelogs
      ADD CONSTRAINT timelogs_pkey PRIMARY KEY (id);
- 
+
 -- 
 2.31.1
 
