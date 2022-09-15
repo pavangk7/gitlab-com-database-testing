@@ -56,9 +56,3 @@ run pipeline:
     - apk add --update curl jq
   script:
     - ./misc/trigger-test-pipeline.sh
-
-run pipeline decomposed:
-  extends:
-    - run pipeline
-  variables:
-    RUN_DECOMPOSED: 'true'

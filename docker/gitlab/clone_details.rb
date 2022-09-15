@@ -4,22 +4,29 @@
 require 'net/http'
 require 'uri'
 require 'json'
+require 'yaml'
 
 DBLAB_SSH_JSON_PORT=8000.freeze
 DBLAB_SSH_JSON_FILE='/info.json'.freeze
+CLONE_DETAILS_CONFIG_FILE='clone_details.yml'.freeze
 
-def dblab_ssh_host
-  ARGV[0]
+def load_configuration
+  YAML.load(File.read(CLONE_DETAILS_CONFIG_FILE))
 end
 
-def get_clone_details
-  uri = URI("http://#{dblab_ssh_host}:#{DBLAB_SSH_JSON_PORT}/#{DBLAB_SSH_JSON_FILE}")
-  response = Net::HTTP.get(uri)
-  JSON(response)
+def add_clone_info(response, clone)
+  response['expectedRemovalTime'] = Time.now + 60 * response['maxIdleMinutes']
+  response['projectName'] = clone['project-name']
+  response['instanceId'] = clone['instance-id']
+  response
 end
 
-clone_details = get_clone_details
+def get_clone_details(config)
+  config['clones'].map do |clone|
+    uri = URI("http://#{clone['host']}:#{DBLAB_SSH_JSON_PORT}/#{DBLAB_SSH_JSON_FILE}")
+    response = JSON(Net::HTTP.get(uri))
+    add_clone_info(response, clone)
+  end
+end
 
-clone_details['expectedRemovalTime'] = Time.now + 60 * clone_details['maxIdleMinutes']
-
-puts clone_details.to_json
+puts get_clone_details(load_configuration).to_json

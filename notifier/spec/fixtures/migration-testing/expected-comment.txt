@@ -207,6 +207,7 @@ Sampled 5 batches
 | Clone ID | Clone Created At | Clone Data Timestamp | Expected Removal Time |
 | -------- | ---------------- | -------------------- | --------------------- |
 | [`database-testing-1131483`](https://console.postgres.ai/gitlab/gitlab-production-tunnel/instances/59/clones/database-testing-1131483) | 2022-04-05T16:01:54Z | 2022-04-05T10:35:03Z | 2022-04-06 04:44:56 +0000 |
+| [`database-testing-1131484`](https://console.postgres.ai/gitlab/gitlab-production-ci/instances/165/clones/database-testing-1131484) | 2022-04-05T16:01:54Z | 2022-04-05T10:35:03Z | 2022-04-06 04:44:56 +0000 |
 
 #### [Artifacts](https://gitlab.com/gitlab-org/database-team/gitlab-com-database-testing/-/jobs/1354666720/artifacts/browse/migration-testing/)
 

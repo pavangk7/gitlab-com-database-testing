@@ -37,6 +37,7 @@ RUN patches/apply.sh
 
 COPY list_migrations.rb list_migrations.rb
 COPY clone_details.rb clone_details.rb
+COPY clone_details.yml clone_details.yml
 COPY prepare.sh prepare.sh
 COPY prepare_postgres.sql prepare_postgres.sql
 

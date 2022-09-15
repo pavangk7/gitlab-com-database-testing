@@ -1,3 +1,5 @@
 | Clone ID | Clone Created At | Clone Data Timestamp | Expected Removal Time |
 | -------- | ---------------- | -------------------- | --------------------- |
-| [`<%= clone_details.cloneId %>`](https://console.postgres.ai/gitlab/gitlab-production-tunnel/instances/59/clones/<%= clone_details.cloneId %>) | <%= clone_details.createdAt %> | <%= clone_details.cloneStateTimestamp %> | <%= clone_details.expectedRemovalTime %> |
+<% clone_details.each do |clone| %>
+| [`<%= clone.cloneId %>`](https://console.postgres.ai/gitlab/<%= clone.projectName %>/instances/<%= clone.instanceId %>/clones/<%= clone.cloneId %>) | <%= clone.createdAt %> | <%= clone.cloneStateTimestamp %> | <%= clone.expectedRemovalTime %> |
+<% end %>
