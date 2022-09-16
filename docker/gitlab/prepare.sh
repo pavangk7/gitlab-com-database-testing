@@ -30,14 +30,8 @@ test: &test
 EOF
 
 if test "$VALIDATION_PIPELINE"; then
-  echo "Applying test patch"
-  git am < /gitlab/patches/testing/New-Table-Migration.patch
-  git am < /gitlab/patches/testing/Drop-table-in-post-migration.patch
-  git am < /gitlab/patches/testing/Exception-Raised-in-Migration.patch
-  git am < /gitlab/patches/testing/Add-a-migration-that-takes-five-seconds.patch
-  git am < /gitlab/patches/testing/Migration-inheriting-Gitlab-Database-Migration.patch
-  git am < /gitlab/patches/testing/Migration-that-requires-Gitlab-com-true.patch
-  git am < /gitlab/patches/testing/Test-background-migrations.patch
+  echo "Applying test patches"
+  /gitlab/patches/testing/apply.sh
 fi
 
 ### REDIS
