@@ -10,10 +10,12 @@ require 'gitlab'
 require 'thor'
 
 require_relative 'feedback'
+require_relative 'multi_db_feedback'
 require_relative 'background_migration'
 require_relative 'migration'
 require_relative 'query'
 require_relative 'result'
+require_relative 'multi_db_result'
 require_relative 'warnings'
 require_relative 'charts/execution_histogram'
 
@@ -71,9 +73,9 @@ class Notifier < Thor
   private
 
   def feedback_for(database_testing_path)
-    result = Result.from_directory(database_testing_path)
+    result = MultiDbResult.from_directory(database_testing_path)
 
-    Feedback.new(result)
+    MultiDbFeedback.new(result)
   end
 
   def ignore_errors
