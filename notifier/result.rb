@@ -4,14 +4,11 @@ require 'ostruct'
 require 'json'
 
 class Result
-  def self.from_directory(database_testing_path)
-    migrations_file = File.join(database_testing_path, 'migrations.json')
-    clone_details_file = File.join(database_testing_path, 'clone-details.json')
+  def self.from_directory(database_testing_path, global_migration_data, clone_details)
+
     query_details_path = File.join(database_testing_path, 'up')
 
     background_migrations_path = File.join(database_testing_path, 'background_migrations')
-
-    global_migration_data = read_to_json(migrations_file)
 
     migrations = Pathname(query_details_path)
                    .children
@@ -23,24 +20,24 @@ class Result
                               .children.select(&:directory?)
                               .map { |d| BackgroundMigration.from_directory(d) }
 
-    # Attach clone details
-    clone_details = read_clone_details(clone_details_file)
-
     # Migrations with statistics have been executed in this run, others not
     # Limit to executed migrations
     migrations = migrations.select do |_, migration|
       migration.was_run?
     end
 
-    Result.new(migrations, background_migrations, clone_details)
+    database = metadata(database_testing_path)['database'] || 'main'
+
+    Result.new(migrations, background_migrations, clone_details, database)
   end
 
-  attr_reader :migrations, :background_migrations, :clone_details
+  attr_reader :migrations, :background_migrations, :clone_details, :database
 
-  def initialize(migrations, background_migrations, clone_details)
+  def initialize(migrations, background_migrations, clone_details, database)
     @migrations = migrations
     @background_migrations = background_migrations
     @clone_details = clone_details
+    @database = database
   end
 
   def migrations_from_branch
@@ -51,13 +48,7 @@ class Result
     sorted_migrations.reject(&:intro_on_current_branch)
   end
 
-  private
 
-  def self.read_clone_details(details_filename)
-    JSON.parse(File.read(details_filename)).map do |detail|
-      OpenStruct.new(detail)
-    end
-  end
 
   def self.read_stats_legacy(stats_file)
     read_to_json(stats_file).index_by { |s| s['version'] }
@@ -79,8 +70,12 @@ class Result
   end
 
   def self.schema_version(path)
+    metadata(path)['version']
+  end
+
+  def self.metadata(path)
     metadata_file = File.join(path, 'up', 'metadata.json')
 
-    read_to_json(metadata_file)['version']
+    read_to_json(metadata_file)
   end
 end

@@ -9,11 +9,11 @@ RSpec.describe Feedback do
     where(fixture_root: %w[v3])
 
     with_them do
-      let(:result) { Result.from_directory(file_fixture("migration-testing/#{fixture_root}")) }
+      let(:result) { MultiDbResult.from_directory(file_fixture("migration-testing/#{fixture_root}")) }
 
       let(:expected_comment_file) { file_fixture('migration-testing/expected-comment.txt') }
 
-      subject { described_class.new(result).render }
+      subject { MultiDbFeedback.new(result).render }
 
       before do
         override_env_from_fixture('migration-testing/environment.json')

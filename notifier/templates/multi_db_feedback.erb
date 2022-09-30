@@ -1,0 +1,3 @@
+<% multi_db_result.per_db_results.values.each do |result| %>
+  <%= Feedback.new(result).render %>
+<% end %>

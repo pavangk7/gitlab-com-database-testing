@@ -82,11 +82,15 @@ db:migrations:
   script:
     - cd ${GITLAB_PATH}
     - ./prepare.sh
-    - mkdir -p tmp/migration-testing/up
-    - mkdir -p tmp/migration-testing/background_migrations
-    - bundle exec rake gitlab:db:migration_testing:up | tee tmp/migration-testing/up/full-migration-output.log || true
+    - mkdir -p tmp/migration-testing/main/up
+    - mkdir -p tmp/migration-testing/ci/up
+    - mkdir -p tmp/migration-testing/main/background_migrations
+    - mkdir -p tmp/migration-testing/ci/background_migrations
+    - bundle exec rake gitlab:db:migration_testing:up:main | tee tmp/migration-testing/main/up/full-migration-output.log || true
+    - bundle exec rake gitlab:db:migration_testing:up:ci | tee tmp/migration-testing/ci/up/full-migration-output.log || true
     - bundle exec rake gitlab:db:migration_testing:sample_background_migrations | tee tmp/migration-testing/background_migrations/full-migration-output.log || true
-    - bundle exec rake gitlab:db:migration_testing:sample_batched_background_migrations[main] | tee tmp/migration-testing/background_migrations/full-batched-migration-output.log || true
+    - bundle exec rake gitlab:db:migration_testing:sample_batched_background_migrations:main | tee tmp/migration-testing/main/background_migrations/full-batched-migration-output.log || true
+    - bundle exec rake gitlab:db:migration_testing:sample_batched_background_migrations:ci | tee tmp/migration-testing/ci/background_migrations/full-batched-migration-output.log || true
     - mv tmp/migration-testing/ ${CI_PROJECT_DIR}
     - bundle exec ruby list_migrations.rb > ${CI_PROJECT_DIR}/migration-testing/migrations.json
     - bundle exec ruby clone_details.rb > ${CI_PROJECT_DIR}/migration-testing/clone-details.json
