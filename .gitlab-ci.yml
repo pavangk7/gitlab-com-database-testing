@@ -31,7 +31,7 @@ shellcheck:
   script:
     - shellcheck docker/**/*.sh misc/trigger-test-pipeline.sh
 
-rspec:
+notifier-rspec:
   stage: test
   image: ruby:2.7
   script:
@@ -45,6 +45,22 @@ rspec:
       - rspec.xml
     reports:
       junit: rspec.xml
+
+gitlab-rspec:
+  stage: test
+  image: ruby:2.7
+  script:
+    - cd docker/gitlab
+    - ls
+    - bundle install
+    - bundle exec rspec --format progress --format RspecJunitFormatter --out rspec.xml
+    - mv rspec.xml ../../gitlab-rspec.xml
+  artifacts:
+    when: always
+    paths:
+      - gitlab-rspec.xml
+    reports:
+      junit: gitlab-rspec.xml
 
 run pipeline:
   stage: test

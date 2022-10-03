@@ -36,6 +36,7 @@ COPY patches patches
 RUN patches/apply.sh
 
 COPY list_migrations.rb list_migrations.rb
+COPY lib/migration_lister.rb lib/migration_lister.rb
 COPY clone_details.rb clone_details.rb
 COPY clone_details.yml clone_details.yml
 COPY prepare.sh prepare.sh
