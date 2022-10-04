@@ -6,12 +6,12 @@ RSpec.describe Feedback do
   # This is a temporary measure to increase our confidence in a change - we can remove
   # it if it gets tedious and we have smaller unit tests in place
   describe 'end to end test for rendering feedback comment' do
-    where(fixture_root: %w[v3])
+    where(fixture_root: %w[v3 v4])
 
     with_them do
       let(:result) { MultiDbResult.from_directory(file_fixture("migration-testing/#{fixture_root}")) }
 
-      let(:expected_comment_file) { file_fixture('migration-testing/expected-comment.txt') }
+      let(:expected_comment_file) { file_fixture("migration-testing/#{fixture_root}/expected-comment.txt") }
 
       subject { MultiDbFeedback.new(result).render }
 

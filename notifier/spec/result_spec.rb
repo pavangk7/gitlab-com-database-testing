@@ -5,7 +5,8 @@ require 'spec_helper'
 RSpec.describe Result do
   where(:fixture_root, :schema_version) do
     [
-      ['v3', 3]
+      ['v3', 3],
+      ['v4', 4]
     ]
   end
 
@@ -13,7 +14,7 @@ RSpec.describe Result do
     let(:root_testing_path) { file_fixture("migration-testing/#{fixture_root}") }
     let(:clone_details) { File.join(root_testing_path, "clone-details.json") }
 
-    subject(:result) { described_class.from_directory(root_testing_path) }
+    subject(:result) { MultiDbResult.from_directory(root_testing_path).per_db_results.values.first }
 
     it 'identifies the correct schema version' do
       expect(described_class.schema_version(root_testing_path)).to eq(schema_version)

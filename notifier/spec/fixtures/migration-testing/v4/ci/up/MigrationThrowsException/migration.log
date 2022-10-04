@@ -1,0 +1,10 @@
+# Logfile created on 2022-09-30 21:37:24 +0000 by logger.rb/v1.4.2
+D, [2022-09-30T21:37:25.363528 #407] DEBUG -- :   [1m[35m (41.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(3005434223539248480)[0m
+D, [2022-09-30T21:37:25.364035 #407] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:127:in `block (3 levels) in run'
+D, [2022-09-30T21:37:25.492349 #407] DEBUG -- :   [1m[35m (127.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application:test,db_config_name:ci,line:/lib/gitlab/database/migrations/runner.rb:127:in `block (3 levels) in run'*/[0m
+D, [2022-09-30T21:37:25.493038 #407] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:127:in `block (3 levels) in run'
+I, [2022-09-30T21:37:25.506179 #407]  INFO -- : Migrating to MigrationThrowsException (20990604233157)
+D, [2022-09-30T21:37:25.562649 #407] DEBUG -- :   [1m[35m (43.7ms)[0m  [1m[34mSELECT pg_advisory_unlock(3005434223539248480)[0m
+D, [2022-09-30T21:37:25.563204 #407] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:127:in `block (3 levels) in run'
+D, [2022-09-30T21:37:25.795113 #407] DEBUG -- :   [1m[35m (190.1ms)[0m  [1m[34mselect pg_database_size(current_database()) /*application:test,db_config_name:ci,line:/lib/gitlab/database/migrations/observers/total_database_size_change.rb:25:in `get_total_database_size'*/[0m
+D, [2022-09-30T21:37:25.795647 #407] DEBUG -- :   ↳ lib/gitlab/database/migrations/observers/total_database_size_change.rb:25:in `get_total_database_size'

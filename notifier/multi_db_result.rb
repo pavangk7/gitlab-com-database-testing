@@ -13,6 +13,10 @@ class MultiDbResult
       Result.from_directory(path, global_migration_data, clone_details)
     end
 
+    # main is alphabetically after CI and we want it to come first, so reverse the order
+    # ruby's hash is order-preserving once we sort it
+    per_db_results = per_db_results.sort.reverse.to_h
+
     MultiDbResult.new(per_db_results)
   end
 

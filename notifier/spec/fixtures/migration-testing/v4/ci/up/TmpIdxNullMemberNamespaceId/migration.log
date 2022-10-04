@@ -1,0 +1,28 @@
+# Logfile created on 2022-09-30 21:35:31 +0000 by logger.rb/v1.4.2
+D, [2022-09-30T21:35:32.299565 #407] DEBUG -- :   [1m[35m (40.8ms)[0m  [1m[34mSELECT pg_try_advisory_lock(3005434223539248480)[0m
+D, [2022-09-30T21:35:32.300074 #407] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:127:in `block (3 levels) in run'
+D, [2022-09-30T21:35:32.381304 #407] DEBUG -- :   [1m[35m (80.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application:test,db_config_name:ci,line:/lib/gitlab/database/migrations/runner.rb:127:in `block (3 levels) in run'*/[0m
+D, [2022-09-30T21:35:32.381919 #407] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:127:in `block (3 levels) in run'
+I, [2022-09-30T21:35:32.391340 #407]  INFO -- : Migrating to TmpIdxNullMemberNamespaceId (20220929081645)
+D, [2022-09-30T21:35:33.135034 #407] DEBUG -- :   [1m[35m (40.3ms)[0m  [1m[35mSHOW statement_timeout /*application:test,db_config_name:ci,line:/lib/gitlab/database/migration_helpers.rb:1624:in `statement_timeout_disabled?'*/[0m
+D, [2022-09-30T21:35:33.135649 #407] DEBUG -- :   ↳ lib/gitlab/database/migration_helpers.rb:1624:in `statement_timeout_disabled?'
+D, [2022-09-30T21:35:33.177086 #407] DEBUG -- :   [1m[35m (40.3ms)[0m  [1m[35mSET statement_timeout TO 0 /*application:test,db_config_name:ci,line:/lib/gitlab/database/migration_helpers.rb:386:in `disable_statement_timeout'*/[0m
+D, [2022-09-30T21:35:33.177628 #407] DEBUG -- :   ↳ lib/gitlab/database/migration_helpers.rb:386:in `disable_statement_timeout'
+D, [2022-09-30T21:37:23.443152 #407] DEBUG -- :   [1m[35m (110223.3ms)[0m  [1m[35mCREATE INDEX CONCURRENTLY "tmp_index_for_null_member_namespace_id" ON "members" ("member_namespace_id") WHERE member_namespace_id IS NULL /*application:test,db_config_name:ci,line:/lib/gitlab/database/migration_helpers.rb:167:in `block in add_concurrent_index'*/[0m
+D, [2022-09-30T21:37:23.443881 #407] DEBUG -- :   ↳ lib/gitlab/database/migration_helpers.rb:167:in `block in add_concurrent_index'
+D, [2022-09-30T21:37:23.486140 #407] DEBUG -- :   [1m[35m (40.8ms)[0m  [1m[35mRESET statement_timeout /*application:test,db_config_name:ci,line:/lib/gitlab/database/migration_helpers.rb:390:in `disable_statement_timeout'*/[0m
+D, [2022-09-30T21:37:23.486762 #407] DEBUG -- :   ↳ lib/gitlab/database/migration_helpers.rb:390:in `disable_statement_timeout'
+D, [2022-09-30T21:37:23.670769 #407] DEBUG -- :   [1m[36mGitlab::Database::AsyncIndexes::PostgresAsyncIndex Load (47.6ms)[0m  [1m[34mSELECT "postgres_async_indexes".* FROM "postgres_async_indexes" WHERE "postgres_async_indexes"."name" = 'tmp_index_for_null_member_namespace_id' LIMIT 1 /*application:test,db_config_name:ci,line:/lib/gitlab/database/async_indexes/migration_helpers.rb:24:in `unprepare_async_index_by_name'*/[0m
+D, [2022-09-30T21:37:23.671366 #407] DEBUG -- :   ↳ lib/gitlab/database/async_indexes/migration_helpers.rb:24:in `unprepare_async_index_by_name'
+D, [2022-09-30T21:37:23.714767 #407] DEBUG -- :   [1m[36mTRANSACTION (40.5ms)[0m  [1m[35mBEGIN /*application:test,db_config_name:ci,line:/lib/gitlab/database/migrations/lock_retry_mixin.rb:36:in `ddl_transaction'*/[0m
+D, [2022-09-30T21:37:23.715840 #407] DEBUG -- :   ↳ lib/gitlab/database/migrations/lock_retry_mixin.rb:36:in `ddl_transaction'
+D, [2022-09-30T21:37:23.757164 #407] DEBUG -- :   [1m[36mActiveRecord::SchemaMigration Create (40.9ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20220929081645') RETURNING "version" /*application:test,db_config_name:ci,line:/lib/gitlab/database/migrations/lock_retry_mixin.rb:36:in `ddl_transaction'*/[0m
+D, [2022-09-30T21:37:23.758071 #407] DEBUG -- :   ↳ lib/gitlab/database/migrations/lock_retry_mixin.rb:36:in `ddl_transaction'
+D, [2022-09-30T21:37:23.799703 #407] DEBUG -- :   [1m[36mTRANSACTION (40.7ms)[0m  [1m[35mCOMMIT /*application:test,db_config_name:ci,line:/lib/gitlab/database.rb:365:in `commit'*/[0m
+D, [2022-09-30T21:37:23.800211 #407] DEBUG -- :   ↳ lib/gitlab/database.rb:365:in `commit'
+D, [2022-09-30T21:37:23.842350 #407] DEBUG -- :   [1m[36mActiveRecord::InternalMetadata Load (40.7ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' LIMIT 1 /*application:test,db_config_name:ci,line:/lib/gitlab/database/migrations/runner.rb:127:in `block (3 levels) in run'*/[0m
+D, [2022-09-30T21:37:23.843067 #407] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:127:in `block (3 levels) in run'
+D, [2022-09-30T21:37:23.884952 #407] DEBUG -- :   [1m[35m (40.5ms)[0m  [1m[34mSELECT pg_advisory_unlock(3005434223539248480)[0m
+D, [2022-09-30T21:37:23.885443 #407] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:127:in `block (3 levels) in run'
+D, [2022-09-30T21:37:24.095778 #407] DEBUG -- :   [1m[35m (169.0ms)[0m  [1m[34mselect pg_database_size(current_database()) /*application:test,db_config_name:ci,line:/lib/gitlab/database/migrations/observers/total_database_size_change.rb:25:in `get_total_database_size'*/[0m
+D, [2022-09-30T21:37:24.096232 #407] DEBUG -- :   ↳ lib/gitlab/database/migrations/observers/total_database_size_change.rb:25:in `get_total_database_size'
