@@ -3,7 +3,7 @@ require 'spec_helper'
 require "base64"
 
 RSpec.describe JsonPayload do
-  let(:result) { Result.from_directory(file_fixture('migration-testing/v3')) }
+  let(:result) { MultiDbResult.from_directory(file_fixture('migration-testing/v4')).per_db_results['main'] }
 
   subject do
     encoded = described_class.new.encode(result)

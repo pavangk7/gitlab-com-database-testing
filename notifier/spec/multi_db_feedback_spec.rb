@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 require 'spec_helper'
 
-RSpec.describe Feedback do
+RSpec.describe MultiDbFeedback do
   # This is an end-to-end test based on the checked in fixtures
   # This is a temporary measure to increase our confidence in a change - we can remove
   # it if it gets tedious and we have smaller unit tests in place
   describe 'end to end test for rendering feedback comment' do
-    where(fixture_root: %w[v3 v4])
+    where(fixture_root: %w[v4])
 
     with_them do
       let(:result) { MultiDbResult.from_directory(file_fixture("migration-testing/#{fixture_root}")) }
