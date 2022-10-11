@@ -1,20 +1,20 @@
-From 19c21e7028da0437c7b2f891227eec808b45a0fb Mon Sep 17 00:00:00 2001
+From ae029ff2254271707b7325485853fd5b09100c9c Mon Sep 17 00:00:00 2001
 From: Simon Tomlinson <stomlinson@gitlab.com>
-Date: Thu, 6 Oct 2022 14:48:40 -0500
+Date: Tue, 11 Oct 2022 13:47:43 -0500
 Subject: [PATCH] Patch for testing batched background migrations
 
 ---
- ..._test_batched_background_migration_main.rb | 16 ++++++++
- ...ue_test_batched_background_migration_ci.rb | 38 +++++++++++++++++++
- 2 files changed, 54 insertions(+)
- create mode 100644 db/migrate/20221006193625_queue_test_batched_background_migration_main.rb
- create mode 100644 db/migrate/20221006193710_queue_test_batched_background_migration_ci.rb
+ ...e_test_batched_background_migration_main.rb | 16 ++++++++++++++++
+ ...eue_test_batched_background_migration_ci.rb | 18 ++++++++++++++++++
+ 2 files changed, 34 insertions(+)
+ create mode 100644 db/migrate/20221011184436_queue_test_batched_background_migration_main.rb
+ create mode 100644 db/migrate/20221011184500_queue_test_batched_background_migration_ci.rb
 
-diff --git a/db/migrate/20221006193625_queue_test_batched_background_migration_main.rb b/db/migrate/20221006193625_queue_test_batched_background_migration_main.rb
+diff --git a/db/migrate/20221011184436_queue_test_batched_background_migration_main.rb b/db/migrate/20221011184436_queue_test_batched_background_migration_main.rb
 new file mode 100644
-index 000000000000..4f434dd230f9
+index 000000000000..1b56e6bf4f23
 --- /dev/null
-+++ b/db/migrate/20221006193625_queue_test_batched_background_migration_main.rb
++++ b/db/migrate/20221011184436_queue_test_batched_background_migration_main.rb
 @@ -0,0 +1,16 @@
 +# frozen_string_literal: true
 +
@@ -25,37 +25,35 @@ index 000000000000..4f434dd230f9
 +    # Test background migration that sets created_at = updated_at for issues rows
 +    queue_batched_background_migration(
 +      'CopyColumnUsingBackgroundMigrationJob',
-+      :issues,
-+      :id,
-+      :updated_at, :created_at,
-+      job_interval: 2.minutes
++        :issues,
++        :id,
++        :updated_at, :created_at,
++        job_interval: 2.minutes
 +    )
 +  end
 +end
-diff --git a/db/migrate/20221006193710_queue_test_batched_background_migration_ci.rb b/db/migrate/20221006193710_queue_test_batched_background_migration_ci.rb
+diff --git a/db/migrate/20221011184500_queue_test_batched_background_migration_ci.rb b/db/migrate/20221011184500_queue_test_batched_background_migration_ci.rb
 new file mode 100644
-index 000000000000..7d2176cd3a30
+index 000000000000..d31f3f594194
 --- /dev/null
-+++ b/db/migrate/20221006193710_queue_test_batched_background_migration_ci.rb
-@@ -0,0 +1,38 @@
++++ b/db/migrate/20221011184500_queue_test_batched_background_migration_ci.rb
+@@ -0,0 +1,18 @@
 +# frozen_string_literal: true
 +
 +class QueueTestBatchedBackgroundMigrationCi < Gitlab::Database::Migration[2.0]
 +  restrict_gitlab_migration gitlab_schema: :gitlab_ci
 +
-+  def change
-+    def up
-+      # Test background migration that sets created_at = updated_at for ci_runner_projects rows
-+      # ci_runner_projects was chosen as a CI table that's not likely to be partitioned in the future, but we may need
-+      # to change this test if that changes
-+      queue_batched_background_migration(
-+        'CopyColumnUsingBackgroundMigrationJob',
++  def up
++    # Test background migration that sets created_at = updated_at for ci_runner_projects rows
++    # ci_runner_projects was chosen as a CI table that's not likely to be partitioned in the future, but we may need
++    # to change this test if that changes
++    queue_batched_background_migration(
++      'CopyColumnUsingBackgroundMigrationJob',
 +        :ci_runner_projects,
 +        :id,
 +        :updated_at, :created_at,
 +        job_interval: 2.minutes
-+      )
-+    end
++    )
 +  end
 +end
 -- 
