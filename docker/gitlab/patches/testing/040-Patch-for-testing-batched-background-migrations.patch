@@ -28,7 +28,7 @@ index 000000000000..1b56e6bf4f23
 +        :issues,
 +        :id,
 +        :updated_at, :created_at,
-+        job_interval: 2.minutes
++        job_interval: 2.minutes, batch_size: 10, sub_batch_size: 5
 +    )
 +  end
 +end
@@ -52,7 +52,7 @@ index 000000000000..d31f3f594194
 +        :ci_runner_projects,
 +        :id,
 +        :updated_at, :created_at,
-+        job_interval: 2.minutes
++        job_interval: 2.minutes, batch_size: 10, sub_batch_size: 5
 +    )
 +  end
 +end
