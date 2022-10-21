@@ -24,13 +24,12 @@ RSpec.describe Warnings do
 
       expect(subject.render).to include('did not complete')
       expect(subject.render).to include('[background migration]')
-      expect(subject.render).to include('[post-deploy migration]')
       expect(subject.render).to include('(`@gitlab-org/release/managers`)')
       expect(subject.render).to include('222.49')
     end
 
     it 'excludes migrations not introduced on current branch' do
-      excluded_name = 'UnrelatedMigration'
+      excluded_name = 'TmpIdxNullMemberNamespaceId'
       expect(result.other_migrations.map(&:name)).to include(excluded_name)
       expect(subject.render).not_to include(excluded_name)
     end
