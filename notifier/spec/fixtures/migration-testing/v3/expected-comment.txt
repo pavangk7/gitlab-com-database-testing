@@ -1,5 +1,5 @@
-<!-- gitlab-org/database-team/gitlab-com-database-testing:identifiable-note -->
-### Database migrations
+  <!-- gitlab-org/database-team/gitlab-com-database-testing:identifiable-note -->
+### Database migrations (on the main database)
 
 |           | 5 Warnings |
 | --------- | -------------------- |

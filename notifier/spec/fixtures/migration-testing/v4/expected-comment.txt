@@ -1,0 +1,358 @@
+  <!-- gitlab-org/database-team/gitlab-com-database-testing:identifiable-note -->
+### Database migrations (on the main database)
+
+|           | 3 Warnings |
+| --------- | -------------------- |
+| :warning: |  <b>20210602144718 - CreateTestTable</b> had a query that [exceeded timing guidelines](https://docs.gitlab.com/ee/development/query_performance.html#timing-guidelines-for-queries). Run time<br /> should not exceed 100ms, but it was 192.8ms. Please consider possible options to improve the query<br /> performance. <br/><pre>CREATE TABLE "test_tables" ("id" bigserial primary key, "stars" bigint<br /> DEFAULT 0 NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, "title"<br /> text, "notes" text)<br /> &#x2F;&#x2A;application:test,db_config_name:main,line:/lib/gitlab/database/migration_helpers.rb:100:in<br /> `block in create_table_with_constraints'&#x2A;&#x2F;</pre> |
+| :warning: |  <b>20210603233011 - RegularMigrationWithFiveSecondQuery</b> had a query that [exceeded timing<br /> guidelines](https://docs.gitlab.com/ee/development/query_performance.html#timing-guidelines-for-queries). Run time should not exceed 100ms, but it was 5005.1ms. Please consider possible options<br /> to improve the query performance. <br/><pre>SELECT pg_sleep($1)</pre> |
+| :warning: |  <b>20990604233157 - MigrationThrowsException</b> did not complete successfully, check the job log<br /> for details |
+
+Migrations included in this change have been executed on gitlab.com data for testing purposes. For details, please see the [migration testing pipeline](https://gitlab.com/gitlab-org/database-team/gitlab-com-database-testing/-/pipelines/4711) (limited access).
+
+| Migration | Type | Total runtime | Result | DB size change |
+| --------- | ---- | ------------- | ------ | -------------- |
+| 20210602144718 - CreateTestTable | Regular | 2.2 s | :warning: | +24.00 KiB |
+| 20210603233011 - RegularMigrationWithFiveSecondQuery | Regular | 6.5 s | :warning: | +0.00 B |
+| 20210915152743 - MigrationInheritsGitlabDatabaseMigration | Regular | 1.2 s | :white_check_mark: | +0.00 B |
+| 20220223163519 - EnsureGitlabComInMigrations | Regular | 1.2 s | :white_check_mark: | +0.00 B |
+| 20220318174439 - QueueTestBackgroundMigration | Regular | 1.8 s | :white_check_mark: | +0.00 B |
+| 20210604232017 - DropTestTable | Post deploy | 1.3 s | :white_check_mark: | -24.00 KiB |
+| 20990604233157 - MigrationThrowsException | Post deploy | 1.1 s | :boom: | +0.00 B |
+
+<details>
+<summary>Runtime Histogram for all migrations</summary>
+
+| Query Runtime | Count |
+|---------------|-------|
+|0 seconds - 0.01 seconds | 0 |
+|0.01 seconds - 0.1 seconds | 3 |
+|0.1 seconds - 1 second | 1 |
+|1 second - 5 minutes | 1 |
+|5 minutes + | 0 |
+
+</details>
+
+
+#### :warning: Migration: <b>20210602144718 - CreateTestTable</b>
+
+* Type: Regular
+* Duration: 2.2 s
+* Database size change: +24.00 KiB
+
+| Query | Calls | Total Time | Max Time | Mean Time | Rows |
+| ----- | ----- | ---------- | -------- | --------- | ---- |
+| <pre>CREATE TABLE "test_tables" ("id" bigserial primary key, "stars" bigint DEFAULT 0 NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, "title" text, "notes" text) &#x2F;&#x2A;application:test,db_config_name:main,line:/lib/gitlab/database/migration_helpers.rb:100:in `block in create_table_with_constraints'&#x2A;&#x2F;</pre> | 1 | 192.8 ms | 192.8 ms | 192.8 ms | 0 |
+| <pre>ALTER TABLE "test_tables" ADD CONSTRAINT "check_0770ba173a" CHECK (char_length("title") <= 128), ADD CONSTRAINT "check_9cfc473dbc" CHECK (char_length("notes") <= 1024) &#x2F;&#x2A;application:test,db_config_name:main,line:/lib/gitlab/database/migration_helpers.rb:128:in `block in create_table_with_constraints'&#x2A;&#x2F;</pre> | 1 | 6.6 ms | 6.6 ms | 6.6 ms | 0 |
+| <pre>SELECT $1::regtype::oid</pre> | 1 | 0.0 ms | 0.0 ms | 0.0 ms | 1 |
+
+<details>
+<summary>Histogram for CreateTestTable</summary>
+
+| Query Runtime | Count |
+|---------------|-------|
+|0 seconds - 0.01 seconds | 0 |
+|0.01 seconds - 0.1 seconds | 2 |
+|0.1 seconds - 1 second | 1 |
+|1 second - 5 minutes | 0 |
+|5 minutes + | 0 |
+
+</details>
+
+#### :warning: Migration: <b>20210603233011 - RegularMigrationWithFiveSecondQuery</b>
+
+* Type: Regular
+* Duration: 6.5 s
+* Database size change: +0.00 B
+
+| Query | Calls | Total Time | Max Time | Mean Time | Rows |
+| ----- | ----- | ---------- | -------- | --------- | ---- |
+| <pre>SELECT pg_sleep($1)</pre> | 1 | 5005.1 ms | 5005.1 ms | 5005.1 ms | 1 |
+
+<details>
+<summary>Histogram for RegularMigrationWithFiveSecondQuery</summary>
+
+| Query Runtime | Count |
+|---------------|-------|
+|0 seconds - 0.01 seconds | 0 |
+|0.01 seconds - 0.1 seconds | 0 |
+|0.1 seconds - 1 second | 0 |
+|1 second - 5 minutes | 1 |
+|5 minutes + | 0 |
+
+</details>
+
+####  Migration: <b>20210915152743 - MigrationInheritsGitlabDatabaseMigration</b>
+
+* Type: Regular
+* Duration: 1.2 s
+* Database size change: +0.00 B
+
+
+####  Migration: <b>20220223163519 - EnsureGitlabComInMigrations</b>
+
+* Type: Regular
+* Duration: 1.2 s
+* Database size change: +0.00 B
+
+
+####  Migration: <b>20220318174439 - QueueTestBackgroundMigration</b>
+
+* Type: Regular
+* Duration: 1.8 s
+* Database size change: +0.00 B
+
+
+####  Migration: <b>20210604232017 - DropTestTable</b>
+
+* Type: Post deploy
+* Duration: 1.3 s
+* Database size change: -24.00 KiB
+
+| Query | Calls | Total Time | Max Time | Mean Time | Rows |
+| ----- | ----- | ---------- | -------- | --------- | ---- |
+| <pre>DROP TABLE "test_tables" &#x2F;&#x2A;application:test,db_config_name:main,line:/db/post_migrate/20210604232017_drop_test_table.rb:5:in `change'&#x2A;&#x2F;</pre> | 1 | 2.6 ms | 2.6 ms | 2.6 ms | 0 |
+
+<details>
+<summary>Histogram for DropTestTable</summary>
+
+| Query Runtime | Count |
+|---------------|-------|
+|0 seconds - 0.01 seconds | 0 |
+|0.01 seconds - 0.1 seconds | 1 |
+|0.1 seconds - 1 second | 0 |
+|1 second - 5 minutes | 0 |
+|5 minutes + | 0 |
+
+</details>
+
+#### :boom: Migration: <b>20990604233157 - MigrationThrowsException</b>
+
+* Type: Post deploy
+* Duration: 1.1 s
+* Database size change: +0.00 B
+
+
+
+---
+
+### Background migrations
+
+
+---
+
+<details>
+  <summary>Other migrations pending on GitLab.com</summary>
+
+  | Migration | Type | Total runtime | Result | DB size change |
+| --------- | ---- | ------------- | ------ | -------------- |
+| 20220929081645 - TmpIdxNullMemberNamespaceId | Post deploy | 56.3 s | :white_check_mark: | +32.00 KiB |
+
+</details>
+
+#### Clone Details
+| Clone ID | Clone Created At | Clone Data Timestamp | Expected Removal Time |
+| -------- | ---------------- | -------------------- | --------------------- |
+| [`database-testing-1448027-8121647-main`](https://console.postgres.ai/gitlab/gitlab-production-tunnel/instances/59/clones/database-testing-1448027-8121647-main) | 2022-09-30T21:32:10Z | 2022-09-30T20:11:48Z | 2022-10-01 09:39:17 +0000 |
+| [`database-testing-1448027-8121647-ci`](https://console.postgres.ai/gitlab/gitlab-production-ci/instances/165/clones/database-testing-1448027-8121647-ci) | 2022-09-30T21:32:10Z | 2022-09-30T20:46:43Z | 2022-10-01 09:39:17 +0000 |
+
+#### [Artifacts](https://gitlab.com/gitlab-org/database-team/gitlab-com-database-testing/-/jobs/1354666720/artifacts/browse/migration-testing/)
+
+---
+Brought to you by [gitlab-org/database-team/gitlab-com-database-testing](https://gitlab.com/gitlab-org/database-team/gitlab-com-database-testing). [Epic](https://gitlab.com/groups/gitlab-org/database-team/-/epics/9)
+<!-- JSON: eyJ2ZXJzaW9uIjoyLCJkYXRhIjpbeyJ2ZXJzaW9uIjoyMDIxMDYwMjE0NDcx
+OCwid2FsbHRpbWUiOjIuMTk4NTE0MDIxOTMzMDc4OCwidG90YWxfZGF0YWJh
+c2Vfc2l6ZV9jaGFuZ2UiOjI0NTc2LCJzdWNjZXNzIjp0cnVlfSx7InZlcnNp
+b24iOjIwMjEwNjAzMjMzMDExLCJ3YWxsdGltZSI6Ni41Mzg2NzQ4Mzg4NDA5
+NjE1LCJ0b3RhbF9kYXRhYmFzZV9zaXplX2NoYW5nZSI6MCwic3VjY2VzcyI6
+dHJ1ZX0seyJ2ZXJzaW9uIjoyMDIxMDkxNTE1Mjc0Mywid2FsbHRpbWUiOjEu
+MjE4NzE5MTYyMDQ2OTA5MywidG90YWxfZGF0YWJhc2Vfc2l6ZV9jaGFuZ2Ui
+OjAsInN1Y2Nlc3MiOnRydWV9LHsidmVyc2lvbiI6MjAyMjAyMjMxNjM1MTks
+IndhbGx0aW1lIjoxLjE4NDQ1MDI3NjE5NjAwMywidG90YWxfZGF0YWJhc2Vf
+c2l6ZV9jaGFuZ2UiOjAsInN1Y2Nlc3MiOnRydWV9LHsidmVyc2lvbiI6MjAy
+MjAzMTgxNzQ0MzksIndhbGx0aW1lIjoxLjgxNjg0MTU4NzQyNDI3ODMsInRv
+dGFsX2RhdGFiYXNlX3NpemVfY2hhbmdlIjowLCJzdWNjZXNzIjp0cnVlfSx7
+InZlcnNpb24iOjIwMjEwNjA0MjMyMDE3LCJ3YWxsdGltZSI6MS4yOTQxNDMx
+MjU0MTQ4NDgzLCJ0b3RhbF9kYXRhYmFzZV9zaXplX2NoYW5nZSI6LTI0NTc2
+LCJzdWNjZXNzIjp0cnVlfSx7InZlcnNpb24iOjIwOTkwNjA0MjMzMTU3LCJ3
+YWxsdGltZSI6MS4wNjA5MjQ1MDAyMjY5NzQ1LCJ0b3RhbF9kYXRhYmFzZV9z
+aXplX2NoYW5nZSI6MCwic3VjY2VzcyI6ZmFsc2V9XX0=
+ -->
+  <!-- gitlab-org/database-team/gitlab-com-database-testing:identifiable-note -->
+### Database migrations (on the ci database)
+
+|           | 3 Warnings |
+| --------- | -------------------- |
+| :warning: |  <b>20210602144718 - CreateTestTable</b> had a query that [exceeded timing guidelines](https://docs.gitlab.com/ee/development/query_performance.html#timing-guidelines-for-queries). Run time<br /> should not exceed 100ms, but it was 122.94ms. Please consider possible options to improve the query<br /> performance. <br/><pre>CREATE TABLE "test_tables" ("id" bigserial primary key, "stars" bigint<br /> DEFAULT 0 NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, "title"<br /> text, "notes" text)<br /> &#x2F;&#x2A;application:test,db_config_name:ci,line:/lib/gitlab/database/migration_helpers.rb:100:in<br /> `block in create_table_with_constraints'&#x2A;&#x2F;</pre> |
+| :warning: |  <b>20210603233011 - RegularMigrationWithFiveSecondQuery</b> had a query that [exceeded timing<br /> guidelines](https://docs.gitlab.com/ee/development/query_performance.html#timing-guidelines-for-queries). Run time should not exceed 100ms, but it was 5005.1ms. Please consider possible options<br /> to improve the query performance. <br/><pre>SELECT pg_sleep($1)</pre> |
+| :warning: |  <b>20990604233157 - MigrationThrowsException</b> did not complete successfully, check the job log<br /> for details |
+
+Migrations included in this change have been executed on gitlab.com data for testing purposes. For details, please see the [migration testing pipeline](https://gitlab.com/gitlab-org/database-team/gitlab-com-database-testing/-/pipelines/4711) (limited access).
+
+| Migration | Type | Total runtime | Result | DB size change |
+| --------- | ---- | ------------- | ------ | -------------- |
+| 20210602144718 - CreateTestTable | Regular | 1.9 s | :warning: | +24.00 KiB |
+| 20210603233011 - RegularMigrationWithFiveSecondQuery | Regular | 6.2 s | :warning: | +0.00 B |
+| 20210915152743 - MigrationInheritsGitlabDatabaseMigration | Regular | 1.2 s | :white_check_mark: | +0.00 B |
+| 20220223163519 - EnsureGitlabComInMigrations | Regular | 1.2 s | :white_check_mark: | +0.00 B |
+| 20220318174439 - QueueTestBackgroundMigration | Regular | 1.7 s | :white_check_mark: | +0.00 B |
+| 20210604232017 - DropTestTable | Post deploy | 1.4 s | :white_check_mark: | -24.00 KiB |
+| 20990604233157 - MigrationThrowsException | Post deploy | 1.1 s | :boom: | +0.00 B |
+
+<details>
+<summary>Runtime Histogram for all migrations</summary>
+
+| Query Runtime | Count |
+|---------------|-------|
+|0 seconds - 0.01 seconds | 0 |
+|0.01 seconds - 0.1 seconds | 3 |
+|0.1 seconds - 1 second | 1 |
+|1 second - 5 minutes | 1 |
+|5 minutes + | 0 |
+
+</details>
+
+
+#### :warning: Migration: <b>20210602144718 - CreateTestTable</b>
+
+* Type: Regular
+* Duration: 1.9 s
+* Database size change: +24.00 KiB
+
+| Query | Calls | Total Time | Max Time | Mean Time | Rows |
+| ----- | ----- | ---------- | -------- | --------- | ---- |
+| <pre>CREATE TABLE "test_tables" ("id" bigserial primary key, "stars" bigint DEFAULT 0 NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, "title" text, "notes" text) &#x2F;&#x2A;application:test,db_config_name:ci,line:/lib/gitlab/database/migration_helpers.rb:100:in `block in create_table_with_constraints'&#x2A;&#x2F;</pre> | 1 | 122.9 ms | 122.9 ms | 122.9 ms | 0 |
+| <pre>ALTER TABLE "test_tables" ADD CONSTRAINT "check_0770ba173a" CHECK (char_length("title") <= 128), ADD CONSTRAINT "check_9cfc473dbc" CHECK (char_length("notes") <= 1024) &#x2F;&#x2A;application:test,db_config_name:ci,line:/lib/gitlab/database/migration_helpers.rb:128:in `block in create_table_with_constraints'&#x2A;&#x2F;</pre> | 1 | 8.3 ms | 8.3 ms | 8.3 ms | 0 |
+| <pre>SELECT $1::regtype::oid</pre> | 1 | 0.0 ms | 0.0 ms | 0.0 ms | 1 |
+
+<details>
+<summary>Histogram for CreateTestTable</summary>
+
+| Query Runtime | Count |
+|---------------|-------|
+|0 seconds - 0.01 seconds | 0 |
+|0.01 seconds - 0.1 seconds | 2 |
+|0.1 seconds - 1 second | 1 |
+|1 second - 5 minutes | 0 |
+|5 minutes + | 0 |
+
+</details>
+
+#### :warning: Migration: <b>20210603233011 - RegularMigrationWithFiveSecondQuery</b>
+
+* Type: Regular
+* Duration: 6.2 s
+* Database size change: +0.00 B
+
+| Query | Calls | Total Time | Max Time | Mean Time | Rows |
+| ----- | ----- | ---------- | -------- | --------- | ---- |
+| <pre>SELECT pg_sleep($1)</pre> | 1 | 5005.1 ms | 5005.1 ms | 5005.1 ms | 1 |
+
+<details>
+<summary>Histogram for RegularMigrationWithFiveSecondQuery</summary>
+
+| Query Runtime | Count |
+|---------------|-------|
+|0 seconds - 0.01 seconds | 0 |
+|0.01 seconds - 0.1 seconds | 0 |
+|0.1 seconds - 1 second | 0 |
+|1 second - 5 minutes | 1 |
+|5 minutes + | 0 |
+
+</details>
+
+####  Migration: <b>20210915152743 - MigrationInheritsGitlabDatabaseMigration</b>
+
+* Type: Regular
+* Duration: 1.2 s
+* Database size change: +0.00 B
+
+
+####  Migration: <b>20220223163519 - EnsureGitlabComInMigrations</b>
+
+* Type: Regular
+* Duration: 1.2 s
+* Database size change: +0.00 B
+
+
+####  Migration: <b>20220318174439 - QueueTestBackgroundMigration</b>
+
+* Type: Regular
+* Duration: 1.7 s
+* Database size change: +0.00 B
+
+
+####  Migration: <b>20210604232017 - DropTestTable</b>
+
+* Type: Post deploy
+* Duration: 1.4 s
+* Database size change: -24.00 KiB
+
+| Query | Calls | Total Time | Max Time | Mean Time | Rows |
+| ----- | ----- | ---------- | -------- | --------- | ---- |
+| <pre>DROP TABLE "test_tables" &#x2F;&#x2A;application:test,db_config_name:ci,line:/db/post_migrate/20210604232017_drop_test_table.rb:5:in `change'&#x2A;&#x2F;</pre> | 1 | 6.8 ms | 6.8 ms | 6.8 ms | 0 |
+
+<details>
+<summary>Histogram for DropTestTable</summary>
+
+| Query Runtime | Count |
+|---------------|-------|
+|0 seconds - 0.01 seconds | 0 |
+|0.01 seconds - 0.1 seconds | 1 |
+|0.1 seconds - 1 second | 0 |
+|1 second - 5 minutes | 0 |
+|5 minutes + | 0 |
+
+</details>
+
+#### :boom: Migration: <b>20990604233157 - MigrationThrowsException</b>
+
+* Type: Post deploy
+* Duration: 1.1 s
+* Database size change: +0.00 B
+
+
+
+---
+
+### Background migrations
+
+
+---
+
+<details>
+  <summary>Other migrations pending on GitLab.com</summary>
+
+  | Migration | Type | Total runtime | Result | DB size change |
+| --------- | ---- | ------------- | ------ | -------------- |
+| 20220929081645 - TmpIdxNullMemberNamespaceId | Post deploy | 112.4 s | :white_check_mark: | +32.00 KiB |
+
+</details>
+
+#### Clone Details
+| Clone ID | Clone Created At | Clone Data Timestamp | Expected Removal Time |
+| -------- | ---------------- | -------------------- | --------------------- |
+| [`database-testing-1448027-8121647-main`](https://console.postgres.ai/gitlab/gitlab-production-tunnel/instances/59/clones/database-testing-1448027-8121647-main) | 2022-09-30T21:32:10Z | 2022-09-30T20:11:48Z | 2022-10-01 09:39:17 +0000 |
+| [`database-testing-1448027-8121647-ci`](https://console.postgres.ai/gitlab/gitlab-production-ci/instances/165/clones/database-testing-1448027-8121647-ci) | 2022-09-30T21:32:10Z | 2022-09-30T20:46:43Z | 2022-10-01 09:39:17 +0000 |
+
+#### [Artifacts](https://gitlab.com/gitlab-org/database-team/gitlab-com-database-testing/-/jobs/1354666720/artifacts/browse/migration-testing/)
+
+---
+Brought to you by [gitlab-org/database-team/gitlab-com-database-testing](https://gitlab.com/gitlab-org/database-team/gitlab-com-database-testing). [Epic](https://gitlab.com/groups/gitlab-org/database-team/-/epics/9)
+<!-- JSON: eyJ2ZXJzaW9uIjoyLCJkYXRhIjpbeyJ2ZXJzaW9uIjoyMDIxMDYwMjE0NDcx
+OCwid2FsbHRpbWUiOjEuOTEwOTU3MTg3NDE0MTY5MywidG90YWxfZGF0YWJh
+c2Vfc2l6ZV9jaGFuZ2UiOjI0NTc2LCJzdWNjZXNzIjp0cnVlfSx7InZlcnNp
+b24iOjIwMjEwNjAzMjMzMDExLCJ3YWxsdGltZSI6Ni4xOTc0MjE2NDAxNTc3
+LCJ0b3RhbF9kYXRhYmFzZV9zaXplX2NoYW5nZSI6MCwic3VjY2VzcyI6dHJ1
+ZX0seyJ2ZXJzaW9uIjoyMDIxMDkxNTE1Mjc0Mywid2FsbHRpbWUiOjEuMTg5
+MzU2NTk1Mjc3Nzg2MywidG90YWxfZGF0YWJhc2Vfc2l6ZV9jaGFuZ2UiOjAs
+InN1Y2Nlc3MiOnRydWV9LHsidmVyc2lvbiI6MjAyMjAyMjMxNjM1MTksIndh
+bGx0aW1lIjoxLjE1MDA0MzIyNjc3ODUwNzIsInRvdGFsX2RhdGFiYXNlX3Np
+emVfY2hhbmdlIjowLCJzdWNjZXNzIjp0cnVlfSx7InZlcnNpb24iOjIwMjIw
+MzE4MTc0NDM5LCJ3YWxsdGltZSI6MS43MzM3Nzk4MjUyNzAxNzYsInRvdGFs
+X2RhdGFiYXNlX3NpemVfY2hhbmdlIjowLCJzdWNjZXNzIjp0cnVlfSx7InZl
+cnNpb24iOjIwMjEwNjA0MjMyMDE3LCJ3YWxsdGltZSI6MS40MTMzMTk2OTk0
+NjYyMjg1LCJ0b3RhbF9kYXRhYmFzZV9zaXplX2NoYW5nZSI6LTI0NTc2LCJz
+dWNjZXNzIjp0cnVlfSx7InZlcnNpb24iOjIwOTkwNjA0MjMzMTU3LCJ3YWxs
+dGltZSI6MS4wNTMxMzgyMzM3MjEyNTYzLCJ0b3RhbF9kYXRhYmFzZV9zaXpl
+X2NoYW5nZSI6MCwic3VjY2VzcyI6ZmFsc2V9XX0=
+ -->

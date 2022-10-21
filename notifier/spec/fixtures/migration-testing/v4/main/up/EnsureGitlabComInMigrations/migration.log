@@ -1,0 +1,18 @@
+# Logfile created on 2022-09-30 21:33:40 +0000 by logger.rb/v1.4.2
+D, [2022-09-30T21:33:40.870297 #388] DEBUG -- :   [1m[35m (40.8ms)[0m  [1m[34mSELECT pg_try_advisory_lock(3005434223539248480)[0m
+D, [2022-09-30T21:33:40.870901 #388] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:127:in `block (3 levels) in run'
+D, [2022-09-30T21:33:40.952304 #388] DEBUG -- :   [1m[35m (80.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application:test,db_config_name:main,line:/lib/gitlab/database/migrations/runner.rb:127:in `block (3 levels) in run'*/[0m
+D, [2022-09-30T21:33:40.953022 #388] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:127:in `block (3 levels) in run'
+I, [2022-09-30T21:33:40.966950 #388]  INFO -- : Migrating to EnsureGitlabComInMigrations (20220223163519)
+D, [2022-09-30T21:33:41.011542 #388] DEBUG -- :   [1m[36mTRANSACTION (40.9ms)[0m  [1m[35mBEGIN /*application:test,db_config_name:main,line:/lib/gitlab/database.rb:332:in `block in transaction'*/[0m
+D, [2022-09-30T21:33:41.012868 #388] DEBUG -- :   ↳ lib/gitlab/database.rb:332:in `block in transaction'
+D, [2022-09-30T21:33:41.056610 #388] DEBUG -- :   [1m[36mActiveRecord::SchemaMigration Create (43.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20220223163519') RETURNING "version" /*application:test,db_config_name:main,line:/lib/gitlab/database.rb:332:in `block in transaction'*/[0m
+D, [2022-09-30T21:33:41.057684 #388] DEBUG -- :   ↳ lib/gitlab/database.rb:332:in `block in transaction'
+D, [2022-09-30T21:33:41.100139 #388] DEBUG -- :   [1m[36mTRANSACTION (41.1ms)[0m  [1m[35mCOMMIT /*application:test,db_config_name:main,line:/lib/gitlab/database.rb:365:in `commit'*/[0m
+D, [2022-09-30T21:33:41.100815 #388] DEBUG -- :   ↳ lib/gitlab/database.rb:365:in `commit'
+D, [2022-09-30T21:33:41.143652 #388] DEBUG -- :   [1m[36mActiveRecord::InternalMetadata Load (41.0ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' LIMIT 1 /*application:test,db_config_name:main,line:/lib/gitlab/database/migrations/runner.rb:127:in `block (3 levels) in run'*/[0m
+D, [2022-09-30T21:33:41.144486 #388] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:127:in `block (3 levels) in run'
+D, [2022-09-30T21:33:41.189489 #388] DEBUG -- :   [1m[35m (43.4ms)[0m  [1m[34mSELECT pg_advisory_unlock(3005434223539248480)[0m
+D, [2022-09-30T21:33:41.190042 #388] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:127:in `block (3 levels) in run'
+D, [2022-09-30T21:33:41.427729 #388] DEBUG -- :   [1m[35m (195.8ms)[0m  [1m[34mselect pg_database_size(current_database()) /*application:test,db_config_name:main,line:/lib/gitlab/database/migrations/observers/total_database_size_change.rb:25:in `get_total_database_size'*/[0m
+D, [2022-09-30T21:33:41.428305 #388] DEBUG -- :   ↳ lib/gitlab/database/migrations/observers/total_database_size_change.rb:25:in `get_total_database_size'

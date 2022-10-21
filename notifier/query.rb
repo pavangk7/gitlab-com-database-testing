@@ -21,7 +21,7 @@ class Query
   end
 
   def formatted_query
-    Niceql::Prettifier.prettify_sql(query)
+    Niceql::Prettifier.prettify_sql(query, false)
       .gsub('/*', '&#x2F;&#x2A;')
       .gsub('*/', '&#x2A;&#x2F;')
       .gsub("\n", '<br />')

@@ -1,0 +1,5 @@
+# Logfile created on 2022-09-30 21:38:10 +0000 by logger.rb/v1.4.2
+D, [2022-09-30T21:38:14.418518 #426] DEBUG -- :   [1m[35m (4044.6ms)[0m  [1m[34mselect pg_sleep($1) /*application:test,db_config_name:main,line:/lib/gitlab/background_migration/test_background_migration.rb:5:in `perform'*/[0m  [[nil, 4]]
+D, [2022-09-30T21:38:14.419023 #426] DEBUG -- :   ↳ lib/gitlab/background_migration/test_background_migration.rb:5:in `perform'
+D, [2022-09-30T21:38:14.624787 #426] DEBUG -- :   [1m[35m (205.0ms)[0m  [1m[34mselect pg_database_size(current_database()) /*application:test,db_config_name:main,line:/lib/gitlab/database/migrations/observers/total_database_size_change.rb:25:in `get_total_database_size'*/[0m
+D, [2022-09-30T21:38:14.625282 #426] DEBUG -- :   ↳ lib/gitlab/database/migrations/observers/total_database_size_change.rb:25:in `get_total_database_size'

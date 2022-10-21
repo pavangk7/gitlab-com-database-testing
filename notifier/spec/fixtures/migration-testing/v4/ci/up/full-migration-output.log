@@ -1,0 +1,53 @@
+== 20210602144718 CreateTestTable: migrating ==================================
+-- create_table(:test_tables, {})
+-- quote_column_name(:title)
+   -> 0.0000s
+-- quote_column_name(:notes)
+   -> 0.0000s
+   -> 0.2083s
+-- quote_table_name("check_0770ba173a")
+   -> 0.0001s
+-- quote_table_name("check_9cfc473dbc")
+   -> 0.0000s
+-- quote_table_name(:test_tables)
+   -> 0.0000s
+-- execute("ALTER TABLE \"test_tables\"\nADD CONSTRAINT \"check_0770ba173a\" CHECK (char_length(\"title\") <= 128),\nADD CONSTRAINT \"check_9cfc473dbc\" CHECK (char_length(\"notes\") <= 1024)\n")
+   -> 0.0502s
+== 20210602144718 CreateTestTable: migrated (0.4754s) =========================
+
+== 20210603233011 RegularMigrationWithFiveSecondQuery: migrating ==============
+-- execute("SELECT pg_sleep(5);")
+   -> 5.0899s
+== 20210603233011 RegularMigrationWithFiveSecondQuery: migrated (5.0901s) =====
+
+== 20210604232017 DropTestTable: migrating ====================================
+-- drop_table(:test_tables)
+   -> 0.0904s
+== 20210604232017 DropTestTable: migrated (0.0906s) ===========================
+
+ci: == 20210915152743 MigrationInheritsGitlabDatabaseMigration: migrating =========
+ci: -- execute("SELECT 'up'")
+ci:    -> 0.0849s
+ci: == 20210915152743 MigrationInheritsGitlabDatabaseMigration: migrated (0.0851s) 
+
+ci: == 20220223163519 EnsureGitlabComInMigrations: migrating ======================
+ci: == 20220223163519 EnsureGitlabComInMigrations: migrated (0.0000s) =============
+
+ci: == 20220318174439 QueueTestBackgroundMigration: migrating =====================
+ci: == 20220318174439 QueueTestBackgroundMigration: migrated (0.5866s) ============
+
+ci: == 20220929081645 TmpIdxNullMemberNamespaceId: migrating ======================
+ci: -- transaction_open?()
+ci:    -> 0.0000s
+ci: -- index_exists?(:members, :member_namespace_id, {:name=>"tmp_index_for_null_member_namespace_id", :where=>"member_namespace_id IS NULL", :algorithm=>:concurrently})
+ci:    -> 0.7003s
+ci: -- execute("SET statement_timeout TO 0")
+ci:    -> 0.0418s
+ci: -- add_index(:members, :member_namespace_id, {:name=>"tmp_index_for_null_member_namespace_id", :where=>"member_namespace_id IS NULL", :algorithm=>:concurrently})
+ci:    -> 110.2664s
+ci: -- execute("RESET statement_timeout")
+ci:    -> 0.0423s
+ci: == 20220929081645 TmpIdxNullMemberNamespaceId: migrated (111.2802s) ===========
+
+== 20990604233157 MigrationThrowsException: migrating =========================
+-- RuntimeError("This throws an exception")

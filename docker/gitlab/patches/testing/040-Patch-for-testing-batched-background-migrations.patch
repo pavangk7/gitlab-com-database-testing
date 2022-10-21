@@ -1,0 +1,61 @@
+From ae029ff2254271707b7325485853fd5b09100c9c Mon Sep 17 00:00:00 2001
+From: Simon Tomlinson <stomlinson@gitlab.com>
+Date: Tue, 11 Oct 2022 13:47:43 -0500
+Subject: [PATCH] Patch for testing batched background migrations
+
+---
+ ...e_test_batched_background_migration_main.rb | 16 ++++++++++++++++
+ ...eue_test_batched_background_migration_ci.rb | 18 ++++++++++++++++++
+ 2 files changed, 34 insertions(+)
+ create mode 100644 db/migrate/20221011184436_queue_test_batched_background_migration_main.rb
+ create mode 100644 db/migrate/20221011184500_queue_test_batched_background_migration_ci.rb
+
+diff --git a/db/migrate/20221011184436_queue_test_batched_background_migration_main.rb b/db/migrate/20221011184436_queue_test_batched_background_migration_main.rb
+new file mode 100644
+index 000000000000..1b56e6bf4f23
+--- /dev/null
++++ b/db/migrate/20221011184436_queue_test_batched_background_migration_main.rb
+@@ -0,0 +1,16 @@
++# frozen_string_literal: true
++
++class QueueTestBatchedBackgroundMigrationMain < Gitlab::Database::Migration[2.0]
++  restrict_gitlab_migration gitlab_schema: :gitlab_main
++
++  def up
++    # Test background migration that sets created_at = updated_at for issues rows
++    queue_batched_background_migration(
++      'CopyColumnUsingBackgroundMigrationJob',
++        :issues,
++        :id,
++        :updated_at, :created_at,
++        job_interval: 2.minutes, batch_size: 10, sub_batch_size: 5
++    )
++  end
++end
+diff --git a/db/migrate/20221011184500_queue_test_batched_background_migration_ci.rb b/db/migrate/20221011184500_queue_test_batched_background_migration_ci.rb
+new file mode 100644
+index 000000000000..d31f3f594194
+--- /dev/null
++++ b/db/migrate/20221011184500_queue_test_batched_background_migration_ci.rb
+@@ -0,0 +1,18 @@
++# frozen_string_literal: true
++
++class QueueTestBatchedBackgroundMigrationCi < Gitlab::Database::Migration[2.0]
++  restrict_gitlab_migration gitlab_schema: :gitlab_ci
++
++  def up
++    # Test background migration that sets created_at = updated_at for ci_runner_projects rows
++    # ci_runner_projects was chosen as a CI table that's not likely to be partitioned in the future, but we may need
++    # to change this test if that changes
++    queue_batched_background_migration(
++      'CopyColumnUsingBackgroundMigrationJob',
++        :ci_runner_projects,
++        :id,
++        :updated_at, :created_at,
++        job_interval: 2.minutes, batch_size: 10, sub_batch_size: 5
++    )
++  end
++end
+-- 
+2.37.1
+

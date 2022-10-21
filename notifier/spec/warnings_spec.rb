@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe Warnings do
-  let(:result) { Result.from_directory(file_fixture('migration-testing/v3')) }
+  let(:result) { MultiDbResult.from_directory(file_fixture('migration-testing/v4')).per_db_results['main'] }
   let(:migration) { result.migrations[20210604232017] }
 
   subject(:warnings) { described_class.new(result) }
@@ -24,13 +24,12 @@ RSpec.describe Warnings do
 
       expect(subject.render).to include('did not complete')
       expect(subject.render).to include('[background migration]')
-      expect(subject.render).to include('[post-deploy migration]')
       expect(subject.render).to include('(`@gitlab-org/release/managers`)')
       expect(subject.render).to include('222.49')
     end
 
     it 'excludes migrations not introduced on current branch' do
-      excluded_name = 'UnrelatedMigration'
+      excluded_name = 'TmpIdxNullMemberNamespaceId'
       expect(result.other_migrations.map(&:name)).to include(excluded_name)
       expect(subject.render).not_to include(excluded_name)
     end
