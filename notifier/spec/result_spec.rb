@@ -23,7 +23,9 @@ RSpec.describe Result do
 
     it 'loads clone details' do
       detail_names = result.clone_details.map(&:cloneId)
-      expect(detail_names).to contain_exactly( "database-testing-1448027-8121647-main","database-testing-1448027-8121647-ci"  )
+      expect(detail_names).to contain_exactly(
+        "database-testing-1448027-8121647-main", "database-testing-1448027-8121647-ci"
+      )
     end
 
     it 'loads migrations' do

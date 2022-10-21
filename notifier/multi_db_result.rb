@@ -26,8 +26,6 @@ class MultiDbResult
     @per_db_results = per_db_results
   end
 
-  private
-
   def self.per_database_path_parts(database_testing_path)
     metadata_files = Dir.glob(File.join(database_testing_path, '**/up/metadata.json'))
     metadata_files.to_h do |f|
@@ -47,9 +45,7 @@ class MultiDbResult
     end
   end
 
-
   def self.read_to_json(path)
     JSON.parse(File.read(path))
   end
-
 end

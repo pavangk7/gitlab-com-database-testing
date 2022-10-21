@@ -13,7 +13,7 @@ RSpec.describe MultiDbFeedback do
 
       let(:expected_comment_file) { file_fixture("migration-testing/#{fixture_root}/expected-comment.txt") }
 
-      subject { MultiDbFeedback.new(result).render }
+      subject { described_class.new(result).render }
 
       before do
         override_env_from_fixture('migration-testing/environment.json')

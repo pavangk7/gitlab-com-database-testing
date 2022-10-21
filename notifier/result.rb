@@ -5,7 +5,6 @@ require 'json'
 
 class Result
   def self.from_directory(database_testing_path, global_migration_data, clone_details)
-
     query_details_path = File.join(database_testing_path, 'up')
 
     background_migrations_path = File.join(database_testing_path, 'background_migrations')
@@ -47,8 +46,6 @@ class Result
   def other_migrations
     sorted_migrations.reject(&:intro_on_current_branch)
   end
-
-
 
   def self.read_stats_legacy(stats_file)
     read_to_json(stats_file).index_by { |s| s['version'] }
