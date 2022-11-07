@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 require 'pry'
 require 'json'
-require './lib/migration_lister'
+require_relative 'lib/migration_lister'
 
 lister = MigrationLister.new
 
