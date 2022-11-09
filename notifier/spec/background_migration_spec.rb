@@ -24,8 +24,8 @@ RSpec.describe BackgroundMigration do
       ]
     end
 
-    let(:migration_1) { double(Migration, queries: queries_migration_1) }
-    let(:migration_2) { double(Migration, queries: queries_migration_2) }
+    let(:migration_1) { instance_double(Migration, queries: queries_migration_1) }
+    let(:migration_2) { instance_double(Migration, queries: queries_migration_2) }
 
     it 'has the correct number of aggregated queries' do
       expect(background_migration.queries.count).to eq(2)
