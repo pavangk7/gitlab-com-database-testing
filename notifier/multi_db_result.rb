@@ -41,7 +41,9 @@ class MultiDbResult
 
   def self.read_clone_details(details_filename)
     JSON.parse(File.read(details_filename)).map do |detail|
+      # rubocop:disable Style/OpenStructUse
       OpenStruct.new(detail)
+      # rubocop:enable Style/OpenStructUse
     end
   end
 
