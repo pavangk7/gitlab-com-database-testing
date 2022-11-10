@@ -8,6 +8,7 @@ class Query
   QUERY_GUIDANCE_MILLISECONDS = 100
   CONCURRENT_QUERY_GUIDANCE_MILLISECONDS = 5.minutes.in_milliseconds
   TIMING_GUIDELINES = 'https://docs.gitlab.com/ee/development/query_performance.html#timing-guidelines-for-queries'
+  CREATE_TABLE_STATMENT ='create table'
 
   attr_accessor :query, :calls, :total_time, :max_time, :mean_time, :rows, :executions
 
@@ -33,6 +34,25 @@ class Query
 
   def concurrent?
     query.downcase.include?('create index concurrently')
+  end
+
+  def new_table_fields_and_types
+    return unless new_table?
+
+    result = []
+
+    PgQuery.parse(query).tree.stmts.first.stmt.create_stmt.table_elts.each do |elt|
+      elt.column_def.type_name.names.each do |part|
+        column_name = elt.column_def.colname
+        data_type = part.string.str
+
+        next if data_type == 'pg_catalog'
+
+        result << [column_name, data_type]
+      end
+    end
+
+    result
   end
 
   def time_guidance
@@ -61,5 +81,11 @@ class Query
 
   def excluded?
     QueryExclusion.exclude?(query)
+  end
+
+  private
+
+  def new_table?
+    query.downcase.include?(CREATE_TABLE_STATMENT)
   end
 end
