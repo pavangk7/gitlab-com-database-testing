@@ -37,11 +37,11 @@ class Query
   end
 
   def new_table_fields_and_types
-    return unless new_table?
+    return unless new_table? && !pg_statement.create_stmt.nil?
 
     result = []
 
-    PgQuery.parse(query).tree.stmts.first.stmt.create_stmt.table_elts.each do |elt|
+    pg_statement.create_stmt.table_elts.each do |elt|
       elt.column_def.type_name.names.each do |part|
         column_name = elt.column_def.colname
         data_type = part.string.str
@@ -84,6 +84,10 @@ class Query
   end
 
   private
+
+  def pg_statement
+    @pg_statement ||= PgQuery.parse(query).tree.stmts.first.stmt
+  end
 
   def new_table?
     query.downcase.include?(CREATE_TABLE_STATMENT)
