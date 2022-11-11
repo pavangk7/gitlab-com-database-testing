@@ -31,7 +31,7 @@ RSpec.describe Query do
     let(:pgss) { { "query" => query } }
 
     let(:query) do
-      <<~SQL
+      <<~SQL.squish
         CREATE TABLE accounts (
           user_id serial PRIMARY KEY,
           username VARCHAR ( 50 ) UNIQUE NOT NULL,
@@ -44,7 +44,14 @@ RSpec.describe Query do
     end
 
     let(:result) do
-      [ ['user_id', 'serial'], ['username', 'varchar'], ['password', 'varchar'], ['email', 'varchar'], ['created_on', 'timestamp'], ['last_login', 'timestamp'] ]
+      [
+        %w[user_id serial],
+        %w[username varchar],
+        %w[password varchar],
+        %w[email varchar],
+        %w[created_on timestamp],
+        %w[last_login timestamp]
+      ]
     end
 
     it 'returns column names and data types' do
@@ -52,7 +59,7 @@ RSpec.describe Query do
     end
 
     context 'when is not a create table statement' do
-      let(:query) { 'select pg_database_size(current_database()) /*application:test*/'}
+      let(:query) { 'select pg_database_size(current_database()) /*application:test*/' }
 
       it 'returns nil' do
         expect(subject.new_table_fields_and_types).to be_nil

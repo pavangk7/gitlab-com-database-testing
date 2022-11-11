@@ -8,7 +8,7 @@ class Query
   QUERY_GUIDANCE_MILLISECONDS = 100
   CONCURRENT_QUERY_GUIDANCE_MILLISECONDS = 5.minutes.in_milliseconds
   TIMING_GUIDELINES = 'https://docs.gitlab.com/ee/development/query_performance.html#timing-guidelines-for-queries'
-  CREATE_TABLE_STATMENT ='create table'
+  CREATE_TABLE_STATMENT = 'create table'
 
   attr_accessor :query, :calls, :total_time, :max_time, :mean_time, :rows, :executions
 
