@@ -1,0 +1,19 @@
+---
+ uuid: 16
+ bigint: 8
+ double: 8
+ time: 8
+ timestamp_with_time_zone: 8
+ timestamp: 8
+ date: 4
+ integer: 4
+ oid: 4
+ smallint: 2
+ boolean: 1
+ bytea: -1
+ character: -1
+ inet: -1
+ jsonb: -1
+ numeric: -1
+ text: -1
+ varchar: -1
