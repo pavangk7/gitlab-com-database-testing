@@ -61,10 +61,15 @@ class Feedback
     erb('json_payload').result(b)
   end
 
-  def render_new_table
+  def render_new_table(query)
+    b = binding
+    erb('new_table').result(b)
+  end
+
+  def render_new_table_details
     b = binding
     b.local_variable_set(:migrations, migrations_from_branch)
-    erb('new_table').result(b)
+    erb('new_table_details').result(b)
   end
 
   def render_all_migrations_histogram
