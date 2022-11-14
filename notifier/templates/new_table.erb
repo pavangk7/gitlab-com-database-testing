@@ -1,0 +1,18 @@
+<% columns = NewTable(query) %>
+
+<% if columns.optimized? %>
+  PERFECT!
+<% else %>
+  | Column name | Data Type |
+  | -------- | ---------------- |
+  <% columns.each do |column| %>
+  | <%= column[0] %> | <%= column[1] %> |
+  <% end %>
+<% end %>
+
+
+
+
+
+
+
