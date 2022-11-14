@@ -29,6 +29,7 @@ RSpec.describe Result do
     end
 
     it 'loads migrations' do
+      binding.pry
       expect(result.migrations).not_to be_empty
     end
 

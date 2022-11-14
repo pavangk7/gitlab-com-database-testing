@@ -1,0 +1,7 @@
+<% migrations.each do |migration| %>
+  <% migration.queries do |query| %>
+    <% query.new_table? %>
+      <% render new_table(query) %>
+    <% end %>
+  <% end %>
+<% end %>
