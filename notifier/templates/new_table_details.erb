@@ -1,6 +1,8 @@
 <% migrations.each do |migration| %>
   <% migration.queries do |query| %>
     <% query.new_table? %>
+      ### New Table
+
       <% render new_table(query) %>
     <% end %>
   <% end %>
