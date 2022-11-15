@@ -27,6 +27,46 @@ RSpec.describe Query do
     end
   end
 
+  describe '#new_table_fields_and_types' do
+    let(:pgss) { { "query" => query } }
+
+    let(:query) do
+      <<~SQL.squish
+        CREATE TABLE accounts (
+          user_id serial PRIMARY KEY,
+          username VARCHAR ( 50 ) UNIQUE NOT NULL,
+          password VARCHAR ( 50 ) NOT NULL,
+          email VARCHAR ( 255 ) UNIQUE NOT NULL,
+          created_on TIMESTAMP NOT NULL,
+          last_login TIMESTAMP
+        );
+      SQL
+    end
+
+    let(:result) do
+      [
+        %w[user_id serial],
+        %w[username varchar],
+        %w[password varchar],
+        %w[email varchar],
+        %w[created_on timestamp],
+        %w[last_login timestamp]
+      ]
+    end
+
+    it 'returns column names and data types' do
+      expect(subject.new_table_fields_and_types).to eql(result)
+    end
+
+    context 'when is not a create table statement' do
+      let(:query) { 'select pg_database_size(current_database()) /*application:test*/' }
+
+      it 'returns nil' do
+        expect(subject.new_table_fields_and_types).to be_nil
+      end
+    end
+  end
+
   describe '#formatted_query' do
     let(:normalized_query) { 'Select $1 from users where email=$2 limit $3' }
 
