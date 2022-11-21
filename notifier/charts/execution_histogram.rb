@@ -28,6 +28,10 @@ module Charts
       5.minutes
     ].freeze
 
+    PLACEHOLDER_TEMPLATE = 'templates/charts/placeholder.erb'
+
+    HISTOGRAM_TEMPLATE = 'templates/charts/histogram.erb'
+
     attr_reader :query_executions, :buckets, :title, :column_label
 
     def self.for_result(result)
@@ -82,10 +86,14 @@ module Charts
       end
     end
 
-    def render
-      return '' if query_executions.empty?
+    def template
+      return PLACEHOLDER_TEMPLATE if query_executions.empty?
 
-      ERB.new(File.read('templates/charts/histogram.erb'), trim_mode: '-').result(binding)
+      HISTOGRAM_TEMPLATE
+    end
+
+    def render
+      ERB.new(File.read(template), trim_mode: '-').result(binding)
     end
   end
 end
