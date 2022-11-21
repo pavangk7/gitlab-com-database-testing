@@ -17,7 +17,7 @@ license_scanning:
 
 lint:
   stage: test
-  image: ruby:2.7
+  image: ruby:3.0.0
   script:
     - cd notifier
     - bundle install
@@ -33,7 +33,7 @@ shellcheck:
 
 notifier-rspec:
   stage: test
-  image: ruby:2.7
+  image: ruby:3.0.0
   script:
     - cd notifier
     - bundle install
@@ -48,10 +48,9 @@ notifier-rspec:
 
 gitlab-rspec:
   stage: test
-  image: ruby:2.7
+  image: ruby:3.0.0
   script:
     - cd docker/gitlab
-    - ls
     - bundle install
     - bundle exec rspec --format progress --format RspecJunitFormatter --out rspec.xml
     - mv rspec.xml ../../gitlab-rspec.xml
