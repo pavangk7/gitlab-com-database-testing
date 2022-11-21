@@ -37,7 +37,7 @@ class Query
   end
 
   def new_table_fields_and_types
-    return unless new_table? && !pg_statement.create_stmt.nil?
+    return unless create_table? && !pg_statement.create_stmt.nil?
 
     result = []
 
@@ -83,13 +83,13 @@ class Query
     QueryExclusion.exclude?(query)
   end
 
+  def create_table?
+    query.downcase.include?(CREATE_TABLE_STATMENT)
+  end
+
   private
 
   def pg_statement
     @pg_statement ||= PgQuery.parse(query).tree.stmts.first.stmt
-  end
-
-  def new_table?
-    query.downcase.include?(CREATE_TABLE_STATMENT)
   end
 end

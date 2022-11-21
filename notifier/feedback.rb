@@ -61,23 +61,19 @@ class Feedback
     erb('json_payload').result(b)
   end
 
-  def render_new_table(query)
-    b = binding
-    erb('new_table').result(b)
-  end
-
-  def render_new_table_details
-    b = binding
-    b.local_variable_set(:migrations, migrations_from_branch)
-    erb('new_table_details').result(b)
-  end
-
   def render_all_migrations_histogram
     Charts::ExecutionHistogram.for_result(result).render
   end
 
   def render_migration_histogram(migration)
     Charts::ExecutionHistogram.for_migration(migration).render
+  end
+
+  def render_migration_column_ordering_suggestion(queries)
+    b = binding
+    b.local_variable_set(:column_ordering_title, "Column (Re)Ordering suggestions")
+    b.local_variable_set(:reference_url, "https://docs.gitlab.com/ee/development/database/ordering_table_columns.html#ordering-table-columns-in-postgresql")
+    erb('column_ordering_suggestions').result(binding)
   end
 
   def render_background_migration_batch_histogram(background_migration)

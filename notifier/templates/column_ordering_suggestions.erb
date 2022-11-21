@@ -1,0 +1,15 @@
+<details>
+  <summary><%= column_ordering_title %></summary>
+  Ordering columns efficiently will help us save (more) space, further details can be found <%= link_to "here", reference_url %>.
+  <% queries.each do |query| %>
+    <% new_table = NewTable.new(query) %>
+    <% unless new_table.is_column_order_optimized? %>
+      <%= "Query: #{query}" %>
+      | Column name | Data Type |
+      | ----------- | --------- |
+      <% new_table.optimize_column_order.each do |column| %>
+      | <%= column[0] %> | <%= column[1] %> |
+      <% end %>
+    <% end %>
+  <% end %>
+</details>
