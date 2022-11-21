@@ -88,6 +88,8 @@ Migrations included in this change have been executed on gitlab.com data for tes
 * Database size change: +0.00 B
 
 
+<i>No histogram available for visualization</i>
+
 ####  Migration: <b>20220223163519 - EnsureGitlabComInMigrations</b>
 
 * Type: Regular
@@ -95,12 +97,16 @@ Migrations included in this change have been executed on gitlab.com data for tes
 * Database size change: +0.00 B
 
 
+<i>No histogram available for visualization</i>
+
 ####  Migration: <b>20220318174439 - QueueTestBackgroundMigration</b>
 
 * Type: Regular
 * Duration: 1.8 s
 * Database size change: +0.00 B
 
+
+<i>No histogram available for visualization</i>
 
 ####  Migration: <b>20210604232017 - DropTestTable</b>
 
@@ -131,6 +137,8 @@ Migrations included in this change have been executed on gitlab.com data for tes
 * Duration: 1.1 s
 * Database size change: +0.00 B
 
+
+<i>No histogram available for visualization</i>
 
 
 ---
@@ -267,6 +275,8 @@ Migrations included in this change have been executed on gitlab.com data for tes
 * Database size change: +0.00 B
 
 
+<i>No histogram available for visualization</i>
+
 ####  Migration: <b>20220223163519 - EnsureGitlabComInMigrations</b>
 
 * Type: Regular
@@ -274,12 +284,16 @@ Migrations included in this change have been executed on gitlab.com data for tes
 * Database size change: +0.00 B
 
 
+<i>No histogram available for visualization</i>
+
 ####  Migration: <b>20220318174439 - QueueTestBackgroundMigration</b>
 
 * Type: Regular
 * Duration: 1.7 s
 * Database size change: +0.00 B
 
+
+<i>No histogram available for visualization</i>
 
 ####  Migration: <b>20210604232017 - DropTestTable</b>
 
@@ -310,6 +324,8 @@ Migrations included in this change have been executed on gitlab.com data for tes
 * Duration: 1.1 s
 * Database size change: +0.00 B
 
+
+<i>No histogram available for visualization</i>
 
 
 ---

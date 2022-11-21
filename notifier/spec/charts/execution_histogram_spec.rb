@@ -37,6 +37,18 @@ RSpec.describe Charts::ExecutionHistogram do
     end
   end
 
+  describe '#template' do
+    context 'when executions are empty' do
+      let(:executions) { [] }
+
+      it { expect(subject.template).to eq('templates/charts/placeholder.erb') }
+    end
+
+    context "when there's executions to render" do
+      it { expect(subject.template).to eq('templates/charts/histogram.erb') }
+    end
+  end
+
   describe '#render' do
     it 'renders' do
       rendered = subject.render
