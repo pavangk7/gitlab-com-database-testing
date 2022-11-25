@@ -1,0 +1,68 @@
+diff --git a/db/migrate/20221123151656_create_inefficiently_ordered_columns_table.rb b/db/migrate/20221123151656_create_inefficiently_ordered_columns_table.rb
+new file mode 100644
+index 00000000000..adb2c72a1a6
+--- /dev/null
++++ b/db/migrate/20221123151656_create_inefficiently_ordered_columns_table.rb
+@@ -0,0 +1,28 @@
++# frozen_string_literal: true
++
++# See https://docs.gitlab.com/ee/development/migration_style_guide.html
++# for more information on how to write migrations for GitLab.
++
++class CreateInefficientlyOrderedColumnsTable < Gitlab::Database::Migration[2.0]
++  def change
++    create_table :inefficiently_ordered_columns_tables do |t|
++      t.text :text_attr
++      t.numeric :numeric_attr
++      t.jsonb :jsonb_attr
++      t.inet :inet_attr
++      t.int8range :int8range_attr
++      t.boolean :boolean_attr
++      t.int4range :int4range_attr
++      t.oid :oid_attr
++      t.integer :integer_attr
++      t.date :date_attr
++      t.timestamp :timestamp_attr
++      t.time :time_attr
++      t.float :float_attr
++      t.bigint :bigint_attr
++      t.uuid :uuid_attr
++
++      t.timestamps_with_timezone null: false
++    end
++  end
++end
+diff --git a/db/migrate/20221123153833_create_efficiently_ordered_columns_table.rb b/db/migrate/20221123153833_create_efficiently_ordered_columns_table.rb
+new file mode 100644
+index 00000000000..60878d9aeca
+--- /dev/null
++++ b/db/migrate/20221123153833_create_efficiently_ordered_columns_table.rb
+@@ -0,0 +1,28 @@
++# frozen_string_literal: true
++
++# See https://docs.gitlab.com/ee/development/migration_style_guide.html
++# for more information on how to write migrations for GitLab.
++
++class CreateEfficientlyOrderedColumnsTable < Gitlab::Database::Migration[2.0]
++  def change
++    create_table :efficiently_ordered_columns_tables do |t|
++      t.uuid :uuid_attr
++      t.bigint :bigint_attuuid_attr
++      t.float :float_attuuid_attr
++      t.time :time_attuuid_attr
++      t.timestamp :timestamp_attuuid_attr
++      t.date :date_attuuid_attr
++      t.integer :integer_attuuid_attr
++      t.oid :oid_attuuid_attr
++      t.int4range :int4range_attuuid_attr
++      t.boolean :boolean_attuuid_attr
++      t.int8range :int8range_attuuid_attr
++      t.inet :inet_attuuid_attr
++      t.jsonb :jsonb_attuuid_attr
++      t.numeric :numeric_attuuid_attr
++      t.text :text_attuuid_attr
++
++      t.timestamps_with_timezone null: false
++    end
++  end
++end

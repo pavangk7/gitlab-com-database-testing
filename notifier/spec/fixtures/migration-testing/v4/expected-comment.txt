@@ -6,6 +6,7 @@
 | :warning: |  <b>20210602144718 - CreateTestTable</b> had a query that [exceeded timing guidelines](https://docs.gitlab.com/ee/development/query_performance.html#timing-guidelines-for-queries). Run time<br /> should not exceed 100ms, but it was 192.8ms. Please consider possible options to improve the query<br /> performance. <br/><pre>CREATE TABLE "test_tables" ("id" bigserial primary key, "stars" bigint<br /> DEFAULT 0 NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, "title"<br /> text, "notes" text)<br /> &#x2F;&#x2A;application:test,db_config_name:main,line:/lib/gitlab/database/migration_helpers.rb:100:in<br /> `block in create_table_with_constraints'&#x2A;&#x2F;</pre> |
 | :warning: |  <b>20210603233011 - RegularMigrationWithFiveSecondQuery</b> had a query that [exceeded timing<br /> guidelines](https://docs.gitlab.com/ee/development/query_performance.html#timing-guidelines-for-queries). Run time should not exceed 100ms, but it was 5005.1ms. Please consider possible options<br /> to improve the query performance. <br/><pre>SELECT pg_sleep($1)</pre> |
 | :warning: |  <b>20990604233157 - MigrationThrowsException</b> did not complete successfully, check the job log<br /> for details |
+| :warning: |  <b>20221123151656 - CreateInefficientlyOrderedColumnsTable</b> had a query that [exceeded timing<br /> guidelines](https://docs.gitlab.com/ee/development/query_performance.html#timing-guidelines-for-queries). Run time should not exceed 100ms, but it was 210.05ms. Please consider possible options<br /> to improve the query performance. <br/><pre>CREATE TABLE "inefficiently_ordered_columns_tables"<br /> ("id" bigserial primary key, "text_attr" text, "numeric_attr" decimal, "jsonb_attr" jsonb,<br /> "inet_attr" inet, "int8range_attr" int8range, "boolean_attr" boolean, "int4range_attr" int4range,<br /> "oid_attr" oid, "integer_attr" integer, "date_attr" date, "datetime_with_timezone_attr" timestamptz,<br /> "time_attr" time, "float_attr" float, "bigint_attr" bigint, "uuid_attr" uuid, "created_at"<br /> timestamptz NOT NULL, "updated_at" timestamptz NOT NULL, CONSTRAINT check_e3e98d6856 CHECK<br /> (char_length("text_attr") <= 255))<br /> &#x2F;&#x2A;application:test,db_config_name:main,line:/lib/gitlab/database/migration_helpers/v2.rb:46:in<br /> `create_table'&#x2A;&#x2F;</pre> |
 
 Migrations included in this change have been executed on gitlab.com data for testing purposes. For details, please see the [migration testing pipeline](https://gitlab.com/gitlab-org/database-team/gitlab-com-database-testing/-/pipelines/4711) (limited access).
 
@@ -18,6 +19,8 @@ Migrations included in this change have been executed on gitlab.com data for tes
 | 20220318174439 - QueueTestBackgroundMigration | Regular | 1.8 s | :white_check_mark: | +0.00 B |
 | 20210604232017 - DropTestTable | Post deploy | 1.3 s | :white_check_mark: | -24.00 KiB |
 | 20990604233157 - MigrationThrowsException | Post deploy | 1.1 s | :boom: | +0.00 B |
+| 20221123151656 - CreateInefficientlyOrderedColumnsTable | Regular | 1.8 s | :warning: | +24.00 KiB |
+| 20221123153833 - CreateEfficientlyOrderedColumnsTable | Regular | 1.2 s | :white_check_mark: | +40.00 KiB |
 
 <details>
 <summary>Runtime Histogram for all migrations</summary>
@@ -25,8 +28,8 @@ Migrations included in this change have been executed on gitlab.com data for tes
 | Query Runtime | Count |
 |---------------|-------|
 |0 seconds - 0.01 seconds | 0 |
-|0.01 seconds - 0.1 seconds | 3 |
-|0.1 seconds - 1 second | 1 |
+|0.01 seconds - 0.1 seconds | 4 |
+|0.1 seconds - 1 second | 2 |
 |1 second - 5 minutes | 1 |
 |5 minutes + | 0 |
 
@@ -140,6 +143,64 @@ Migrations included in this change have been executed on gitlab.com data for tes
 
 <i>No histogram available for visualization</i>
 
+#### :warning: Migration: <b>20221123151656 - CreateInefficientlyOrderedColumnsTable</b>
+
+* Type: Regular
+* Duration: 1.8 s
+* Database size change: +24.00 KiB
+
+| Query | Calls | Total Time | Max Time | Mean Time | Rows |
+| ----- | ----- | ---------- | -------- | --------- | ---- |
+| <pre>CREATE TABLE "inefficiently_ordered_columns_tables" ("id" bigserial primary key, "text_attr" text, "numeric_attr" decimal, "jsonb_attr" jsonb, "inet_attr" inet, "int8range_attr" int8range, "boolean_attr" boolean, "int4range_attr" int4range, "oid_attr" oid, "integer_attr" integer, "date_attr" date, "datetime_with_timezone_attr" timestamptz, "time_attr" time, "float_attr" float, "bigint_attr" bigint, "uuid_attr" uuid, "created_at" timestamptz NOT NULL, "updated_at" timestamptz NOT NULL, CONSTRAINT check_e3e98d6856 CHECK (char_length("text_attr") <= 255)) &#x2F;&#x2A;application:test,db_config_name:main,line:/lib/gitlab/database/migration_helpers/v2.rb:46:in `create_table'&#x2A;&#x2F;</pre> | 1 | 210.1 ms | 210.1 ms | 210.1 ms | 0 |
+
+<details>
+<summary>Column (Re)Ordering suggestions</summary>
+Ordering columns efficiently will help us save (more) space, further details can be found <a href="https://docs.gitlab.com/ee/development/database/ordering_table_columns.html#ordering-table-columns-in-postgresql">here</a>.
+
+
+Query: CREATE TABLE "inefficiently_ordered_columns_tables" ("id" bigserial primary key, "text_attr" text, "numeric_attr" decimal, "jsonb_attr" jsonb, "inet_attr" inet, "int8range_attr" int8range, "boolean_attr" boolean, "int4range_attr" int4range, "oid_attr" oid, "integer_attr" integer, "date_attr" date, "datetime_with_timezone_attr" timestamptz, "time_attr" time, "float_attr" float, "bigint_attr" bigint, "uuid_attr" uuid, "created_at" timestamptz NOT NULL, "updated_at" timestamptz NOT NULL, CONSTRAINT check_e3e98d6856 CHECK (char_length("text_attr") <= 255)) &#x2F;&#x2A;application:test,db_config_name:main,line:/lib/gitlab/database/migration_helpers/v2.rb:46:in `create_table'&#x2A;&#x2F;
+
+| Column name | Data Type |
+| ----------- | --------- |
+|  |  |
+|  |  |
+</details>
+
+<details>
+<summary>Histogram for CreateInefficientlyOrderedColumnsTable</summary>
+
+| Query Runtime | Count |
+|---------------|-------|
+|0 seconds - 0.01 seconds | 0 |
+|0.01 seconds - 0.1 seconds | 0 |
+|0.1 seconds - 1 second | 1 |
+|1 second - 5 minutes | 0 |
+|5 minutes + | 0 |
+
+</details>
+
+####  Migration: <b>20221123153833 - CreateEfficientlyOrderedColumnsTable</b>
+
+* Type: Regular
+* Duration: 1.2 s
+* Database size change: +40.00 KiB
+
+| Query | Calls | Total Time | Max Time | Mean Time | Rows |
+| ----- | ----- | ---------- | -------- | --------- | ---- |
+| <pre>CREATE TABLE "efficiently_ordered_columns_tables" ("id" bigserial primary key, "uuid_attr" uuid, "bigint_attr" bigint, "float_attr" float, "time_attr" time, "datetime_with_timezone_attr" timestamptz, "date_attr" date, "integer_attr" integer, "oid_attr" oid, "int4range_attr" int4range, "boolean_attr" boolean, "int8range_attr" int8range, "inet_attr" inet, "jsonb_attr" jsonb, "numeric_attr" decimal, "text_attr" text, "created_at" timestamptz NOT NULL, "updated_at" timestamptz NOT NULL, CONSTRAINT check_cff703a65d CHECK (char_length("text_attr") <= 255)) &#x2F;&#x2A;application:test,db_config_name:main,line:/lib/gitlab/database/migration_helpers/v2.rb:46:in `create_table'&#x2A;&#x2F;</pre> | 1 | 24.0 ms | 24.0 ms | 24.0 ms | 0 |
+
+<details>
+<summary>Histogram for CreateEfficientlyOrderedColumnsTable</summary>
+
+| Query Runtime | Count |
+|---------------|-------|
+|0 seconds - 0.01 seconds | 0 |
+|0.01 seconds - 0.1 seconds | 1 |
+|0.1 seconds - 1 second | 0 |
+|1 second - 5 minutes | 0 |
+|5 minutes + | 0 |
+
+</details>
 
 ---
 

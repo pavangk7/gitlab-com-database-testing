@@ -2,12 +2,15 @@
 require 'filesize'
 require 'erb'
 require 'active_support/core_ext/module/delegation'
+require 'action_view/helpers/url_helper'
 require_relative 'niceql'
 require 'pg_query'
 require_relative 'json_payload'
 require_relative 'environment'
 
 class Feedback
+  include ActionView::Helpers::UrlHelper
+
   UNKNOWN = ':grey_question:'
 
   attr_reader :result, :env
@@ -73,7 +76,7 @@ class Feedback
     b = binding
     b.local_variable_set(:column_ordering_title, "Column (Re)Ordering suggestions")
     b.local_variable_set(:reference_url, "https://docs.gitlab.com/ee/development/database/ordering_table_columns.html#ordering-table-columns-in-postgresql")
-    erb('column_ordering_suggestions').result(binding)
+    erb('column_ordering_suggestions').result(b)
   end
 
   def render_background_migration_batch_histogram(background_migration)

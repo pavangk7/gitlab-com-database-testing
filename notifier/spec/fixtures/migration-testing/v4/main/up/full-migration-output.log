@@ -51,3 +51,17 @@ main: == 20220929081645 TmpIdxNullMemberNamespaceId: migrated (55.0195s) =======
 
 == 20990604233157 MigrationThrowsException: migrating =========================
 -- RuntimeError("This throws an exception")
+
+main: == 20221123151656 CreateInefficientlyOrderedColumnsTable: migrating ===========
+main: -- create_table(:inefficiently_ordered_columns_tables, {})
+main: -- quote_column_name(:text_attr)
+main:    -> 0.0000s
+main:    -> 0.3030s
+main: == 20221123151656 CreateInefficientlyOrderedColumnsTable: migrated (0.3050s) ==
+
+main: == 20221123153833 CreateEfficientlyOrderedColumnsTable: migrating =============
+main: -- create_table(:efficiently_ordered_columns_tables, {})
+main: -- quote_column_name(:text_attr)
+main:    -> 0.0000s
+main:    -> 0.1103s
+main: == 20221123153833 CreateEfficientlyOrderedColumnsTable: migrated (0.1107s) ====

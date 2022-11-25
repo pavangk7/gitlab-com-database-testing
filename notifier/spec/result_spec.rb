@@ -24,7 +24,7 @@ RSpec.describe Result do
     it 'loads clone details' do
       detail_names = result.clone_details.map(&:cloneId)
       expect(detail_names).to contain_exactly(
-        "database-testing-1448027-8121647-main", "database-testing-1448027-8121647-ci"
+        "database-testing-1562566-8582789-main", "database-testing-1562566-8582789-ci"
       )
     end
 

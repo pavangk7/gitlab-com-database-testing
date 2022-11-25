@@ -1,1 +1,20 @@
-[{"createdAt":"2022-09-30T21:32:10Z","cloneStateTimestamp":"2022-09-30T20:11:48Z","cloneId":"database-testing-1448027-8121647-main","maxIdleMinutes":720,"expectedRemovalTime":"2022-10-01 09:39:17 +0000","projectName":"gitlab-production-tunnel","instanceId":59},{"createdAt":"2022-09-30T21:32:10Z","cloneStateTimestamp":"2022-09-30T20:46:43Z","cloneId":"database-testing-1448027-8121647-ci","maxIdleMinutes":720,"expectedRemovalTime":"2022-10-01 09:39:17 +0000","projectName":"gitlab-production-ci","instanceId":165}]
+[
+    {
+       "createdAt":"2022-11-24T14:05:17Z",
+       "cloneStateTimestamp":"2022-11-24T12:09:58Z",
+       "cloneId":"database-testing-1562566-8582789-main",
+       "maxIdleMinutes":720,
+       "expectedRemovalTime":"2022-11-25 02:08:58 +0000",
+       "projectName":"gitlab-production-tunnel",
+       "instanceId":59
+    },
+    {
+       "createdAt":"2022-11-24T14:05:17Z",
+       "cloneStateTimestamp":"2022-11-24T12:46:34Z",
+       "cloneId":"database-testing-1562566-8582789-ci",
+       "maxIdleMinutes":720,
+       "expectedRemovalTime":"2022-11-25 02:08:58 +0000",
+       "projectName":"gitlab-production-ci",
+       "instanceId":165
+    }
+ ]

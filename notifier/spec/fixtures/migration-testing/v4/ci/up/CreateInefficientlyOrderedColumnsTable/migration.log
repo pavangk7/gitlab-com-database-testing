@@ -1,0 +1,26 @@
+# Logfile created on 2022-11-24 14:07:13 +0000 by logger.rb/v1.4.2
+D, [2022-11-24T14:07:14.650550 #105] DEBUG -- :   [1m[35m (41.7ms)[0m  [1m[34mSELECT pg_try_advisory_lock(3005434223539248480)[0m
+D, [2022-11-24T14:07:14.651123 #105] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:131:in `block (3 levels) in run'
+D, [2022-11-24T14:07:14.733421 #105] DEBUG -- :   [1m[35m (81.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application:test,db_config_name:ci,line:/lib/gitlab/database/migrations/runner.rb:131:in `block (3 levels) in run'*/[0m
+D, [2022-11-24T14:07:14.734057 #105] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:131:in `block (3 levels) in run'
+I, [2022-11-24T14:07:14.742976 #105]  INFO -- : Migrating to CreateInefficientlyOrderedColumnsTable (20221123151656)
+D, [2022-11-24T14:07:14.799619 #105] DEBUG -- :   [1m[36mTRANSACTION (41.5ms)[0m  [1m[35mBEGIN /*application:test,db_config_name:ci,line:/lib/gitlab/database/migration_helpers/v2.rb:46:in `create_table'*/[0m
+D, [2022-11-24T14:07:14.800379 #105] DEBUG -- :   ↳ lib/gitlab/database/migration_helpers/v2.rb:46:in `create_table'
+D, [2022-11-24T14:07:15.153559 #105] DEBUG -- :   [1m[35m (351.3ms)[0m  [1m[35mCREATE TABLE "inefficiently_ordered_columns_tables" ("id" bigserial primary key, "text_attr" text, "numeric_attr" decimal, "jsonb_attr" jsonb, "inet_attr" inet, "int8range_attr" int8range, "boolean_attr" boolean, "int4range_attr" int4range, "oid_attr" oid, "integer_attr" integer, "date_attr" date, "datetime_with_timezone_attr" timestamptz, "time_attr" time, "float_attr" float, "bigint_attr" bigint, "uuid_attr" uuid, "created_at" timestamptz NOT NULL, "updated_at" timestamptz NOT NULL, CONSTRAINT check_e3e98d6856 CHECK (char_length("text_attr") <= 255)) /*application:test,db_config_name:ci,line:/lib/gitlab/database/migration_helpers/v2.rb:46:in `create_table'*/[0m
+D, [2022-11-24T14:07:15.154160 #105] DEBUG -- :   ↳ lib/gitlab/database/migration_helpers/v2.rb:46:in `create_table'
+D, [2022-11-24T14:07:15.297429 #105] DEBUG -- :   [1m[36mActiveRecord::SchemaMigration Create (54.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20221123151656') RETURNING "version" /*application:test,db_config_name:ci,line:/lib/gitlab/database.rb:332:in `block in transaction'*/[0m
+D, [2022-11-24T14:07:15.298347 #105] DEBUG -- :   ↳ lib/gitlab/database.rb:332:in `block in transaction'
+D, [2022-11-24T14:07:15.339768 #105] DEBUG -- :   [1m[36mTRANSACTION (40.4ms)[0m  [1m[35mCOMMIT /*application:test,db_config_name:ci,line:/lib/gitlab/database.rb:365:in `commit'*/[0m
+D, [2022-11-24T14:07:15.340334 #105] DEBUG -- :   ↳ lib/gitlab/database.rb:365:in `commit'
+D, [2022-11-24T14:07:15.510885 #105] DEBUG -- :   [1m[36mActiveRecord::InternalMetadata Load (66.3ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' LIMIT 1 /*application:test,db_config_name:ci,line:/lib/gitlab/database/migrations/runner.rb:131:in `block (3 levels) in run'*/[0m
+D, [2022-11-24T14:07:15.511593 #105] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:131:in `block (3 levels) in run'
+D, [2022-11-24T14:07:15.556798 #105] DEBUG -- :   [1m[36mTRANSACTION (39.9ms)[0m  [1m[35mBEGIN /*application:test,db_config_name:ci,line:/lib/gitlab/database/migrations/runner.rb:131:in `block (3 levels) in run'*/[0m
+D, [2022-11-24T14:07:15.557918 #105] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:131:in `block (3 levels) in run'
+D, [2022-11-24T14:07:15.607619 #105] DEBUG -- :   [1m[36mActiveRecord::InternalMetadata Update (49.2ms)[0m  [1m[33mUPDATE "ar_internal_metadata" SET "value" = 'test', "updated_at" = '2022-11-24 14:07:15.515290' WHERE "ar_internal_metadata"."key" = 'environment' /*application:test,db_config_name:ci,line:/lib/gitlab/database/migrations/runner.rb:131:in `block (3 levels) in run'*/[0m
+D, [2022-11-24T14:07:15.608719 #105] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:131:in `block (3 levels) in run'
+D, [2022-11-24T14:07:15.649936 #105] DEBUG -- :   [1m[36mTRANSACTION (40.1ms)[0m  [1m[35mCOMMIT /*application:test,db_config_name:ci,line:/lib/gitlab/database.rb:365:in `commit'*/[0m
+D, [2022-11-24T14:07:15.650508 #105] DEBUG -- :   ↳ lib/gitlab/database.rb:365:in `commit'
+D, [2022-11-24T14:07:15.691069 #105] DEBUG -- :   [1m[35m (40.1ms)[0m  [1m[34mSELECT pg_advisory_unlock(3005434223539248480)[0m
+D, [2022-11-24T14:07:15.691580 #105] DEBUG -- :   ↳ lib/gitlab/database/migrations/runner.rb:131:in `block (3 levels) in run'
+D, [2022-11-24T14:07:15.856865 #105] DEBUG -- :   [1m[35m (124.1ms)[0m  [1m[34mselect pg_database_size(current_database()) /*application:test,db_config_name:ci,line:/lib/gitlab/database/migrations/observers/total_database_size_change.rb:25:in `get_total_database_size'*/[0m
+D, [2022-11-24T14:07:15.857335 #105] DEBUG -- :   ↳ lib/gitlab/database/migrations/observers/total_database_size_change.rb:25:in `get_total_database_size'
