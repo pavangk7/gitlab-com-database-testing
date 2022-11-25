@@ -75,9 +75,10 @@ class Feedback
   end
 
   def render_migration_column_ordering_suggestion(queries)
+    docs_url = "https://docs.gitlab.com/ee/development/database/ordering_table_columns.html"
     b = binding
     b.local_variable_set(:column_ordering_title, "Column (Re)Ordering suggestions")
-    b.local_variable_set(:reference_url, "https://docs.gitlab.com/ee/development/database/ordering_table_columns.html#ordering-table-columns-in-postgresql")
+    b.local_variable_set(:reference_url, docs_url)
     erb('column_ordering_suggestions').result(b)
   end
 
