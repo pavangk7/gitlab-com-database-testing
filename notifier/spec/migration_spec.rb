@@ -20,6 +20,14 @@ RSpec.describe Migration do
         "max_time" => 80.51234,
         "mean_time" => 80.51234,
         "rows" => 1
+      },
+      {
+        "query" => "CREATE TABLE \"users\" (\"id\" bigserial primary key, \"created_at\" timestamp(6) NOT NULL) /*application:test*/",
+        "calls" => 1,
+        "total_time" => 80.51234,
+        "max_time" => 80.51234,
+        "mean_time" => 80.51234,
+        "rows" => 0
       }
     ]
   end
@@ -35,7 +43,7 @@ RSpec.describe Migration do
     }
   end
 
-  let(:queries) { good_queries << bad_query }
+  let(:queries) { good_queries + [bad_query] }
 
   let(:stats) do
     {
@@ -64,7 +72,7 @@ RSpec.describe Migration do
   end
 
   it 'collects queries into query objects' do
-    expect(subject.queries.size).to eq(3)
+    expect(subject.queries.size).to eq(4)
     expect(subject.queries.first).to be_a(Query)
   end
 
@@ -180,7 +188,16 @@ RSpec.describe Migration do
 
   describe '#important_queries' do
     it 'returns only unexcluded queries' do
-      expect(subject.important_queries.size).to eq(2)
+      expect(subject.important_queries.size).to eq(3)
+    end
+  end
+
+  describe '#create_table_queries' do
+    it 'returns only create table queries' do
+      create_queries = queries.select { |q| q["query"].downcase.include?(Query::CREATE_TABLE_STATMENT) }
+
+      expect(subject.create_table_queries.count).to eq(1)
+      expect(subject.create_table_queries.map(&:query)).to eq(create_queries.pluck("query"))
     end
   end
 
