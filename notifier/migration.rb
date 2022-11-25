@@ -111,7 +111,7 @@ class Migration
   end
 
   def important_queries
-    queries.reject(&:excluded?)
+    @important_queries ||= queries.reject(&:excluded?)
   end
 
   def important_query_executions
@@ -124,6 +124,10 @@ class Migration
 
   def has_queries_with_warnings?
     queries_with_warnings.any?
+  end
+
+  def create_table_queries
+    important_queries.select(&:create_table?)
   end
 
   def name_formatted

@@ -6,10 +6,10 @@
 
 % if migration.queries.any?
 <%= render_pgss_table(migration.queries) %>
-% end
 
-<% if migration.queries.any?(&:create_table?) %>
-  <%= render_migration_column_ordering_suggestion(migration.queries) %>
-<% end %>
+% if create_table_queries.present?
+  <%= render_migration_column_ordering_suggestion(create_table_queries) %>
+% end
+% end
 
 <%= render_migration_histogram(migration) %>

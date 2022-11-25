@@ -29,7 +29,9 @@ class Feedback
   private
 
   def render_details(migration)
-    erb('detail').result(binding)
+    b = binding
+    b.local_variable_set(:create_table_queries, migration.create_table_queries)
+    erb('detail').result(b)
   end
 
   def render_background_migration_detail(background_migration)
