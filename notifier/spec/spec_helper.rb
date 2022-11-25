@@ -4,6 +4,7 @@ require 'pry'
 require_relative '../notifier'
 require 'json'
 require 'rspec-parameterized'
+require 'byebug'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|

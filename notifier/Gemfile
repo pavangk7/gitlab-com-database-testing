@@ -11,6 +11,10 @@ gem 'pg_query'
 gem 'pry'
 gem 'thor'
 
+group :test, :development do
+  gem 'byebug'
+end
+
 group :test do
   gem 'rspec'
   gem 'rspec_junit_formatter'

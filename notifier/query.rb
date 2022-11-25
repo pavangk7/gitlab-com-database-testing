@@ -42,6 +42,8 @@ class Query
     result = []
 
     pg_statement.create_stmt.table_elts.each do |elt|
+      next unless elt.column_def.present?
+
       elt.column_def.type_name.names.each do |part|
         column_name = elt.column_def.colname
         data_type = part.string.str

@@ -1,5 +1,6 @@
 .env
 .idea
 notifier/vendor
+notifier/.byebug_history
 notifier/spec/examples.txt
 tmp

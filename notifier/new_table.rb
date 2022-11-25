@@ -2,7 +2,7 @@
 
 class NewTable
   DATA_TYPE_POSITION = 1
-  VARIABLE_SIZE = -1
+  VARIABLE_SIZE_TYPE_LENGTH = -1
   FILE_NAME = 'pg_data_types.yml'
 
   def initialize(columns)
@@ -10,7 +10,9 @@ class NewTable
   end
 
   def optimize_column_order
-    columns.sort { |a, b| pg_data_types[b[DATA_TYPE_POSITION]] <=> pg_data_types[a[DATA_TYPE_POSITION]] }
+    columns.sort do |a, b|
+      data_type_length(b[DATA_TYPE_POSITION]) <=> data_type_length(a[DATA_TYPE_POSITION])
+    end
   end
 
   def column_order_optimized?
@@ -27,5 +29,9 @@ class NewTable
 
   def pg_data_types
     @pg_data_types ||= YAML.load_file(FILE_NAME)
+  end
+
+  def data_type_length(data_type)
+    pg_data_types[data_type] || VARIABLE_SIZE_TYPE_LENGTH
   end
 end
