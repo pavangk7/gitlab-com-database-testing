@@ -2,7 +2,6 @@
 source 'https://rubygems.org'
 
 gem 'activesupport'
-gem 'actionview'
 gem 'filesize'
 gem 'gitlab'
 gem 'gitlab-styles', require: false

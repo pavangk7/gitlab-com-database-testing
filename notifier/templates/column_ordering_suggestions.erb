@@ -1,12 +1,12 @@
 <details>
 <summary><%= column_ordering_title %></summary>
-Ordering columns efficiently will help us save (more) space, further details can be found <%= link_to "here", reference_url %>.
+Ordering columns efficiently will help us save (more) space, further details can be found <a href="<%= reference_url %>">here</a>.
 
 % queries.each do |query|
 % new_table = NewTable.new(query.new_table_fields_and_types)
 % unless new_table.column_order_optimized?
 
-Query: <%= query.formatted_query %>
+Query: `<%= query.formatted_query %>`
 
 | Column name | Data Type |
 | ----------- | --------- |

@@ -22,7 +22,8 @@ RSpec.describe Migration do
         "rows" => 1
       },
       {
-        "query" => "CREATE TABLE \"users\" (\"id\" bigserial primary key, \"created_at\" timestamp(6) NOT NULL) /*application:test*/",
+        "query" => "CREATE TABLE \"users\" (\"id\" bigserial primary key, \"created_at\" timestamp(6) NOT NULL) "\
+                   "/*application:test*/",
         "calls" => 1,
         "total_time" => 80.51234,
         "max_time" => 80.51234,

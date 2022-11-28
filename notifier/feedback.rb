@@ -2,15 +2,12 @@
 require 'filesize'
 require 'erb'
 require 'active_support/core_ext/module/delegation'
-require 'action_view/helpers/url_helper'
 require_relative 'niceql'
 require 'pg_query'
 require_relative 'json_payload'
 require_relative 'environment'
 
 class Feedback
-  include ActionView::Helpers::UrlHelper
-
   UNKNOWN = ':grey_question:'
 
   attr_reader :result, :env
