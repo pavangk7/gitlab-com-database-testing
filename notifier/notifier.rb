@@ -18,6 +18,7 @@ require_relative 'result'
 require_relative 'multi_db_result'
 require_relative 'warnings'
 require_relative 'charts/execution_histogram'
+require_relative 'new_table'
 
 IDENTIFIABLE_NOTE_TAG = 'gitlab-org/database-team/gitlab-com-database-testing:identifiable-note'
 
