@@ -34,6 +34,13 @@ RSpec.describe QueryExclusion do
     expect(described_class.exclude?(query)).to be true
   end
 
+  it 'is true if query table is postgres_partitions' do
+    query =
+      "SELECT $1 AS one FROM \"postgres_partitions\" WHERE (identifier = concat(current_schema(), $2, $3)) LIMIT $4"
+
+    expect(described_class.exclude?(query)).to be true
+  end
+
   it 'is false for other queries' do
     query = "SELECT * from user;"
 

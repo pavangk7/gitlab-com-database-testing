@@ -16,7 +16,8 @@ class QueryExclusion
     "SELECT current_database()",
     "SELECT $1",
     "SELECT current_schema",
-    "SELECT \"postgres_async_indexes\".* FROM \"postgres_async_indexes\" WHERE \"postgres_async_indexes\".\"name\" = $1 LIMIT $2"
+    "SELECT \"postgres_async_indexes\".* FROM \"postgres_async_indexes\" WHERE \"postgres_async_indexes\".\"name\" = $1 LIMIT $2",
+    "SELECT $1 AS one FROM \"postgres_partitions\" WHERE (identifier = concat(current_schema(), $2, $3)) LIMIT $4"
   ].map { |q| PgQuery.parse(q).deparse.downcase }.freeze
   # rubocop:enable Layout/LineLength
 
