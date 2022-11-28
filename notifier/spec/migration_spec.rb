@@ -68,6 +68,34 @@ RSpec.describe Migration do
     expect(subject.queries.first).to be_a(Query)
   end
 
+  describe 'types predicates' do
+    context 'with "regular" type' do
+      it { is_expected.to be_regular }
+      it { is_expected.not_to be_post_deploy }
+      it { is_expected.not_to be_background_batch }
+    end
+
+    context 'with "post_deploy" type' do
+      before do
+        migration_hash['type'] = described_class::TYPE_POST_DEPLOY
+      end
+
+      it { is_expected.not_to be_regular }
+      it { is_expected.to be_post_deploy }
+      it { is_expected.not_to be_background_batch }
+    end
+
+    context 'with "background_batch" type' do
+      before do
+        migration_hash['type'] = described_class::TYPE_BACKGROUND_BATCH
+      end
+
+      it { is_expected.not_to be_regular }
+      it { is_expected.not_to be_post_deploy }
+      it { is_expected.to be_background_batch }
+    end
+  end
+
   describe '#was_run?' do
     it 'returns false if the migration has no statistics' do
       subject = described_class.new(migration_hash, nil, [])

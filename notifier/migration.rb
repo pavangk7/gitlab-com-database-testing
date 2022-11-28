@@ -6,7 +6,7 @@ class Migration
   SRE_NOTIFICATION_GUIDANCE = 20.minutes.freeze
   TYPE_REGULAR = 'regular'
   TYPE_POST_DEPLOY = 'post_deploy'
-  TYPE_BACKGROUND = 'background'
+  TYPE_BACKGROUND_BATCH = 'background_batch'
   TIMING_GUIDELINES = 'https://docs.gitlab.com/ee/development/database_review.html#timing-guidelines-for-migrations'
   POST_DEPLOY_MIGRATION_GUIDE = 'https://docs.gitlab.com/ee/development/post_deployment_migrations.html'
   BACKGROUND_MIGRATION_GUIDE = 'https://docs.gitlab.com/ee/development/background_migrations.html'
@@ -24,7 +24,7 @@ class Migration
     migration_data = {
       version: nil,
       name: directory.basename.to_s,
-      type: TYPE_BACKGROUND,
+      type: TYPE_BACKGROUND_BATCH,
       path: nil,
       intro_on_current_branch: true
     }
@@ -83,9 +83,21 @@ class Migration
     @was_run
   end
 
+  def regular?
+    type == TYPE_REGULAR
+  end
+
+  def post_deploy?
+    type == TYPE_POST_DEPLOY
+  end
+
+  def background_batch?
+    type == TYPE_BACKGROUND_BATCH
+  end
+
   def time_guidance
-    return REGULAR_MIGRATION_GUIDANCE_SECONDS if type == TYPE_REGULAR
-    return POST_DEPLOY_MIGRATION_GUIDANCE_SECONDS if type == TYPE_POST_DEPLOY
+    return REGULAR_MIGRATION_GUIDANCE_SECONDS if regular?
+    return POST_DEPLOY_MIGRATION_GUIDANCE_SECONDS if post_deploy?
 
     raise 'Unknown migration type'
   end
@@ -142,7 +154,7 @@ class Migration
   end
 
   def time_remedy
-    if type == TYPE_REGULAR && walltime < POST_DEPLOY_MIGRATION_GUIDANCE_SECONDS
+    if regular? && walltime < POST_DEPLOY_MIGRATION_GUIDANCE_SECONDS
       "#{name_formatted} may need a [post-deploy migration](#{POST_DEPLOY_MIGRATION_GUIDE}) "\
       "to comply with [timing guidelines](#{TIMING_GUIDELINES}). It took #{walltime_minutes}, "\
       "but should not exceed #{time_guidance_minutes}"
@@ -178,6 +190,6 @@ class Migration
   end
 
   def sort_key
-    [type == TYPE_REGULAR ? 0 : 1, version]
+    [regular? ? 0 : 1, version]
   end
 end
